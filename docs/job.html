@@ -19,6 +19,13 @@
       gap: 18px;
       align-items: start;
     }
+    .charts-row {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      align-items: start;
+    }
     .card {
       background: white;
       border-radius: 14px;
@@ -77,6 +84,12 @@
       font-weight: bold;
     }
     a { text-decoration: none; }
+    @media (max-width: 900px) {
+      .grid,
+      .charts-row {
+        grid-template-columns: 1fr;
+      }
+    }
   </style>
 </head>
 <body>
@@ -89,14 +102,16 @@
       <div id="status">Loading...</div>
     </div>
 
-    <div class="card">
-      <h2>Energy History</h2>
-      <canvas id="energyChart"></canvas>
-    </div>
+    <div class="charts-row">
+      <div class="card">
+        <h2>Energy History</h2>
+        <canvas id="energyChart"></canvas>
+      </div>
 
-    <div class="card">
-      <h2>Total Force History</h2>
-      <canvas id="forceChart"></canvas>
+      <div class="card">
+        <h2>Total Force History</h2>
+        <canvas id="forceChart"></canvas>
+      </div>
     </div>
 
     <div class="card full">
