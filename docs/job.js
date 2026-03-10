@@ -440,19 +440,13 @@ function formatScientific(value, digits = 3) {
 function renderStatus(status, job) {
   document.getElementById("status").innerHTML = `
     <div><b>Job:</b> ${status.job ?? job.label ?? "-"}</div>
-    <div><b>Status:</b> ${status.status ?? job.status ?? "-"}</div>
     <div><b>Converged:</b> ${status.converged ?? "-"}</div>
     <div><b>Latest energy:</b> ${status.latest_energy_ry ?? "-"}</div>
     <div><b>Latest total force:</b> ${formatScientific(status.latest_total_force_ry_bohr)}</div>
-    <div><b>Target total force:</b> ${formatScientific(status.target_total_force_ry_bohr)}</div>
     <div><b>BFGS steps:</b> ${status.bfgs_steps ?? "-"}</div>
     <div><b>SCF cycles:</b> ${status.scf_cycles ?? "-"}</div>
     <div><b>Atoms:</b> ${status.nat_latest ?? "-"}</div>
     <div><b>Geometry steps:</b> ${status.num_structure_steps ?? "-"}</div>
-    <div><b>Positions format:</b> ${status.positions_format ?? "-"}</div>
-    <div><b>Cell format:</b> ${status.cell_format ?? "-"}</div>
-    <div><b>Cell source:</b> ${status.cell_source ?? "-"}</div>
-    <div><b>Output file:</b> ${job.output_file ?? "-"}</div>
     <div><b>Last update:</b> ${status.last_update ?? "-"}</div>
     ${job.note ? `<div><b>Note:</b> ${job.note}</div>` : ""}
   `;
