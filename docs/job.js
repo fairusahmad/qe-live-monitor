@@ -9,6 +9,10 @@ let currentLattice = null;
 let showCell = true;
 let showAxes = true;
 let currentStyle = "ballstick";
+let measureMode = false;
+let measurementAtoms = [];
+let measurementLabels = [];
+let measurementLine = null;
 
 function getJobId() {
   const params = new URLSearchParams(window.location.search);
@@ -42,6 +46,102 @@ function initViewer() {
       }
     });
   }
+}
+
+function formatAtomLabel(atom) {
+  const elem = atom.elem || atom.atom || "Atom";
+  const idx = atom.serial ?? atom.index;
+  return idx !== undefined ? `${elem}${idx}` : elem;
+}
+
+function distanceBetweenAtoms(atomA, atomB) {
+  const dx = atomA.x - atomB.x;
+  const dy = atomA.y - atomB.y;
+  const dz = atomA.z - atomB.z;
+  return Math.sqrt(dx * dx + dy * dy + dz * dz);
+}
+
+function updateMeasurementStatus(message) {
+  const el = document.getElementById("measureStatus");
+  if (el) el.textContent = message;
+}
+
+function clearMeasurement() {
+  measurementAtoms = [];
+
+  if (viewer) {
+    for (const label of measurementLabels) {
+      viewer.removeLabel(label);
+    }
+    if (measurementLine) {
+      viewer.removeShape(measurementLine);
+    }
+  }
+
+  measurementLabels = [];
+  measurementLine = null;
+  updateMeasurementStatus(measureMode ? "Select atom 1 of 2" : "Measurement off");
+
+  if (viewer) viewer.render();
+}
+
+function handleMeasurementClick(atom) {
+  if (!measureMode || !atom) return;
+
+  if (measurementAtoms.length === 2) {
+    clearMeasurement();
+  }
+
+  measurementAtoms.push({
+    index: atom.index,
+    serial: atom.serial,
+    elem: atom.elem,
+    x: atom.x,
+    y: atom.y,
+    z: atom.z
+  });
+
+  const pickNumber = measurementAtoms.length;
+  const marker = viewer.addLabel(`${pickNumber}: ${formatAtomLabel(atom)}`, {
+    position: { x: atom.x, y: atom.y, z: atom.z },
+    backgroundColor: "#111827",
+    fontColor: "white",
+    backgroundOpacity: 0.85,
+    fontSize: 12
+  });
+  measurementLabels.push(marker);
+
+  if (measurementAtoms.length === 1) {
+    updateMeasurementStatus("Select atom 2 of 2");
+    viewer.render();
+    return;
+  }
+
+  const [atomA, atomB] = measurementAtoms;
+  const distance = distanceBetweenAtoms(atomA, atomB);
+  measurementLine = viewer.addLine({
+    start: { x: atomA.x, y: atomA.y, z: atomA.z },
+    end: { x: atomB.x, y: atomB.y, z: atomB.z },
+    color: "#7c3aed",
+    linewidth: 3,
+    dashed: true
+  });
+
+  const midpoint = {
+    x: (atomA.x + atomB.x) / 2,
+    y: (atomA.y + atomB.y) / 2,
+    z: (atomA.z + atomB.z) / 2
+  };
+  const distanceLabel = viewer.addLabel(`${distance.toFixed(3)} A`, {
+    position: midpoint,
+    backgroundColor: "#7c3aed",
+    fontColor: "white",
+    backgroundOpacity: 0.9,
+    fontSize: 12
+  });
+  measurementLabels.push(distanceLabel);
+  updateMeasurementStatus(`Distance: ${distance.toFixed(3)} A`);
+  viewer.render();
 }
 
 function parseXYZTrajectory(xyzText) {
@@ -188,6 +288,10 @@ function renderFrame(index, preserveView = false) {
 
   viewer.clear();
   viewer.addModel(frame.xyz, "xyz");
+  clearMeasurement();
+  viewer.setClickable({}, true, function(atom) {
+    handleMeasurementClick(atom);
+  });
 
   applyStyle();
   addLatticeBox(currentLattice);
@@ -238,6 +342,15 @@ function toggleAxes() {
 function resetView() {
   if (!viewer) return;
   renderFrame(currentStep, false);
+}
+
+function toggleMeasureMode() {
+  measureMode = !measureMode;
+  const button = document.getElementById("measureToggle");
+  if (button) {
+    button.textContent = measureMode ? "Exit Measure" : "Measure Distance";
+  }
+  clearMeasurement();
 }
 
 function goFirst() {
