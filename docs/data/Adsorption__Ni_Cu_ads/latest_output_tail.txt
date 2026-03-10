@@ -1,54 +1,3 @@
-     atom   59 type  2   force =     0.00010951    0.00027605   -0.00473106
-     atom   60 type  2   force =     0.00009589    0.00000996   -0.00223278
-     atom   61 type  2   force =     0.00006625    0.00009121   -0.00478007
-     atom   62 type  2   force =     0.00024524    0.00001296   -0.00251130
-     atom   63 type  2   force =     0.00017630    0.00002651   -0.00314388
-     atom   64 type  2   force =    -0.00086452   -0.00071799   -0.00358756
-     atom   65 type  2   force =     0.00044181    0.00049052   -0.00418470
-     atom   66 type  2   force =     0.00017798   -0.00002913   -0.00310610
-     atom   67 type  2   force =     0.00022186    0.00040613   -0.00416967
-     atom   68 type  2   force =     0.00003212    0.00012619   -0.00335757
-     atom   69 type  2   force =    -0.00120845   -0.00052673   -0.00358897
-     atom   70 type  2   force =     0.00024610   -0.00006467   -0.00351939
-     atom   71 type  2   force =    -0.00087678   -0.00048138   -0.00379457
-     atom   72 type  2   force =     0.00047229    0.00013630   -0.00412731
-     atom   73 type  3   force =     0.00028708   -0.00020924    0.00017331
-     atom   74 type  3   force =    -0.00007924   -0.00038998   -0.00142447
-     atom   75 type  3   force =    -0.00024445   -0.00027497    0.00017765
-     atom   76 type  4   force =    -0.00025065   -0.00010433   -0.00034198
-     atom   77 type  4   force =     0.00000375    0.00020327   -0.00164430
-     atom   78 type  4   force =    -0.00008983    0.00042142   -0.00013739
-     atom   79 type  5   force =    -0.00022283    0.00006408   -0.00026402
-     atom   80 type  5   force =     0.00029321    0.00020624   -0.00083118
-     atom   81 type  5   force =    -0.00015350    0.00013428   -0.00121755
-     atom   82 type  5   force =     0.00003874    0.00023740   -0.00046824
-     atom   83 type  5   force =     0.00037692    0.00006578   -0.00044658
-     atom   84 type  5   force =    -0.00005574   -0.00017124   -0.00025541
-     atom   85 type  5   force =    -0.00002720   -0.00030841   -0.00193238
-     atom   86 type  5   force =    -0.00008865   -0.00016517   -0.00004000
-
-     Total force =     0.041007     Total SCF correction =     0.001226
-
-     DFT-D3 dispersion Force =     0.022266
-     Energy error            =      2.6E-03 Ry
-     Gradient error          =      1.4E-02 Ry/Bohr
-
-     number of scf cycles    =  57
-     number of bfgs steps    =  56
-
-     energy             old  =   -8184.2263389905 Ry
-     energy             new  =   -8184.2289472909 Ry
-
-     CASE: energy            _new < energy            _old
-
-     new trust radius        =       0.0793528178 bohr
-     new conv_thr            =       0.0000002608 Ry
-
-
-ATOMIC_POSITIONS (crystal)
-Ni               0.0000000000        0.0000000000        0.1675988400    0   0   0
-Ni              -0.0000000000        0.3333333300        0.1675988400    0   0   0
-Ni               1.0000000000        0.6666666700        0.1675988400    0   0   0
 Ni               0.3333333300        0.0000000000        0.1675988400    0   0   0
 Ni               0.3333333300        0.3333333300        0.1675988400    0   0   0
 Ni               0.3333333300        0.6666666700        0.1675988400    0   0   0
@@ -297,4 +246,55 @@ H                0.3853866694        0.6236383662        0.6487937397
           1037 MiB given to the printing process from OS
            322 MiB allocation reported by mallinfo(arena+hblkhd)
         151437 MiB available memory on the node where the printing process lives
+------------------
+     ethr =  6.19E-07,  avg # of iterations =  1.4
+
+     negative rho (up, down):  3.623E-03 0.000E+00
+
+     total cpu time spent up to now is   184077.1 secs
+
+     total energy              =   -8184.23226923 Ry
+     estimated scf accuracy    <       0.00384743 Ry
+
+     iteration # 10     ecut=    50.00 Ry     beta= 0.20
+     Davidson diagonalization with overlap
+
+---- Real-time Memory Report at c_bands before calling an iterative solver
+          1037 MiB given to the printing process from OS
+           322 MiB allocation reported by mallinfo(arena+hblkhd)
+        149050 MiB available memory on the node where the printing process lives
+------------------
+     ethr =  4.85E-07,  avg # of iterations =  1.0
+
+     negative rho (up, down):  3.622E-03 0.000E+00
+
+     total cpu time spent up to now is   184168.2 secs
+
+     total energy              =   -8184.23237804 Ry
+     estimated scf accuracy    <       0.00039738 Ry
+
+     iteration # 11     ecut=    50.00 Ry     beta= 0.20
+     Davidson diagonalization with overlap
+
+---- Real-time Memory Report at c_bands before calling an iterative solver
+          1037 MiB given to the printing process from OS
+           322 MiB allocation reported by mallinfo(arena+hblkhd)
+        150851 MiB available memory on the node where the printing process lives
+------------------
+     ethr =  5.00E-08,  avg # of iterations =  2.0
+
+     negative rho (up, down):  3.622E-03 0.000E+00
+
+     total cpu time spent up to now is   184272.1 secs
+
+     total energy              =   -8184.23236748 Ry
+     estimated scf accuracy    <       0.00137883 Ry
+
+     iteration # 12     ecut=    50.00 Ry     beta= 0.20
+     Davidson diagonalization with overlap
+
+---- Real-time Memory Report at c_bands before calling an iterative solver
+          1037 MiB given to the printing process from OS
+           322 MiB allocation reported by mallinfo(arena+hblkhd)
+        150679 MiB available memory on the node where the printing process lives
 ------------------
