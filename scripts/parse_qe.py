@@ -7,6 +7,7 @@ BOHR_TO_ANG = 0.529177210903
 
 energy_pattern = re.compile(r'!\s+total energy\s+=\s+([-0-9.Ee+]+)\s+Ry')
 total_force_pattern = re.compile(r'[Tt]otal\s+force\s*=\s*([-0-9.Ee+]+)')
+gradient_error_pattern = re.compile(r'Gradient\s+error\s*=\s*([-0-9.Ee+]+)\s+Ry/Bohr', re.IGNORECASE)
 force_target_pattern = re.compile(r'criteria:\s*energy\s*<\s*[-0-9.Ee+]+\s+Ry,\s*force\s*<\s*([-0-9.Ee+]+)\s+Ry/Bohr', re.IGNORECASE)
 bfgs_pattern = re.compile(r'number of bfgs steps\s+=\s+(\d+)', re.IGNORECASE)
 scf_pattern = re.compile(r'number of scf cycles\s+=\s+(\d+)', re.IGNORECASE)
@@ -231,6 +232,7 @@ def parse_qe_output(filename):
 
     energies = []
     total_forces = []
+    gradient_errors = []
     target_total_force = None
     for line in lines:
         m = energy_pattern.search(line)
@@ -239,6 +241,9 @@ def parse_qe_output(filename):
         mf = total_force_pattern.search(line)
         if mf:
             total_forces.append(float(mf.group(1)))
+        mg = gradient_error_pattern.search(line)
+        if mg:
+            gradient_errors.append(float(mg.group(1)))
         mt = force_target_pattern.search(line)
         if mt:
             target_total_force = float(mt.group(1))
@@ -300,6 +305,8 @@ def parse_qe_output(filename):
         "latest_energy": energies[-1] if energies else None,
         "total_forces": total_forces,
         "latest_total_force": total_forces[-1] if total_forces else None,
+        "gradient_errors": gradient_errors,
+        "latest_gradient_error": gradient_errors[-1] if gradient_errors else None,
         "target_total_force": target_total_force,
         "bfgs_steps": bfgs_steps,
         "scf_cycles": scf_cycles,
@@ -343,6 +350,12 @@ def write_total_force_csv(total_forces, output_csv):
         for i, force in enumerate(total_forces, start=1):
             f.write(f"{i},{force}\n")
 
+def write_gradient_error_csv(gradient_errors, output_csv):
+    with open(output_csv, "w", encoding="utf-8") as f:
+        f.write("step,gradient_error_ry_bohr\n")
+        for i, gradient_error in enumerate(gradient_errors, start=1):
+            f.write(f"{i},{gradient_error}\n")
+
 def write_output_tail(filename, output_tail, nlines=300):
     with open(filename, "r", encoding="utf-8", errors="ignore") as f:
         tail = f.readlines()[-nlines:]
@@ -362,6 +375,9 @@ def write_status_json(result, output_json, job_name="QE Job"):
         "latest_total_force_ry_bohr": result["latest_total_force"],
         "target_total_force_ry_bohr": result["target_total_force"],
         "num_total_force_points": len(result["total_forces"]),
+        "latest_gradient_error_ry_bohr": result["latest_gradient_error"],
+        "target_gradient_error_ry_bohr": result["target_total_force"],
+        "num_gradient_error_points": len(result["gradient_errors"]),
         "bfgs_steps": result["bfgs_steps"],
         "scf_cycles": result["scf_cycles"],
         "converged": result["converged"],
@@ -393,6 +409,7 @@ def export_qe_run(qe_output, outdir, job_name="QE Job"):
     write_status_json(result, os.path.join(outdir, "status.json"), job_name=job_name)
     write_energy_csv(result["energies"], os.path.join(outdir, "energy.csv"))
     write_total_force_csv(result["total_forces"], os.path.join(outdir, "total_force.csv"))
+    write_gradient_error_csv(result["gradient_errors"], os.path.join(outdir, "gradient_error.csv"))
     write_xyz(result["latest_atoms_ang"], os.path.join(outdir, "structure.xyz"))
     write_trajectory_xyz(result["position_blocks"], os.path.join(outdir, "trajectory.xyz"))
     write_lattice_json(result, os.path.join(outdir, "lattice.json"))

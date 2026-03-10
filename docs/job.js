@@ -1,6 +1,6 @@
 let viewer = null;
 let energyChart = null;
-let forceChart = null;
+let gradientChart = null;
 let currentJob = null;
 
 let trajectoryFrames = [];
@@ -443,7 +443,7 @@ function renderStatus(status, job) {
     <div><b>Job:</b> ${status.job ?? job.label ?? "-"}</div>
     <div><b>Converged:</b> ${status.converged ?? "-"}</div>
     <div><b>Latest energy:</b> ${status.latest_energy_ry ?? "-"}</div>
-    <div><b>Latest total force:</b> ${formatScientific(status.latest_total_force_ry_bohr)}</div>
+    <div><b>Latest gradient error:</b> ${formatScientific(status.latest_gradient_error_ry_bohr)}</div>
     <div><b>BFGS steps:</b> ${status.bfgs_steps ?? "-"}</div>
     <div><b>SCF cycles:</b> ${status.scf_cycles ?? "-"}</div>
     <div><b>Atoms:</b> ${status.nat_latest ?? "-"}</div>
@@ -497,28 +497,28 @@ async function refreshJob() {
   }
 
   try {
-    const csv = await loadText(`data/${job.job_id}/total_force.csv`);
+    const csv = await loadText(`data/${job.job_id}/gradient_error.csv`);
     const parsed = parseSeriesCSV(csv);
     if (parsed.length > 0) {
-      forceChart = drawSeriesChart(
-        "forceChart",
-        forceChart,
+      gradientChart = drawSeriesChart(
+        "gradientChart",
+        gradientChart,
         parsed,
-        "Total Force (Ry/Bohr)",
+        "Gradient Error (Ry/Bohr)",
         "#16a34a",
-        "Force (Ry/Bohr)",
-        status.target_total_force_ry_bohr ?? null,
-        "Target Force (Ry/Bohr)"
+        "Gradient Error (Ry/Bohr)",
+        status.target_gradient_error_ry_bohr ?? null,
+        "Target Gradient Error (Ry/Bohr)"
       );
     }
-    else if (forceChart) {
-      forceChart.destroy();
-      forceChart = null;
+    else if (gradientChart) {
+      gradientChart.destroy();
+      gradientChart = null;
     }
   } catch (e) {
-    if (forceChart) {
-      forceChart.destroy();
-      forceChart = null;
+    if (gradientChart) {
+      gradientChart.destroy();
+      gradientChart = null;
     }
     console.error(e);
   }

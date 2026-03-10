@@ -112,6 +112,7 @@ def main():
             item["status"] = "ok"
             item["latest_energy_ry"] = result["latest_energy"]
             item["latest_total_force_ry_bohr"] = result["latest_total_force"]
+            item["latest_gradient_error_ry_bohr"] = result["latest_gradient_error"]
             item["converged"] = result["converged"]
             item["nat_latest"] = len(result["latest_atoms_ang"])
             item["has_structure"] = len(result["latest_atoms_ang"]) > 0
@@ -120,6 +121,7 @@ def main():
             item["status_file"] = f"data/{job_id}/status.json"
             item["energy_file"] = f"data/{job_id}/energy.csv"
             item["total_force_file"] = f"data/{job_id}/total_force.csv"
+            item["gradient_error_file"] = f"data/{job_id}/gradient_error.csv"
             item["structure_file"] = f"data/{job_id}/structure.xyz"
             item["trajectory_file"] = f"data/{job_id}/trajectory.xyz"
             item["lattice_file"] = f"data/{job_id}/lattice.json"
