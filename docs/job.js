@@ -1,5 +1,6 @@
 let viewer = null;
-let chart = null;
+let energyChart = null;
+let forceChart = null;
 let currentJob = null;
 
 let trajectoryFrames = [];
@@ -261,32 +262,35 @@ function goToStep(stepNumber) {
 
 
 
-function parseCSV(csv) {
+function parseSeriesCSV(csv) {
   const lines = csv.trim().split("\n");
   const data = [];
   for (let i = 1; i < lines.length; i++) {
-    const [step, energy] = lines[i].split(",");
+    const [step, value] = lines[i].split(",");
     const s = Number(step);
-    const e = Number(energy);
-    if (!Number.isNaN(s) && !Number.isNaN(e)) {
-      data.push({ step: s, energy: e });
+    const v = Number(value);
+    if (!Number.isNaN(s) && !Number.isNaN(v)) {
+      data.push({ step: s, value: v });
     }
   }
   return data;
 }
 
-function drawChart(data) {
-  const ctx = document.getElementById("energyChart").getContext("2d");
-  if (chart) chart.destroy();
+function drawSeriesChart(canvasId, existingChart, data, label, color, yTitle) {
+  const ctx = document.getElementById(canvasId).getContext("2d");
+  if (existingChart) existingChart.destroy();
 
-  chart = new Chart(ctx, {
+  return new Chart(ctx, {
     type: "line",
     data: {
       labels: data.map(d => d.step),
       datasets: [{
-        label: "Total Energy (Ry)",
-        data: data.map(d => d.energy),
-        tension: 0.15
+        label,
+        data: data.map(d => d.value),
+        tension: 0.15,
+        borderColor: color,
+        backgroundColor: color,
+        pointRadius: 2
       }]
     },
     options: {
@@ -294,7 +298,7 @@ function drawChart(data) {
       maintainAspectRatio: true,
       scales: {
         x: { title: { display: true, text: "Step" } },
-        y: { title: { display: true, text: "Energy (Ry)" } }
+        y: { title: { display: true, text: yTitle } }
       }
     }
   });
@@ -306,6 +310,7 @@ function renderStatus(status, job) {
     <div><b>Status:</b> ${status.status ?? job.status ?? "-"}</div>
     <div><b>Converged:</b> ${status.converged ?? "-"}</div>
     <div><b>Latest energy:</b> ${status.latest_energy_ry ?? "-"}</div>
+    <div><b>Latest total force:</b> ${status.latest_total_force_ry_bohr ?? "-"}</div>
     <div><b>BFGS steps:</b> ${status.bfgs_steps ?? "-"}</div>
     <div><b>SCF cycles:</b> ${status.scf_cycles ?? "-"}</div>
     <div><b>Atoms:</b> ${status.nat_latest ?? "-"}</div>
@@ -347,9 +352,43 @@ async function refreshJob() {
 
   try {
     const csv = await loadText(`data/${job.job_id}/energy.csv`);
-    const parsed = parseCSV(csv);
-    if (parsed.length > 0) drawChart(parsed);
+    const parsed = parseSeriesCSV(csv);
+    if (parsed.length > 0) {
+      energyChart = drawSeriesChart(
+        "energyChart",
+        energyChart,
+        parsed,
+        "Total Energy (Ry)",
+        "#2563eb",
+        "Energy (Ry)"
+      );
+    }
   } catch (e) {
+    console.error(e);
+  }
+
+  try {
+    const csv = await loadText(`data/${job.job_id}/total_force.csv`);
+    const parsed = parseSeriesCSV(csv);
+    if (parsed.length > 0) {
+      forceChart = drawSeriesChart(
+        "forceChart",
+        forceChart,
+        parsed,
+        "Total Force (Ry/Bohr)",
+        "#16a34a",
+        "Force (Ry/Bohr)"
+      );
+    }
+    else if (forceChart) {
+      forceChart.destroy();
+      forceChart = null;
+    }
+  } catch (e) {
+    if (forceChart) {
+      forceChart.destroy();
+      forceChart = null;
+    }
     console.error(e);
   }
 

@@ -6,6 +6,7 @@ from datetime import datetime
 BOHR_TO_ANG = 0.529177210903
 
 energy_pattern = re.compile(r'!\s+total energy\s+=\s+([-0-9.Ee+]+)\s+Ry')
+total_force_pattern = re.compile(r'[Tt]otal\s+force\s*=\s*([-0-9.Ee+]+)')
 bfgs_pattern = re.compile(r'number of bfgs steps\s+=\s+(\d+)', re.IGNORECASE)
 scf_pattern = re.compile(r'number of scf cycles\s+=\s+(\d+)', re.IGNORECASE)
 
@@ -228,10 +229,14 @@ def parse_qe_output(filename):
         lines = f.readlines()
 
     energies = []
+    total_forces = []
     for line in lines:
         m = energy_pattern.search(line)
         if m:
             energies.append(float(m.group(1)))
+        mf = total_force_pattern.search(line)
+        if mf:
+            total_forces.append(float(mf.group(1)))
 
     bfgs_steps = None
     scf_cycles = None
@@ -288,6 +293,8 @@ def parse_qe_output(filename):
     return {
         "energies": energies,
         "latest_energy": energies[-1] if energies else None,
+        "total_forces": total_forces,
+        "latest_total_force": total_forces[-1] if total_forces else None,
         "bfgs_steps": bfgs_steps,
         "scf_cycles": scf_cycles,
         "converged": converged,
@@ -324,6 +331,12 @@ def write_energy_csv(energies, output_csv):
         for i, e in enumerate(energies, start=1):
             f.write(f"{i},{e}\n")
 
+def write_total_force_csv(total_forces, output_csv):
+    with open(output_csv, "w", encoding="utf-8") as f:
+        f.write("step,total_force_ry_bohr\n")
+        for i, force in enumerate(total_forces, start=1):
+            f.write(f"{i},{force}\n")
+
 def write_output_tail(filename, output_tail, nlines=300):
     with open(filename, "r", encoding="utf-8", errors="ignore") as f:
         tail = f.readlines()[-nlines:]
@@ -340,6 +353,8 @@ def write_status_json(result, output_json, job_name="QE Job"):
         "status": "finished" if result["converged"] else "running",
         "latest_energy_ry": result["latest_energy"],
         "num_energy_points": len(result["energies"]),
+        "latest_total_force_ry_bohr": result["latest_total_force"],
+        "num_total_force_points": len(result["total_forces"]),
         "bfgs_steps": result["bfgs_steps"],
         "scf_cycles": result["scf_cycles"],
         "converged": result["converged"],
@@ -370,6 +385,7 @@ def export_qe_run(qe_output, outdir, job_name="QE Job"):
 
     write_status_json(result, os.path.join(outdir, "status.json"), job_name=job_name)
     write_energy_csv(result["energies"], os.path.join(outdir, "energy.csv"))
+    write_total_force_csv(result["total_forces"], os.path.join(outdir, "total_force.csv"))
     write_xyz(result["latest_atoms_ang"], os.path.join(outdir, "structure.xyz"))
     write_trajectory_xyz(result["position_blocks"], os.path.join(outdir, "trajectory.xyz"))
     write_lattice_json(result, os.path.join(outdir, "lattice.json"))
