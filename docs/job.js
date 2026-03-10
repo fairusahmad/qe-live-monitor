@@ -389,22 +389,36 @@ function parseSeriesCSV(csv) {
   return data;
 }
 
-function drawSeriesChart(canvasId, existingChart, data, label, color, yTitle) {
+function drawSeriesChart(canvasId, existingChart, data, label, color, yTitle, targetValue = null, targetLabel = null) {
   const ctx = document.getElementById(canvasId).getContext("2d");
   if (existingChart) existingChart.destroy();
+
+  const datasets = [{
+    label,
+    data: data.map(d => d.value),
+    tension: 0.15,
+    borderColor: color,
+    backgroundColor: color,
+    pointRadius: 2
+  }];
+
+  if (targetValue !== null && data.length > 0) {
+    datasets.push({
+      label: targetLabel ?? "Target",
+      data: data.map(() => targetValue),
+      borderColor: "#dc2626",
+      backgroundColor: "#dc2626",
+      borderDash: [6, 4],
+      pointRadius: 0,
+      tension: 0
+    });
+  }
 
   return new Chart(ctx, {
     type: "line",
     data: {
       labels: data.map(d => d.step),
-      datasets: [{
-        label,
-        data: data.map(d => d.value),
-        tension: 0.15,
-        borderColor: color,
-        backgroundColor: color,
-        pointRadius: 2
-      }]
+      datasets
     },
     options: {
       responsive: true,
@@ -424,6 +438,7 @@ function renderStatus(status, job) {
     <div><b>Converged:</b> ${status.converged ?? "-"}</div>
     <div><b>Latest energy:</b> ${status.latest_energy_ry ?? "-"}</div>
     <div><b>Latest total force:</b> ${status.latest_total_force_ry_bohr ?? "-"}</div>
+    <div><b>Target total force:</b> ${status.target_total_force_ry_bohr ?? "-"}</div>
     <div><b>BFGS steps:</b> ${status.bfgs_steps ?? "-"}</div>
     <div><b>SCF cycles:</b> ${status.scf_cycles ?? "-"}</div>
     <div><b>Atoms:</b> ${status.nat_latest ?? "-"}</div>
@@ -490,7 +505,9 @@ async function refreshJob() {
         parsed,
         "Total Force (Ry/Bohr)",
         "#16a34a",
-        "Force (Ry/Bohr)"
+        "Force (Ry/Bohr)",
+        status.target_total_force_ry_bohr ?? null,
+        "Target Force (Ry/Bohr)"
       );
     }
     else if (forceChart) {
@@ -563,4 +580,5 @@ async function main() {
 
 main();
 setInterval(main, 60000);
+
 

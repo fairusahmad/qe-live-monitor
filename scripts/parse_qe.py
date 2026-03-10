@@ -7,6 +7,7 @@ BOHR_TO_ANG = 0.529177210903
 
 energy_pattern = re.compile(r'!\s+total energy\s+=\s+([-0-9.Ee+]+)\s+Ry')
 total_force_pattern = re.compile(r'[Tt]otal\s+force\s*=\s*([-0-9.Ee+]+)')
+force_target_pattern = re.compile(r'criteria:\s*energy\s*<\s*[-0-9.Ee+]+\s+Ry,\s*force\s*<\s*([-0-9.Ee+]+)\s+Ry/Bohr', re.IGNORECASE)
 bfgs_pattern = re.compile(r'number of bfgs steps\s+=\s+(\d+)', re.IGNORECASE)
 scf_pattern = re.compile(r'number of scf cycles\s+=\s+(\d+)', re.IGNORECASE)
 
@@ -230,6 +231,7 @@ def parse_qe_output(filename):
 
     energies = []
     total_forces = []
+    target_total_force = None
     for line in lines:
         m = energy_pattern.search(line)
         if m:
@@ -237,6 +239,9 @@ def parse_qe_output(filename):
         mf = total_force_pattern.search(line)
         if mf:
             total_forces.append(float(mf.group(1)))
+        mt = force_target_pattern.search(line)
+        if mt:
+            target_total_force = float(mt.group(1))
 
     bfgs_steps = None
     scf_cycles = None
@@ -295,6 +300,7 @@ def parse_qe_output(filename):
         "latest_energy": energies[-1] if energies else None,
         "total_forces": total_forces,
         "latest_total_force": total_forces[-1] if total_forces else None,
+        "target_total_force": target_total_force,
         "bfgs_steps": bfgs_steps,
         "scf_cycles": scf_cycles,
         "converged": converged,
@@ -354,6 +360,7 @@ def write_status_json(result, output_json, job_name="QE Job"):
         "latest_energy_ry": result["latest_energy"],
         "num_energy_points": len(result["energies"]),
         "latest_total_force_ry_bohr": result["latest_total_force"],
+        "target_total_force_ry_bohr": result["target_total_force"],
         "num_total_force_points": len(result["total_forces"]),
         "bfgs_steps": result["bfgs_steps"],
         "scf_cycles": result["scf_cycles"],
@@ -392,4 +399,5 @@ def export_qe_run(qe_output, outdir, job_name="QE Job"):
     write_output_tail(qe_output, os.path.join(outdir, "latest_output_tail.txt"))
 
     return result
+
 
