@@ -1,21 +1,4 @@
 
----- Real-time Memory Report at c_bands before calling an iterative solver
-          1037 MiB given to the printing process from OS
-           322 MiB allocation reported by mallinfo(arena+hblkhd)
-        144083 MiB available memory on the node where the printing process lives
-------------------
-     c_bands:  3 eigenvalues not converged
-     c_bands:  4 eigenvalues not converged
-     c_bands:  1 eigenvalues not converged
-     ethr =  1.32E-06,  avg # of iterations = 19.0
-
-     negative rho (up, down):  3.636E-03 0.000E+00
-
-     total cpu time spent up to now is   183332.9 secs
-
-     total energy              =   -8184.21148301 Ry
-     estimated scf accuracy    <       3.40990225 Ry
-
      iteration #  3     ecut=    50.00 Ry     beta= 0.20
      Davidson diagonalization with overlap
 
@@ -297,4 +280,21 @@
           1037 MiB given to the printing process from OS
            322 MiB allocation reported by mallinfo(arena+hblkhd)
         151033 MiB available memory on the node where the printing process lives
+------------------
+     ethr =  1.92E-08,  avg # of iterations =  1.0
+
+     negative rho (up, down):  3.624E-03 0.000E+00
+
+     total cpu time spent up to now is   185003.7 secs
+
+     total energy              =   -8184.23240696 Ry
+     estimated scf accuracy    <       0.00019830 Ry
+
+     iteration # 20     ecut=    50.00 Ry     beta= 0.20
+     Davidson diagonalization with overlap
+
+---- Real-time Memory Report at c_bands before calling an iterative solver
+          1037 MiB given to the printing process from OS
+           322 MiB allocation reported by mallinfo(arena+hblkhd)
+        148103 MiB available memory on the node where the printing process lives
 ------------------
