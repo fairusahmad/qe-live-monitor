@@ -390,22 +390,23 @@ function parseSeriesCSV(csv) {
 }
 
 function drawSeriesChart(canvasId, existingChart, data, label, color, yTitle, targetValue = null, targetLabel = null) {
+  const visibleData = data.slice(-10);
   const ctx = document.getElementById(canvasId).getContext("2d");
   if (existingChart) existingChart.destroy();
 
   const datasets = [{
     label,
-    data: data.map(d => d.value),
+    data: visibleData.map(d => d.value),
     tension: 0.15,
     borderColor: color,
     backgroundColor: color,
     pointRadius: 2
   }];
 
-  if (targetValue !== null && data.length > 0) {
+  if (targetValue !== null && visibleData.length > 0) {
     datasets.push({
       label: targetLabel ?? "Target",
-      data: data.map(() => targetValue),
+      data: visibleData.map(() => targetValue),
       borderColor: "#dc2626",
       backgroundColor: "#dc2626",
       borderDash: [6, 4],
@@ -417,7 +418,7 @@ function drawSeriesChart(canvasId, existingChart, data, label, color, yTitle, ta
   return new Chart(ctx, {
     type: "line",
     data: {
-      labels: data.map(d => d.step),
+      labels: visibleData.map(d => d.step),
       datasets
     },
     options: {
@@ -580,5 +581,6 @@ async function main() {
 
 main();
 setInterval(main, 60000);
+
 
 
