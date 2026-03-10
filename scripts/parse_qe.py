@@ -392,3 +392,4 @@ def export_qe_run(qe_output, outdir, job_name="QE Job"):
     write_output_tail(qe_output, os.path.join(outdir, "latest_output_tail.txt"))
 
     return result
+
