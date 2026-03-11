@@ -452,11 +452,12 @@ def write_lattice_json(result, output_json):
 
 def write_original_lattice_json(result, output_json):
     input_structure = result.get("input_structure")
+    cell_block = input_structure["cell_block"] if input_structure else None
     data = {
         "input_file": input_structure["input_file"] if input_structure else None,
-        "cell_format": input_structure["cell_block"]["header"] if input_structure else None,
+        "cell_format": cell_block["header"] if cell_block else None,
         "cell_source": os.path.basename(input_structure["input_file"]) if input_structure else None,
-        "matrix_angstrom": input_structure["cell_block"]["matrix_angstrom"] if input_structure else None,
+        "matrix_angstrom": cell_block["matrix_angstrom"] if cell_block else None,
     }
     with open(output_json, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=2)
