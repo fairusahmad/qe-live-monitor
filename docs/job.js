@@ -9,6 +9,7 @@ let originalStructure = null;
 let currentStep = 0;
 let currentLattice = null;
 let originalLattice = null;
+let originalInputFile = null;
 let showCell = true;
 let showAxes = true;
 let currentStyle = "ballstick";
@@ -38,6 +39,12 @@ async function loadJSON(path) {
   const res = await fetch(path + "?t=" + Date.now());
   if (!res.ok) throw new Error(`Failed to load ${path}`);
   return await res.json();
+}
+
+function updateOriginalStructureSource() {
+  const el = document.getElementById("originalStructureSource");
+  if (!el) return;
+  el.textContent = `Source: ${originalInputFile ?? "not available"}`;
 }
 
 function initViewer() {
@@ -466,15 +473,10 @@ function toggleCell() {
   renderOriginalStructure(true);
 }
 
-function toggleCellRepeat() {
-  const isExpanded = cellRepeat.x === 2 && cellRepeat.y === 2 && cellRepeat.z === 1;
-  cellRepeat = isExpanded ? { x: 1, y: 1, z: 1 } : { x: 2, y: 2, z: 1 };
-
-  const button = document.getElementById("cellRepeatToggle");
-  if (button) {
-    button.textContent = isExpanded ? "Cell: 1 x 1 x 1" : "Cell: 2 x 2 x 1";
-  }
-
+function changeCellRepeat(value) {
+  cellRepeat = value === "2x2x1"
+    ? { x: 2, y: 2, z: 1 }
+    : { x: 1, y: 1, z: 1 };
   renderFrame(currentStep, false);
   renderOriginalStructure(false);
 }
@@ -704,9 +706,13 @@ async function refreshJob() {
       try {
         const lattice = await loadJSON(`data/${job.job_id}/original_lattice.json`);
         originalLattice = lattice.matrix_angstrom || null;
+        originalInputFile = lattice.input_file || null;
       } catch (e) {
         originalLattice = null;
+        originalInputFile = null;
       }
+
+      updateOriginalStructureSource();
 
       if (trajectoryFrames.length > 0) {
         renderOriginalStructure(false);

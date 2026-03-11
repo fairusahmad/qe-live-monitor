@@ -46,6 +46,11 @@
       margin-bottom: 10px;
       font-size: 18px;
     }
+    .viewer-meta {
+      margin-bottom: 10px;
+      font-size: 13px;
+      color: #4b5563;
+    }
     .viewerWrap {
       width: 100%;
       height: 520px;
@@ -76,6 +81,12 @@
       margin-right: 8px;
       margin-top: 8px;
       cursor: pointer;
+    }
+    select {
+      padding: 8px 12px;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      background: white;
     }
     input[type="range"] {
       width: 320px;
@@ -131,6 +142,7 @@
       <div class="viewer-grid">
         <div class="viewer-panel">
           <h3>Original Input Structure</h3>
+          <div id="originalStructureSource" class="viewer-meta">Source: loading...</div>
           <div class="viewerWrap">
             <div id="originalViewer" class="viewer"></div>
           </div>
@@ -158,7 +170,11 @@
         <button onclick="setStick()">Stick</button>
         <button onclick="setSphere()">Sphere</button>
         <button onclick="toggleCell()">Toggle Cell</button>
-        <button id="cellRepeatToggle" onclick="toggleCellRepeat()">Cell: 1 x 1 x 1</button>
+        <label for="cellRepeatSelect">Cell size</label>
+        <select id="cellRepeatSelect" onchange="changeCellRepeat(this.value)">
+          <option value="1x1x1">1 x 1 x 1</option>
+          <option value="2x2x1">2 x 2 x 1</option>
+        </select>
         <button onclick="toggleAxes()">Toggle Axes</button>
         <button id="measureToggle" onclick="toggleMeasureMode()">Measure Distance</button>
         <button onclick="clearMeasurement()">Clear Measure</button>
@@ -193,7 +209,7 @@
     </div>
   </div>
 
-  <script src="job.js?v=20260311-original-structure-1"></script>
+  <script src="job.js?v=20260311-original-structure-2"></script>
 </body>
 </html>
 
