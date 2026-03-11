@@ -37,8 +37,10 @@
     "total_force_file": "data/Slab__Ni_only/total_force.csv",
     "gradient_error_file": "data/Slab__Ni_only/gradient_error.csv",
     "structure_file": "data/Slab__Ni_only/structure.xyz",
+    "original_structure_file": "data/Slab__Ni_only/original_structure.xyz",
     "trajectory_file": "data/Slab__Ni_only/trajectory.xyz",
     "lattice_file": "data/Slab__Ni_only/lattice.json",
+    "original_lattice_file": "data/Slab__Ni_only/original_lattice.json",
     "output_tail_file": "data/Slab__Ni_only/latest_output_tail.txt"
   },
   {
@@ -61,8 +63,10 @@
     "total_force_file": "data/Slab__Ni_Cu_only/total_force.csv",
     "gradient_error_file": "data/Slab__Ni_Cu_only/gradient_error.csv",
     "structure_file": "data/Slab__Ni_Cu_only/structure.xyz",
+    "original_structure_file": "data/Slab__Ni_Cu_only/original_structure.xyz",
     "trajectory_file": "data/Slab__Ni_Cu_only/trajectory.xyz",
     "lattice_file": "data/Slab__Ni_Cu_only/lattice.json",
+    "original_lattice_file": "data/Slab__Ni_Cu_only/original_lattice.json",
     "output_tail_file": "data/Slab__Ni_Cu_only/latest_output_tail.txt"
   },
   {
@@ -80,23 +84,9 @@
     "source_dir": "/media/node1/Fairus2TB/fairus/Nguyen/Adsorption/Ni_Cu_ads",
     "found": true,
     "output_file": "/media/node1/Fairus2TB/fairus/Nguyen/Adsorption/Ni_Cu_ads/output_relax.pw.x",
-    "status": "ok",
+    "status": "error",
     "structure_capable": true,
-    "latest_energy_ry": -8184.61241766,
-    "latest_total_force_ry_bohr": 0.108948,
-    "latest_gradient_error_ry_bohr": 0.049,
-    "converged": true,
-    "nat_latest": 86,
-    "has_structure": true,
-    "num_structure_steps": 1,
-    "status_file": "data/Adsorption__Ni_Cu_ads/status.json",
-    "energy_file": "data/Adsorption__Ni_Cu_ads/energy.csv",
-    "total_force_file": "data/Adsorption__Ni_Cu_ads/total_force.csv",
-    "gradient_error_file": "data/Adsorption__Ni_Cu_ads/gradient_error.csv",
-    "structure_file": "data/Adsorption__Ni_Cu_ads/structure.xyz",
-    "trajectory_file": "data/Adsorption__Ni_Cu_ads/trajectory.xyz",
-    "lattice_file": "data/Adsorption__Ni_Cu_ads/lattice.json",
-    "output_tail_file": "data/Adsorption__Ni_Cu_ads/latest_output_tail.txt"
+    "error": "'NoneType' object is not subscriptable"
   },
   {
     "job_id": "DOS",
