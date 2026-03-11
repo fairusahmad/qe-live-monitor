@@ -12,6 +12,7 @@ let originalLattice = null;
 let showCell = true;
 let showAxes = true;
 let currentStyle = "ballstick";
+let cellRepeat = { x: 1, y: 1, z: 1 };
 let measureMode = false;
 let measurementAtoms = [];
 let measurementLabels = [];
@@ -188,6 +189,80 @@ function parseXYZTrajectory(xyzText) {
   return frames;
 }
 
+function parseXYZAtoms(xyzText) {
+  const lines = xyzText.split(/\r?\n/);
+  const nat = parseInt((lines[0] || "").trim(), 10);
+  if (Number.isNaN(nat) || nat <= 0) return [];
+
+  const atoms = [];
+  for (let i = 0; i < nat; i++) {
+    const parts = (lines[i + 2] || "").trim().split(/\s+/);
+    if (parts.length < 4) continue;
+
+    const x = Number(parts[1]);
+    const y = Number(parts[2]);
+    const z = Number(parts[3]);
+    if (!Number.isFinite(x) || !Number.isFinite(y) || !Number.isFinite(z)) continue;
+
+    atoms.push({ elem: parts[0], x, y, z });
+  }
+
+  return atoms;
+}
+
+function buildXYZFromAtoms(atoms, comment = "Generated structure") {
+  return `${atoms.length}\n${comment}\n${atoms.map(atom =>
+    `${atom.elem} ${atom.x.toFixed(10)} ${atom.y.toFixed(10)} ${atom.z.toFixed(10)}`
+  ).join("\n")}\n`;
+}
+
+function scaleVector(vector, factor) {
+  return vector.map(value => value * factor);
+}
+
+function getDisplayLattice(matrix) {
+  if (!matrix) return null;
+  return [
+    scaleVector(matrix[0], cellRepeat.x),
+    scaleVector(matrix[1], cellRepeat.y),
+    scaleVector(matrix[2], cellRepeat.z)
+  ];
+}
+
+function buildDisplayXYZ(xyzText, matrix, comment) {
+  if (!xyzText || !matrix) return xyzText;
+  if (cellRepeat.x === 1 && cellRepeat.y === 1 && cellRepeat.z === 1) return xyzText;
+
+  const atoms = parseXYZAtoms(xyzText);
+  if (!atoms.length) return xyzText;
+
+  const expandedAtoms = [];
+  const a = matrix[0];
+  const b = matrix[1];
+  const c = matrix[2];
+
+  for (let ix = 0; ix < cellRepeat.x; ix++) {
+    for (let iy = 0; iy < cellRepeat.y; iy++) {
+      for (let iz = 0; iz < cellRepeat.z; iz++) {
+        const dx = ix * a[0] + iy * b[0] + iz * c[0];
+        const dy = ix * a[1] + iy * b[1] + iz * c[1];
+        const dz = ix * a[2] + iy * b[2] + iz * c[2];
+
+        for (const atom of atoms) {
+          expandedAtoms.push({
+            elem: atom.elem,
+            x: atom.x + dx,
+            y: atom.y + dy,
+            z: atom.z + dz
+          });
+        }
+      }
+    }
+  }
+
+  return buildXYZFromAtoms(expandedAtoms, comment);
+}
+
 function getColorScheme() {
   return {
     H: "white",
@@ -307,10 +382,13 @@ function renderOriginalStructure(preserveView = false) {
   if (preserveView && originalViewer) savedView = originalViewer.getView();
 
   originalViewer.clear();
-  originalViewer.addModel(originalStructure, "xyz");
+  originalViewer.addModel(
+    buildDisplayXYZ(originalStructure, originalLattice, `Original structure | ${cellRepeat.x} x ${cellRepeat.y} x ${cellRepeat.z}`),
+    "xyz"
+  );
   applyStyleToViewer(originalViewer);
-  addLatticeBox(originalViewer, originalLattice);
-  addAxes(originalViewer, originalLattice);
+  addLatticeBox(originalViewer, getDisplayLattice(originalLattice));
+  addAxes(originalViewer, getDisplayLattice(originalLattice));
 
   if (preserveView && savedView) {
     originalViewer.setView(savedView);
@@ -334,15 +412,18 @@ function renderFrame(index, preserveView = false) {
   if (preserveView) savedView = viewer.getView();
 
   viewer.clear();
-  viewer.addModel(frame.xyz, "xyz");
+  viewer.addModel(
+    buildDisplayXYZ(frame.xyz, currentLattice, `${frame.comment} | ${cellRepeat.x} x ${cellRepeat.y} x ${cellRepeat.z}`),
+    "xyz"
+  );
   clearMeasurement();
   viewer.setClickable({}, true, function(atom) {
     handleMeasurementClick(atom);
   });
 
   applyStyleToViewer(viewer);
-  addLatticeBox(viewer, currentLattice);
-  addAxes(viewer, currentLattice);
+  addLatticeBox(viewer, getDisplayLattice(currentLattice));
+  addAxes(viewer, getDisplayLattice(currentLattice));
 
   if (preserveView && savedView) {
     viewer.setView(savedView);
@@ -383,6 +464,19 @@ function toggleCell() {
   showCell = !showCell;
   renderFrame(currentStep, true);
   renderOriginalStructure(true);
+}
+
+function toggleCellRepeat() {
+  const isExpanded = cellRepeat.x === 2 && cellRepeat.y === 2 && cellRepeat.z === 1;
+  cellRepeat = isExpanded ? { x: 1, y: 1, z: 1 } : { x: 2, y: 2, z: 1 };
+
+  const button = document.getElementById("cellRepeatToggle");
+  if (button) {
+    button.textContent = isExpanded ? "Cell: 1 x 1 x 1" : "Cell: 2 x 2 x 1";
+  }
+
+  renderFrame(currentStep, false);
+  renderOriginalStructure(false);
 }
 
 function toggleAxes() {
