@@ -36,16 +36,26 @@
     .full {
       grid-column: 1 / -1;
     }
-    #viewerWrap {
+    .viewer-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .viewer-panel h3 {
+      margin-top: 0;
+      margin-bottom: 10px;
+      font-size: 18px;
+    }
+    .viewerWrap {
       width: 100%;
-      height: 620px;
+      height: 520px;
       border-radius: 10px;
       overflow: hidden;
       border: 1px solid #ddd;
       background: white;
       position: relative;
     }
-    #viewer {
+    .viewer {
       width: 100%;
       height: 100%;
     }
@@ -86,7 +96,8 @@
     a { text-decoration: none; }
     @media (max-width: 900px) {
       .grid,
-      .charts-row {
+      .charts-row,
+      .viewer-grid {
         grid-template-columns: 1fr;
       }
     }
@@ -117,8 +128,20 @@
     <div class="card full">
       <h2>3D Structure</h2>
 
-      <div id="viewerWrap">
-        <div id="viewer"></div>
+      <div class="viewer-grid">
+        <div class="viewer-panel">
+          <h3>Original Input Structure</h3>
+          <div class="viewerWrap">
+            <div id="originalViewer" class="viewer"></div>
+          </div>
+        </div>
+
+        <div class="viewer-panel">
+          <h3>Current Structure</h3>
+          <div class="viewerWrap">
+            <div id="viewer" class="viewer"></div>
+          </div>
+        </div>
       </div>
 
       <div class="toolbar">
@@ -169,7 +192,7 @@
     </div>
   </div>
 
-  <script src="job.js?v=20260310-gradient-1"></script>
+  <script src="job.js?v=20260311-original-structure-1"></script>
 </body>
 </html>
 

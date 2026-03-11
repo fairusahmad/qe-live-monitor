@@ -157,6 +157,30 @@ def read_file_lines_if_exists(path):
             return f.readlines()
     return None
 
+def find_position_blocks_in_lines(lines, cell_block):
+    if not lines:
+        return []
+
+    position_blocks = []
+    i = 0
+    while i < len(lines):
+        line = lines[i].strip()
+        if line.startswith("ATOMIC_POSITIONS"):
+            parsed_pos = parse_atomic_positions_block(lines, i)
+            if parsed_pos is not None:
+                atoms_ang = convert_atoms_to_angstrom(parsed_pos, cell_block)
+                position_blocks.append({
+                    "header": parsed_pos["header"],
+                    "coord_type": parsed_pos["coord_type"],
+                    "nat": len(atoms_ang),
+                    "atoms_ang": atoms_ang,
+                })
+                i = parsed_pos["next_idx"]
+                continue
+        i += 1
+
+    return position_blocks
+
 def find_latest_cell_block_in_lines(lines):
     if not lines:
         return None
@@ -195,6 +219,29 @@ def find_fallback_cell_block(qe_output):
         if block is not None:
             return block, inp
     return None, None
+
+def parse_input_structure(qe_output):
+    for inp in guess_input_files_from_output(qe_output):
+        lines = read_file_lines_if_exists(inp)
+        if not lines:
+            continue
+
+        cell_block = find_latest_cell_block_in_lines(lines)
+        try:
+            position_blocks = find_position_blocks_in_lines(lines, cell_block)
+        except ValueError:
+            continue
+        if not position_blocks:
+            continue
+
+        return {
+            "input_file": inp,
+            "cell_block": cell_block,
+            "position_block": position_blocks[0],
+            "atoms_ang": position_blocks[0]["atoms_ang"],
+        }
+
+    return None
 
 def convert_atoms_to_angstrom(pos_block, cell_block):
     coord_type = pos_block["coord_type"]
@@ -277,28 +324,11 @@ def parse_qe_output(filename):
             latest_cell_block = fallback_cell_block
             cell_source = f"input:{os.path.basename(fallback_file)}"
 
-    position_blocks = []
-    latest_pos_block = None
-
-    i = 0
-    while i < len(lines):
-        line = lines[i].strip()
-        if line.startswith("ATOMIC_POSITIONS"):
-            parsed_pos = parse_atomic_positions_block(lines, i)
-            if parsed_pos is not None:
-                latest_pos_block = parsed_pos
-                atoms_ang = convert_atoms_to_angstrom(parsed_pos, latest_cell_block)
-                position_blocks.append({
-                    "header": parsed_pos["header"],
-                    "coord_type": parsed_pos["coord_type"],
-                    "nat": len(atoms_ang),
-                    "atoms_ang": atoms_ang,
-                })
-                i = parsed_pos["next_idx"]
-                continue
-        i += 1
+    position_blocks = find_position_blocks_in_lines(lines, latest_cell_block)
+    latest_pos_block = position_blocks[-1] if position_blocks else None
 
     latest_atoms_ang = position_blocks[-1]["atoms_ang"] if position_blocks else []
+    input_structure = parse_input_structure(filename)
 
     return {
         "energies": energies,
@@ -316,6 +346,7 @@ def parse_qe_output(filename):
         "latest_atoms_ang": latest_atoms_ang,
         "position_blocks": position_blocks,
         "cell_source": cell_source,
+        "input_structure": input_structure,
     }
 
 def write_xyz(atoms_ang, output_xyz, comment="Latest structure exported from QE output in Cartesian Angstrom"):
@@ -402,6 +433,17 @@ def write_lattice_json(result, output_json):
     with open(output_json, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=2)
 
+def write_original_lattice_json(result, output_json):
+    input_structure = result.get("input_structure")
+    data = {
+        "input_file": input_structure["input_file"] if input_structure else None,
+        "cell_format": input_structure["cell_block"]["header"] if input_structure else None,
+        "cell_source": os.path.basename(input_structure["input_file"]) if input_structure else None,
+        "matrix_angstrom": input_structure["cell_block"]["matrix_angstrom"] if input_structure else None,
+    }
+    with open(output_json, "w", encoding="utf-8") as f:
+        json.dump(data, f, indent=2)
+
 def export_qe_run(qe_output, outdir, job_name="QE Job"):
     os.makedirs(outdir, exist_ok=True)
     result = parse_qe_output(qe_output)
@@ -413,6 +455,12 @@ def export_qe_run(qe_output, outdir, job_name="QE Job"):
     write_xyz(result["latest_atoms_ang"], os.path.join(outdir, "structure.xyz"))
     write_trajectory_xyz(result["position_blocks"], os.path.join(outdir, "trajectory.xyz"))
     write_lattice_json(result, os.path.join(outdir, "lattice.json"))
+    write_xyz(
+        result["input_structure"]["atoms_ang"] if result.get("input_structure") else [],
+        os.path.join(outdir, "original_structure.xyz"),
+        comment="Original structure exported from QE input in Cartesian Angstrom"
+    )
+    write_original_lattice_json(result, os.path.join(outdir, "original_lattice.json"))
     write_output_tail(qe_output, os.path.join(outdir, "latest_output_tail.txt"))
 
     return result

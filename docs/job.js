@@ -1,11 +1,14 @@
 let viewer = null;
+let originalViewer = null;
 let energyChart = null;
 let gradientChart = null;
 let currentJob = null;
 
 let trajectoryFrames = [];
+let originalStructure = null;
 let currentStep = 0;
 let currentLattice = null;
+let originalLattice = null;
 let showCell = true;
 let showAxes = true;
 let currentStyle = "ballstick";
@@ -44,7 +47,15 @@ function initViewer() {
         viewer.resize();
         viewer.render();
       }
+      if (originalViewer) {
+        originalViewer.resize();
+        originalViewer.render();
+      }
     });
+  }
+
+  if (!originalViewer) {
+    originalViewer = $3Dmol.createViewer("originalViewer", { backgroundColor: "white" });
   }
 }
 
@@ -187,28 +198,27 @@ function getColorScheme() {
   };
 }
 
-function applyStyle() {
-  if (!viewer) return;
-
+function applyStyleToViewer(targetViewer) {
+  if (!targetViewer) return;
   const colorScheme = getColorScheme();
 
   if (currentStyle === "stick") {
-    viewer.setStyle({}, {
+    targetViewer.setStyle({}, {
       stick: { radius: 0.18, colorscheme: colorScheme }
     });
   } else if (currentStyle === "sphere") {
-    viewer.setStyle({}, {
+    targetViewer.setStyle({}, {
       sphere: { scale: 0.60, colorscheme: colorScheme }
     });
   } else {
-    viewer.setStyle({}, {
+    targetViewer.setStyle({}, {
       stick: { radius: 0.16, colorscheme: colorScheme },
       sphere: { scale: 0.32, colorscheme: colorScheme }
     });
   }
 }
 
-function addLatticeBox(matrix) {
+function addLatticeBox(targetViewer, matrix) {
   if (!matrix || !showCell) return;
 
   const a = matrix[0];
@@ -233,7 +243,7 @@ function addLatticeBox(matrix) {
   ];
 
   for (const [p1, p2] of edges) {
-    viewer.addLine({
+    targetViewer.addLine({
       start: p1,
       end: p2,
       color: "black",
@@ -242,7 +252,7 @@ function addLatticeBox(matrix) {
   }
 }
 
-function addAxes(matrix) {
+function addAxes(targetViewer, matrix) {
   if (!showAxes || !matrix) return;
 
   const a = matrix[0];
@@ -254,25 +264,62 @@ function addAxes(matrix) {
   const B = { x: b[0], y: b[1], z: b[2] };
   const C = { x: c[0], y: c[1], z: c[2] };
 
-  viewer.addArrow({ start: O, end: A, radius: 0.08, color: "red" });
-  viewer.addArrow({ start: O, end: B, radius: 0.08, color: "green" });
-  viewer.addArrow({ start: O, end: C, radius: 0.08, color: "blue" });
+  targetViewer.addArrow({ start: O, end: A, radius: 0.08, color: "red" });
+  targetViewer.addArrow({ start: O, end: B, radius: 0.08, color: "green" });
+  targetViewer.addArrow({ start: O, end: C, radius: 0.08, color: "blue" });
 
-  viewer.addLabel("a", {
+  targetViewer.addLabel("a", {
     position: A,
     fontColor: "red",
     backgroundOpacity: 0
   });
-  viewer.addLabel("b", {
+  targetViewer.addLabel("b", {
     position: B,
     fontColor: "green",
     backgroundOpacity: 0
   });
-  viewer.addLabel("c", {
+  targetViewer.addLabel("c", {
     position: C,
     fontColor: "blue",
     backgroundOpacity: 0
   });
+}
+
+function renderOriginalStructure(preserveView = false) {
+  initViewer();
+
+  if (!originalStructure) {
+    originalViewer.clear();
+    originalViewer.addLabel("Original input structure not available.", {
+      position: { x: 0, y: 0, z: 0 },
+      inFront: true,
+      fontSize: 16,
+      backgroundColor: "white",
+      fontColor: "#374151",
+      backgroundOpacity: 0.9
+    });
+    originalViewer.zoomTo();
+    originalViewer.render();
+    return;
+  }
+
+  let savedView = null;
+  if (preserveView && originalViewer) savedView = originalViewer.getView();
+
+  originalViewer.clear();
+  originalViewer.addModel(originalStructure, "xyz");
+  applyStyleToViewer(originalViewer);
+  addLatticeBox(originalViewer, originalLattice);
+  addAxes(originalViewer, originalLattice);
+
+  if (preserveView && savedView) {
+    originalViewer.setView(savedView);
+  } else {
+    originalViewer.zoomTo();
+  }
+
+  originalViewer.resize();
+  originalViewer.render();
 }
 
 function renderFrame(index, preserveView = false) {
@@ -293,9 +340,9 @@ function renderFrame(index, preserveView = false) {
     handleMeasurementClick(atom);
   });
 
-  applyStyle();
-  addLatticeBox(currentLattice);
-  addAxes(currentLattice);
+  applyStyleToViewer(viewer);
+  addLatticeBox(viewer, currentLattice);
+  addAxes(viewer, currentLattice);
 
   if (preserveView && savedView) {
     viewer.setView(savedView);
@@ -317,31 +364,36 @@ function renderFrame(index, preserveView = false) {
 function setBallStick() {
   currentStyle = "ballstick";
   renderFrame(currentStep, true);
+  renderOriginalStructure(true);
 }
 
 function setStick() {
   currentStyle = "stick";
   renderFrame(currentStep, true);
+  renderOriginalStructure(true);
 }
 
 function setSphere() {
   currentStyle = "sphere";
   renderFrame(currentStep, true);
+  renderOriginalStructure(true);
 }
 
 function toggleCell() {
   showCell = !showCell;
   renderFrame(currentStep, true);
+  renderOriginalStructure(true);
 }
 
 function toggleAxes() {
   showAxes = !showAxes;
   renderFrame(currentStep, true);
+  renderOriginalStructure(true);
 }
 
 function resetView() {
-  if (!viewer) return;
-  renderFrame(currentStep, false);
+  if (viewer) renderFrame(currentStep, false);
+  if (originalViewer) renderOriginalStructure(false);
 }
 
 function toggleMeasureMode() {
@@ -532,7 +584,6 @@ async function refreshJob() {
   }
 
   const viewerDiv = document.getElementById("viewer");
-
   if (job.has_structure) {
     try {
       const trajText = await loadText(`data/${job.job_id}/trajectory.xyz`);
@@ -550,9 +601,23 @@ async function refreshJob() {
         currentLattice = null;
       }
 
-	if (trajectoryFrames.length > 0) {
-	  renderFrame(trajectoryFrames.length - 1);
-	} else {
+      try {
+        originalStructure = await loadText(`data/${job.job_id}/original_structure.xyz`);
+      } catch (e) {
+        originalStructure = null;
+      }
+
+      try {
+        const lattice = await loadJSON(`data/${job.job_id}/original_lattice.json`);
+        originalLattice = lattice.matrix_angstrom || null;
+      } catch (e) {
+        originalLattice = null;
+      }
+
+      if (trajectoryFrames.length > 0) {
+        renderOriginalStructure(false);
+        renderFrame(trajectoryFrames.length - 1);
+      } else {
         viewerDiv.innerHTML = "<p>No structure frames available.</p>";
       }
     } catch (e) {

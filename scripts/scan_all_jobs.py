@@ -123,8 +123,10 @@ def main():
             item["total_force_file"] = f"data/{job_id}/total_force.csv"
             item["gradient_error_file"] = f"data/{job_id}/gradient_error.csv"
             item["structure_file"] = f"data/{job_id}/structure.xyz"
+            item["original_structure_file"] = f"data/{job_id}/original_structure.xyz"
             item["trajectory_file"] = f"data/{job_id}/trajectory.xyz"
             item["lattice_file"] = f"data/{job_id}/lattice.json"
+            item["original_lattice_file"] = f"data/{job_id}/original_lattice.json"
             item["output_tail_file"] = f"data/{job_id}/latest_output_tail.txt"
 
             if not item["has_structure"] and not item["structure_capable"]:
