@@ -204,13 +204,30 @@ def find_latest_cell_block_in_lines(lines):
 
 def guess_input_files_from_output(qe_output):
     job_dir = os.path.dirname(os.path.abspath(qe_output))
-    candidates = [
+    output_name = os.path.basename(qe_output)
+
+    preferred_map = {
+        "output_relax.pw.x": ["input.pw_relax.x"],
+        "output_scf.pw.x": ["input.pw.x"],
+        "nscf_output.pw.x": ["nscf_input.pw.x"],
+        "bands_output.pw.x": ["bands_input.pw.x"],
+    }
+
+    candidates = preferred_map.get(output_name, []) + [
         "input.pw_relax.x",
         "input.pw.x",
         "nscf_input.pw.x",
         "bands_input.pw.x",
     ]
-    return [os.path.join(job_dir, x) for x in candidates]
+
+    deduped = []
+    seen = set()
+    for name in candidates:
+        if name in seen:
+            continue
+        seen.add(name)
+        deduped.append(name)
+    return [os.path.join(job_dir, x) for x in deduped]
 
 def find_fallback_cell_block(qe_output):
     for inp in guess_input_files_from_output(qe_output):
