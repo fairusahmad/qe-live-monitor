@@ -1,141 +1,292 @@
-     atom   69 type  2   force =    -0.00002456    0.00004421   -0.00322911
-     atom   70 type  2   force =    -0.00000129   -0.00000074    0.00021808
-     atom   71 type  2   force =     0.00000105    0.00000104    0.00030443
-     atom   72 type  2   force =    -0.00005523   -0.00003437   -0.00331919
-     atom   73 type  3   force =     0.00032200   -0.00035353   -0.00016904
-     atom   74 type  3   force =     0.00009977   -0.00012636   -0.00087574
-     atom   75 type  3   force =    -0.00021091   -0.00034632    0.00007631
-     atom   76 type  4   force =    -0.00019666   -0.00013330   -0.00051163
-     atom   77 type  4   force =     0.00000245    0.00036921   -0.00162983
-     atom   78 type  4   force =    -0.00004098    0.00032149   -0.00006902
-     atom   79 type  5   force =    -0.00020871    0.00009664   -0.00026962
-     atom   80 type  5   force =     0.00034921    0.00007079   -0.00119928
-     atom   81 type  5   force =    -0.00000700    0.00020114   -0.00114673
-     atom   82 type  5   force =     0.00002493    0.00033845   -0.00036789
-     atom   83 type  5   force =     0.00034114    0.00008571   -0.00046423
-     atom   84 type  5   force =    -0.00001276   -0.00011278   -0.00043527
-     atom   85 type  5   force =     0.00010752   -0.00010573   -0.00206743
-     atom   86 type  5   force =    -0.00010478   -0.00016278   -0.00007314
+        78    1   1   1
+        79    1   1   1
+        80    1   1   1
+        81    1   1   1
+        82    1   1   1
+        83    1   1   1
+        84    1   1   1
+        85    1   1   1
+        86    1   1   1
 
-     Total force =     0.003890     Total SCF correction =     0.000106
+     --------------------------------------------
+     DFT-D3 Dispersion Correction (3-body terms):
+     --------------------------------------------
+       Reference C6 values for interpolation: 
 
-     DFT-D3 dispersion Force =     0.021150
-     Energy error            =      2.4E-05 Ry
-     Gradient error          =      2.4E-03 Ry/Bohr
+         atom   Coordination number   C6
+         H          0.912             6.05
+         H          0.000            15.18
+         C          0.000            98.23
+         C          0.987            86.49
+         C          1.998            58.72
+         C          2.999            51.56
+         C          3.984            36.41
+         O          0.000            31.01
+         O          0.993            25.63
+         O          1.989            20.74
+         Ni         0.000          1149.49
+         Ni         1.794           356.66
+         Ni         6.546           257.56
+         Ni         6.292           283.75
+         Cu         0.000           674.36
+         Cu         0.958           349.99
 
-     number of scf cycles    =  51
-     number of bfgs steps    =  50
+       Values used:
 
-     energy             old  =   -8184.6591584904 Ry
-     energy             new  =   -8184.6591825183 Ry
+         atom   Coordination number  R0_AB[au]  C6      C8
+         Ni         7.013            3.162    263.28  22061.27
+         Ni         9.240            3.162    257.64  21588.62
+         Ni         9.103            3.162    257.67  21590.73
+         Ni         9.001            3.162    257.69  21592.74
+         Ni         7.013            3.162    263.29  22061.44
+         Ni         9.240            3.162    257.64  21588.63
+         Ni         9.102            3.162    257.67  21590.76
+         Ni         9.004            3.162    257.69  21592.68
+         Ni         7.013            3.162    263.28  22061.38
+         Ni         9.240            3.162    257.64  21588.62
+         Ni         9.101            3.162    257.67  21590.77
+         Ni         9.001            3.162    257.69  21592.74
+         Ni         7.013            3.162    263.29  22061.44
+         Ni         9.240            3.162    257.64  21588.63
+         Ni         9.102            3.162    257.67  21590.76
+         Ni         9.004            3.162    257.69  21592.68
+         Ni         7.012            3.162    263.29  22061.60
+         Ni         9.239            3.162    257.64  21588.63
+         Ni         9.100            3.162    257.67  21590.78
+         Ni         9.006            3.162    257.69  21592.63
+         Ni         7.013            3.162    263.29  22061.54
+         Ni         9.240            3.162    257.64  21588.63
+         Ni         9.100            3.162    257.67  21590.79
+         Ni         9.003            3.162    257.69  21592.70
+         Ni         7.013            3.162    263.28  22061.38
+         Ni         9.240            3.162    257.64  21588.62
+         Ni         9.101            3.162    257.67  21590.77
+         Ni         9.001            3.162    257.69  21592.74
+         Ni         7.013            3.162    263.29  22061.54
+         Ni         9.240            3.162    257.64  21588.63
+         Ni         9.100            3.162    257.67  21590.79
+         Ni         9.003            3.162    257.69  21592.70
+         Ni         7.013            3.162    263.29  22061.47
+         Ni         9.240            3.162    257.64  21588.62
+         Ni         9.100            3.162    257.67  21590.79
+         Ni         9.000            3.162    257.69  21592.76
+         Cu         7.080            3.119    349.99  28675.33
+         Cu         7.089            3.119    349.99  28675.33
+         Cu         7.093            3.119    349.99  28675.33
+         Cu         7.088            3.119    349.99  28675.33
+         Cu         9.175            3.119    349.99  28675.33
+         Cu         9.103            3.119    349.99  28675.33
+         Cu         9.128            3.119    349.99  28675.33
+         Cu         8.183            3.119    349.99  28675.33
+         Cu         9.175            3.119    349.99  28675.33
+         Cu         9.101            3.119    349.99  28675.33
+         Cu         9.122            3.119    349.99  28675.33
+         Cu         7.079            3.119    349.99  28675.33
+         Cu         7.093            3.119    349.99  28675.33
+         Cu         9.175            3.119    349.99  28675.33
+         Cu         9.101            3.119    349.99  28675.33
+         Cu         9.122            3.119    349.99  28675.33
+         Cu         7.072            3.119    349.99  28675.33
+         Cu         9.175            3.119    349.99  28675.33
+         Cu         9.098            3.119    349.99  28675.33
+         Cu         9.116            3.119    349.99  28675.33
+         Cu         7.066            3.119    349.99  28675.33
+         Cu         9.175            3.119    349.99  28675.33
+         Cu         9.104            3.119    349.99  28675.33
+         Cu         9.129            3.119    349.99  28675.33
+         Cu         9.176            3.119    349.99  28675.33
+         Cu         9.101            3.119    349.99  28675.33
+         Cu         9.123            3.119    349.99  28675.33
+         Cu         9.175            3.119    349.99  28675.33
+         Cu         9.104            3.119    349.99  28675.33
+         Cu         9.129            3.119    349.99  28675.33
+         Cu         9.176            3.119    349.99  28675.33
+         Cu         9.101            3.119    349.99  28675.33
+         Cu         9.123            3.119    349.99  28675.33
+         Cu         9.175            3.119    349.99  28675.33
+         Cu         9.105            3.119    349.99  28675.33
+         Cu         9.129            3.119    349.99  28675.33
+         O          2.041            2.345     20.80    419.70
+         O          3.077            2.345     20.74    418.58
+         O          2.013            2.345     20.81    419.97
+         C          4.050            2.750     36.57   1057.79
+         C          4.102            2.750     36.52   1056.24
+         C          4.051            2.750     36.57   1057.78
+         H          1.005            2.062      6.18     74.66
+         H          1.004            2.062      6.18     74.67
+         H          1.004            2.062      6.18     74.67
+         H          1.001            2.062      6.18     74.71
+         H          1.001            2.062      6.18     74.71
+         H          1.009            2.062      6.17     74.63
+         H          1.149            2.062      6.10     73.70
+         H          1.007            2.062      6.17     74.64
 
-     CASE: energy            _new < energy            _old
-
-     new trust radius        =       0.0316421920 bohr
-     new conv_thr            =       0.0000000100 Ry
-
-
-ATOMIC_POSITIONS (angstrom)
-Ni               1.2286420027        0.7093562278        8.0127033495    0   0   0
-Ni               0.0000022775        0.0000000000       10.0192033545    0   0   0
-Ni               2.4637570809        1.4224515552       12.0711324136    0   0   0
-Ni               1.2397802907        0.7157901456       14.1224527674    0   0   0
-Ni               2.4572821841        2.8374249112        8.0127033495    0   0   0
-Ni               1.2286424588        2.1280686834       10.0192033545    0   0   0
-Ni               3.6926781159        3.5507357065       12.0705045449    0   0   0
-Ni               2.4684725529        2.8434817294       14.1212345102    0   0   0
-Ni               3.6859592251        4.9655574374        8.0127033495    0   0   0
-Ni               2.4573194998        4.2562012095       10.0192033545    0   0   0
-Ni               4.9217656993        5.6792526148       12.0709362359    0   0   0
-Ni               3.6969571749        4.9715231220       14.1220203985    0   0   0
-Ni               3.6859223655        0.7093562278        8.0127033495    0   0   0
-Ni               2.4572826402        0.0000000000       10.0192033545    0   0   0
-Ni               4.9213653839        1.4225857500       12.0705018304    0   0   0
-Ni               3.6967638997        0.7160224207       14.1212311860    0   0   0
-Ni               4.9145625469        2.8374249112        8.0127033495    0   0   0
-Ni               3.6859228216        2.1280686834       10.0192033545    0   0   0
-Ni               6.1503529497        3.5509085402       12.0699854915    0   0   0
-Ni               4.9256539069        2.8438285306       14.1202327617    0   0   0
-Ni               6.1432395878        4.9655574374        8.0127033495    0   0   0
-Ni               4.9145998625        4.2562012095       10.0192033545    0   0   0
-Ni               7.3794585706        5.6794809406       12.0703411417    0   0   0
-Ni               6.1541912510        4.9717126524       14.1210383973    0   0   0
-Ni               6.1432764474        0.7093562278        8.0127033495    0   0   0
-Ni               4.9146367221        0.0000000000       10.0192033545    0   0   0
-Ni               7.3792576901        1.4227490418       12.0709363656    0   0   0
-Ni               6.1539445722        0.7158998925       14.1220190429    0   0   0
-Ni               7.3719166287        2.8374249112        8.0127033495    0   0   0
-Ni               6.1432769035        2.1280686834       10.0192033545    0   0   0
-Ni               8.6083025545        3.5510600089       12.0703431006    0   0   0
-Ni               7.3827250276        2.8438303041       14.1210406577    0   0   0
-Ni               8.6005936697        4.9655574374        8.0127033495    0   0   0
-Ni               7.3719539444        4.2562012095       10.0192033545    0   0   0
-Ni               9.8373683369        5.6796094234       12.0707933550    0   0   0
-Ni               8.6114301675        4.9718114503       14.1216528753    0   0   0
-Cu               0.0003324277        0.0001909401       22.7034719634    0   0   0
-Cu               1.2285751920        2.1286060149       22.7061513885    0   0   0
-Cu               2.4578447435        4.2573723055       22.7059012943    0   0   0
-Cu               2.4577145677       -0.0003268446       22.7061616561    0   0   0
-Cu               0.0125988505        0.0072754476       16.2332161102    0   0   0
-Cu               2.4696349891        1.4258444684       18.3916416570    0   0   0
-Cu               1.2357013061        0.7134308093       20.5525806734    0   0   0
-Cu               3.6858079916        2.1280021715       22.7084853044    0   0   0
-Cu               1.2416711544        2.1361120827       16.2320324925    0   0   0
-Cu               3.6976153977        3.5539780780       18.3918749325    0   0   0
-Cu               2.4641651968        2.8415663609       20.5535203685    0   0   0
-Cu               4.9148376865        4.2571744960       22.7082103455    0   0   0
-Cu               4.9159128270       -0.0001300450       22.7059058638    0   0   0
-Cu               2.4707625323        0.0072639821       16.2320277932    0   0   0
-Cu               4.9266420746        1.4252400817       18.3918761583    0   0   0
-Cu               3.6929504693        0.7132457861       20.5535179654    0   0   0
-Cu               6.1442380243        2.1277879409       22.7082050689    0   0   0
-Cu               3.6999344853        2.1361584753       16.2305426330    0   0   0
-Cu               6.1546566898        3.5533933395       18.3924014903    0   0   0
-Cu               4.9213317101        2.8413334155       20.5541973442    0   0   0
-Cu               7.3733358851        4.2569997776       22.7080517064    0   0   0
-Cu               2.4703615692        4.2639064921       16.2323564383    0   0   0
-Cu               4.9258612022        5.6821553099       18.3929147418    0   0   0
-Cu               3.6923908304        4.9692750903       20.5536695377    0   0   0
-Cu               4.9284376454        4.2641058199       16.2311095738    0   0   0
-Cu               7.3827816611        5.6818035922       18.3933612343    0   0   0
-Cu               6.1495647783        4.9691763920       20.5547682837    0   0   0
-Cu               4.9278325409        0.0074438059       16.2323521866    0   0   0
-Cu               7.3838191099        1.4248449337       18.3929204237    0   0   0
-Cu               6.1497113719        0.7130663237       20.5536678351    0   0   0
-Cu               6.1570438883        2.1360992535       16.2311101997    0   0   0
-Cu               8.6119749333        3.5527772255       18.3933657681    0   0   0
-Cu               7.3782123231        2.8410932514       20.5547689064    0   0   0
-Cu               7.3856113588        4.2640840866       16.2316791967    0   0   0
-Cu               9.8400295452        5.6811466362       18.3940799063    0   0   0
-Cu               8.6063487219        4.9688802328       20.5550099945    0   0   0
-O                7.3780046417        2.5065502308       27.3136214121
-O                6.8022514260        3.9508002381       25.0409174676
-O                6.8274785168        3.8962987114       29.8443938147
-C                6.9071838360        3.8605735055       27.4545500082
-C                7.2566517095        4.6589689476       26.1999025256
-C                7.4241005591        4.5346230144       28.7118467993
-H                5.8129609510        3.7614887972       27.5276208075
-H                8.3462438935        4.8393267986       26.1377382722
-H                6.7443583752        5.6295263700       26.1885143505
-H                7.1654184925        5.6090893390       28.6699519604
-H                8.5300846379        4.4605357989       28.7378797880
-H                8.3462818572        2.5083209946       27.4251042019
-H                7.0326727403        3.0055780560       25.1680490500
-H                7.1623187352        4.3203850360       30.6504644423
+         Molecular C6 ( Ry / a.u.^6 ) =   1688244.56
 
 
+   Crystallographic axes
 
-     Writing config-only to output data dir ./output/VLAB.save/ :
-     XML data file
-     NEW-OLD atomic charge density approx. for the potential
+     site n.     atom                  positions (cryst. coord.)
+         1        Ni     tau(   1) = (  0.1111102  0.1111102  0.1654463  )
+         2        Ni     tau(   2) = ( -0.0000000 -0.0000000  0.2068765  )
+         3        Ni     tau(   3) = (  0.2228058  0.2228061  0.2492447  )
+         4        Ni     tau(   4) = (  0.1121170  0.1121180  0.2916004  )
+         5        Ni     tau(   5) = (  0.1111102  0.4444409  0.1654463  )
+         6        Ni     tau(   6) = ( -0.0000000  0.3333306  0.2068765  )
+         7        Ni     tau(   7) = (  0.2228270  0.5561705  0.2492318  )
+         8        Ni     tau(   8) = (  0.1121536  0.4453896  0.2915753  )
+         9        Ni     tau(   9) = (  0.1111102  0.7777815  0.1654463  )
+        10        Ni     tau(  10) = ( -0.0000000  0.6666713  0.2068765  )
+        11        Ni     tau(  11) = (  0.2228526  0.8895714  0.2492407  )
+        12        Ni     tau(  12) = (  0.1121347  0.7787159  0.2915915  )
+        13        Ni     tau(  13) = (  0.4444409  0.1111102  0.1654463  )
+        14        Ni     tau(  14) = (  0.3333306 -0.0000000  0.2068765  )
+        15        Ni     tau(  15) = (  0.5561704  0.2228271  0.2492317  )
+        16        Ni     tau(  16) = (  0.4453892  0.1121544  0.2915752  )
+        17        Ni     tau(  17) = (  0.4444409  0.4444409  0.1654463  )
+        18        Ni     tau(  18) = (  0.3333306  0.3333306  0.2068765  )
+        19        Ni     tau(  19) = (  0.5561976  0.5561976  0.2492211  )
+        20        Ni     tau(  20) = (  0.4454437  0.4454439  0.2915546  )
+        21        Ni     tau(  21) = (  0.4444409  0.7777815  0.1654463  )
+        22        Ni     tau(  22) = (  0.3333307  0.6666713  0.2068765  )
+        23        Ni     tau(  23) = (  0.5562213  0.8896071  0.2492284  )
+        24        Ni     tau(  24) = (  0.4454442  0.7787456  0.2915712  )
+        25        Ni     tau(  25) = (  0.7777815  0.1111102  0.1654463  )
+        26        Ni     tau(  26) = (  0.6666713 -0.0000000  0.2068765  )
+        27        Ni     tau(  27) = (  0.8895713  0.2228527  0.2492407  )
+        28        Ni     tau(  28) = (  0.7787160  0.1121352  0.2915915  )
+        29        Ni     tau(  29) = (  0.7777815  0.4444409  0.1654463  )
+        30        Ni     tau(  30) = (  0.6666713  0.3333306  0.2068765  )
+        31        Ni     tau(  31) = (  0.8896072  0.5562213  0.2492284  )
+        32        Ni     tau(  32) = (  0.7787458  0.4454442  0.2915713  )
+        33        Ni     tau(  33) = (  0.7777816  0.7777815  0.1654463  )
+        34        Ni     tau(  34) = (  0.6666713  0.6666713  0.2068765  )
+        35        Ni     tau(  35) = (  0.8896273  0.8896272  0.2492377  )
+        36        Ni     tau(  36) = (  0.7787615  0.7787611  0.2915839  )
+        37        Cu     tau(  37) = (  0.0000294  0.0000299  0.4687813  )
+        38        Cu     tau(  38) = ( -0.0000517  0.3334148  0.4688366  )
+        39        Cu     tau(  39) = ( -0.0000209  0.6668547  0.4688315  )
+        40        Cu     tau(  40) = (  0.3334144 -0.0000512  0.4688368  )
+        41        Cu     tau(  41) = (  0.0011387  0.0011396  0.3351835  )
+        42        Cu     tau(  42) = (  0.2233372  0.2233375  0.3797506  )
+        43        Cu     tau(  43) = (  0.1117482  0.1117484  0.4243697  )
+        44        Cu     tau(  44) = (  0.3333198  0.3333202  0.4688848  )
+        45        Cu     tau(  45) = (  0.0011372  0.3345905  0.3351590  )
+        46        Cu     tau(  46) = (  0.2232426  0.5566784  0.3797554  )
+        47        Cu     tau(  47) = (  0.1117191  0.4450895  0.4243891  )
+        48        Cu     tau(  48) = (  0.3332863  0.6668237  0.4688791  )
+        49        Cu     tau(  49) = (  0.6668541 -0.0000204  0.4688316  )
+        50        Cu     tau(  50) = (  0.3345901  0.0011378  0.3351589  )
+        51        Cu     tau(  51) = (  0.5566781  0.2232429  0.3797555  )
+        52        Cu     tau(  52) = (  0.4450892  0.1117194  0.4243890  )
+        53        Cu     tau(  53) = (  0.6668232  0.3332866  0.4688790  )
+        54        Cu     tau(  54) = (  0.3345975  0.3345978  0.3351282  )
+        55        Cu     tau(  55) = (  0.5565866  0.5565868  0.3797663  )
+        56        Cu     tau(  56) = (  0.4450526  0.4450530  0.4244031  )
+        57        Cu     tau(  57) = (  0.6667958  0.6667964  0.4688759  )
+        58        Cu     tau(  58) = (  0.0011655  0.6678782  0.3351657  )
+        59        Cu     tau(  59) = (  0.2231806  0.8900260  0.3797769  )
+        60        Cu     tau(  60) = (  0.1116911  0.7783638  0.4243922  )
+        61        Cu     tau(  61) = (  0.3345885  0.6679094  0.3351400  )
+        62        Cu     tau(  62) = (  0.5564900  0.8899709  0.3797861  )
+        63        Cu     tau(  63) = (  0.4450150  0.7783484  0.4244149  )
+        64        Cu     tau(  64) = (  0.6678781  0.0011659  0.3351656  )
+        65        Cu     tau(  65) = (  0.8900257  0.2231810  0.3797770  )
+        66        Cu     tau(  66) = (  0.7783634  0.1116913  0.4243921  )
+        67        Cu     tau(  67) = (  0.6679097  0.3345885  0.3351400  )
+        68        Cu     tau(  68) = (  0.8899707  0.5564903  0.3797862  )
+        69        Cu     tau(  69) = (  0.7783478  0.4450154  0.4244149  )
+        70        Cu     tau(  70) = (  0.6679064  0.6679060  0.3351517  )
+        71        Cu     tau(  71) = (  0.8898677  0.8898680  0.3798010  )
+        72        Cu     tau(  72) = (  0.7783016  0.7783020  0.4244199  )
+        73        O      tau(  73) = (  0.4792553  0.1254212  0.5541806  )
+        74        O      tau(  74) = (  0.3078915  0.3360801  0.5051354  )
+        75        O      tau(  75) = (  0.3081029  0.3352499  0.6044915  )
+        76        C      tau(  76) = (  0.3059948  0.3348269  0.5546638  )
+        77        C      tau(  77) = (  0.3170573  0.4461007  0.5287650  )
+        78        C      tau(  78) = (  0.3197922  0.4429366  0.5807587  )
+        79        H      tau(  79) = (  0.1644863  0.3216383  0.5547340  )
+        80        H      tau(  80) = (  0.4637832  0.4493430  0.5276665  )
+        81        H      tau(  81) = (  0.1858011  0.6069025  0.5277863  )
+        82        H      tau(  82) = (  0.1910169  0.6051795  0.5816528  )
+        83        H      tau(  83) = (  0.4690665  0.4412450  0.5817147  )
+        84        H      tau(  84) = (  0.6074234  0.1326265  0.5542240  )
+        85        H      tau(  85) = (  0.4247302  0.1933696  0.5063330  )
+        86        H      tau(  86) = (  0.3171719  0.4093540  0.6205681  )
+
+     number of k points=     5  Gaussian smearing, width (Ry)=  0.0200
+                       cart. coord. in units 2pi/alat
+        k(    1) = (   0.0000000   0.0000000   0.0000000), wk =   0.2222222
+        k(    2) = (   0.0000000   0.3848999  -0.0000000), wk =   0.4444444
+        k(    3) = (   0.3333333  -0.1924499  -0.0000001), wk =   0.4444444
+        k(    4) = (   0.3333333   0.1924500  -0.0000001), wk =   0.4444444
+        k(    5) = (   0.3333333  -0.5773498  -0.0000001), wk =   0.4444444
+
+                       cryst. coord.
+        k(    1) = (   0.0000000   0.0000000   0.0000000), wk =   0.2222222
+        k(    2) = (   0.0000000   0.3333333   0.0000000), wk =   0.4444444
+        k(    3) = (   0.3333333  -0.0000000  -0.0000000), wk =   0.4444444
+        k(    4) = (   0.3333333   0.3333333  -0.0000000), wk =   0.4444444
+        k(    5) = (   0.3333333  -0.3333333  -0.0000000), wk =   0.4444444
+
+     Dense  grid:  2078155 G-vectors     FFT dimensions: (  90,  90, 600)
+
+     Smooth grid:   734739 G-vectors     FFT dimensions: (  64,  64, 432)
+
+     Dynamical RAM for                 wfc:      17.55 MB
+
+     Dynamical RAM for     wfc (w. buffer):     105.29 MB
+
+     Dynamical RAM for           str. fact:       4.17 MB
+
+     Dynamical RAM for           local pot:       0.00 MB
+
+     Dynamical RAM for          nlocal pot:      50.14 MB
+
+     Dynamical RAM for                qrad:       8.03 MB
+
+     Dynamical RAM for          rho,v,vnew:       5.47 MB
+
+     Dynamical RAM for               rhoin:       1.82 MB
+
+     Dynamical RAM for            rho*nmix:      13.35 MB
+
+     Dynamical RAM for           G-vectors:       3.28 MB
+
+     Dynamical RAM for          h,s,v(r/c):       1.65 MB
+
+     Dynamical RAM for          <psi|beta>:       9.88 MB
+
+     Dynamical RAM for                 psi:      35.10 MB
+
+     Dynamical RAM for                hpsi:      35.10 MB
+
+     Dynamical RAM for                spsi:      35.10 MB
+
+     Dynamical RAM for      wfcinit/wfcrot:      40.29 MB
+
+     Dynamical RAM for           addusdens:     185.28 MB
+
+     Dynamical RAM for          addusforce:     244.26 MB
+
+     Estimated static dynamical RAM per process >     188.15 MB
+
+     Estimated max dynamical RAM per process >     445.76 MB
+
+     Estimated total dynamical RAM >      16.54 GB
 
      Check: negative core charge=   -0.000001
 
-     negative rho (up, down):  3.790E-03 0.000E+00
+     Initial potential from superposition of free atoms
 
-     total cpu time spent up to now is    82737.6 secs
+     starting charge     793.9825, renormalised to     794.0000
 
-     per-process dynamical memory:   341.1 Mb
+     negative rho (up, down):  3.407E-03 0.000E+00
+     Starting wfcs are random
+
+     total cpu time spent up to now is       20.0 secs
+
+     per-process dynamical memory:   308.6 Mb
 
      Self-consistent Calculation
 
@@ -143,158 +294,7 @@ H                7.1623187352        4.3203850360       30.6504644423
      Davidson diagonalization with overlap
 
 ---- Real-time Memory Report at c_bands before calling an iterative solver
-          1046 MiB given to the printing process from OS
-           333 MiB allocation reported by mallinfo(arena+hblkhd)
-        153792 MiB available memory on the node where the printing process lives
+           431 MiB given to the printing process from OS
+           301 MiB allocation reported by mallinfo(arena+hblkhd)
+        156180 MiB available memory on the node where the printing process lives
 ------------------
-     ethr =  1.00E-06,  avg # of iterations =  5.0
-
-     Threshold (ethr) on eigenvalues was too large:
-     Diagonalizing with lowered threshold
-
-     Davidson diagonalization with overlap
-
----- Real-time Memory Report at c_bands before calling an iterative solver
-          1046 MiB given to the printing process from OS
-           333 MiB allocation reported by mallinfo(arena+hblkhd)
-        153782 MiB available memory on the node where the printing process lives
-------------------
-     ethr =  2.88E-08,  avg # of iterations =  5.8
-
-     negative rho (up, down):  3.790E-03 0.000E+00
-
-     total cpu time spent up to now is    82863.8 secs
-
-     total energy              =   -8184.65923555 Ry
-     estimated scf accuracy    <       0.00024369 Ry
-
-     iteration #  2     ecut=    50.00 Ry     beta= 0.10
-     Davidson diagonalization with overlap
-
----- Real-time Memory Report at c_bands before calling an iterative solver
-          1046 MiB given to the printing process from OS
-           333 MiB allocation reported by mallinfo(arena+hblkhd)
-        153596 MiB available memory on the node where the printing process lives
-------------------
-     ethr =  3.07E-08,  avg # of iterations =  2.0
-
-     negative rho (up, down):  3.791E-03 0.000E+00
-
-     total cpu time spent up to now is    82917.1 secs
-
-     total energy              =   -8184.65922764 Ry
-     estimated scf accuracy    <       0.00068806 Ry
-
-     iteration #  3     ecut=    50.00 Ry     beta= 0.10
-     Davidson diagonalization with overlap
-
----- Real-time Memory Report at c_bands before calling an iterative solver
-          1046 MiB given to the printing process from OS
-           333 MiB allocation reported by mallinfo(arena+hblkhd)
-        153792 MiB available memory on the node where the printing process lives
-------------------
-     ethr =  3.07E-08,  avg # of iterations =  1.0
-
-     negative rho (up, down):  3.791E-03 0.000E+00
-
-     total cpu time spent up to now is    82962.5 secs
-
-     total energy              =   -8184.65921951 Ry
-     estimated scf accuracy    <       0.00287937 Ry
-
-     iteration #  4     ecut=    50.00 Ry     beta= 0.10
-     Davidson diagonalization with overlap
-
----- Real-time Memory Report at c_bands before calling an iterative solver
-          1046 MiB given to the printing process from OS
-           333 MiB allocation reported by mallinfo(arena+hblkhd)
-        153690 MiB available memory on the node where the printing process lives
-------------------
-     ethr =  3.07E-08,  avg # of iterations =  1.0
-
-     negative rho (up, down):  3.792E-03 0.000E+00
-
-     total cpu time spent up to now is    83010.1 secs
-
-     total energy              =   -8184.65920796 Ry
-     estimated scf accuracy    <       0.00034300 Ry
-
-     iteration #  5     ecut=    50.00 Ry     beta= 0.10
-     Davidson diagonalization with overlap
-
----- Real-time Memory Report at c_bands before calling an iterative solver
-          1046 MiB given to the printing process from OS
-           333 MiB allocation reported by mallinfo(arena+hblkhd)
-        153782 MiB available memory on the node where the printing process lives
-------------------
-     ethr =  3.07E-08,  avg # of iterations =  2.0
-
-     negative rho (up, down):  3.795E-03 0.000E+00
-
-     total cpu time spent up to now is    83064.3 secs
-
-     total energy              =   -8184.65916361 Ry
-     estimated scf accuracy    <       0.00621095 Ry
-
-     iteration #  6     ecut=    50.00 Ry     beta= 0.10
-     Davidson diagonalization with overlap
-
----- Real-time Memory Report at c_bands before calling an iterative solver
-          1046 MiB given to the printing process from OS
-           333 MiB allocation reported by mallinfo(arena+hblkhd)
-        153762 MiB available memory on the node where the printing process lives
-------------------
-     ethr =  3.07E-08,  avg # of iterations =  5.0
-
-     negative rho (up, down):  3.795E-03 0.000E+00
-
-     total cpu time spent up to now is    83124.1 secs
-
-     total energy              =   -8184.65921819 Ry
-     estimated scf accuracy    <       0.00029263 Ry
-
-     iteration #  7     ecut=    50.00 Ry     beta= 0.10
-     Davidson diagonalization with overlap
-
----- Real-time Memory Report at c_bands before calling an iterative solver
-          1046 MiB given to the printing process from OS
-           333 MiB allocation reported by mallinfo(arena+hblkhd)
-        153767 MiB available memory on the node where the printing process lives
-------------------
-     ethr =  3.07E-08,  avg # of iterations =  1.0
-
-     negative rho (up, down):  3.795E-03 0.000E+00
-
-     total cpu time spent up to now is    83170.9 secs
-
-     total energy              =   -8184.65922263 Ry
-     estimated scf accuracy    <       0.00002605 Ry
-
-     iteration #  8     ecut=    50.00 Ry     beta= 0.10
-     Davidson diagonalization with overlap
-
----- Real-time Memory Report at c_bands before calling an iterative solver
-          1046 MiB given to the printing process from OS
-           333 MiB allocation reported by mallinfo(arena+hblkhd)
-        153220 MiB available memory on the node where the printing process lives
-------------------
-     ethr =  3.28E-09,  avg # of iterations =  5.0
-
-     negative rho (up, down):  3.795E-03 0.000E+00
-
-     total cpu time spent up to now is    83231.0 secs
-
-     total energy              =   -8184.65922298 Ry
-     estimated scf accuracy    <       0.00002028 Ry
-
-     iteration #  9     ecut=    50.00 Ry     beta= 0.10
-     Davidson diagonalization with overlap
-
----- Real-time Memory Report at c_bands before calling an iterative solver
-          1046 MiB given to the printing process from OS
-           333 MiB allocation reported by mallinfo(arena+hblkhd)
-        153785 MiB available memory on the node where the printing process lives
-------------------
-     ethr =  2.55E-09,  avg # of iterations =  1.0
-
-     negative rho (up, down):  3.795E-03 0.000E+00
