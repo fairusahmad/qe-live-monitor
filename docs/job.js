@@ -19,7 +19,7 @@ let measurementState = {
   current: { atoms: [], labels: [], line: null },
   original: { atoms: [], labels: [], line: null }
 };
-let viewersLinked = false;
+let syncViewsEnabled = true;
 
 function getJobId() {
   const params = new URLSearchParams(window.location.search);
@@ -64,6 +64,18 @@ function enableMiddleMousePan(containerId) {
   el.dataset.middlePanBound = "true";
 }
 
+function updateSyncViewsButton() {
+  const button = document.getElementById("syncViewsToggle");
+  if (!button) return;
+  button.textContent = `Sync Views: ${syncViewsEnabled ? "On" : "Off"}`;
+}
+
+function applyViewerLinkState() {
+  if (!viewer || !originalViewer) return;
+  viewer.linkViewer(syncViewsEnabled ? originalViewer : null);
+  originalViewer.linkViewer(syncViewsEnabled ? viewer : null);
+}
+
 function useTrajectoryAsOriginalFallback() {
   if (!trajectoryFrames.length) return;
   originalStructure = trajectoryFrames[0].xyz;
@@ -96,12 +108,8 @@ function initViewer() {
 
   enableMiddleMousePan("viewer");
   enableMiddleMousePan("originalViewer");
-
-  if (!viewersLinked && viewer && originalViewer) {
-    viewer.linkViewer(originalViewer);
-    originalViewer.linkViewer(viewer);
-    viewersLinked = true;
-  }
+  applyViewerLinkState();
+  updateSyncViewsButton();
 }
 
 function formatAtomLabel(atom) {
@@ -544,6 +552,12 @@ function toggleAxes() {
 function resetView() {
   if (viewer) renderFrame(currentStep, false);
   if (originalViewer) renderOriginalStructure(false);
+}
+
+function toggleSyncViews() {
+  syncViewsEnabled = !syncViewsEnabled;
+  applyViewerLinkState();
+  updateSyncViewsButton();
 }
 
 function toggleMeasureMode() {
