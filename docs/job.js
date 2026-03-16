@@ -15,9 +15,10 @@ let showAxes = true;
 let currentStyle = "ballstick";
 let cellRepeat = { x: 2, y: 2, z: 1 };
 let measureMode = false;
-let measurementAtoms = [];
-let measurementLabels = [];
-let measurementLine = null;
+let measurementState = {
+  current: { atoms: [], labels: [], line: null },
+  original: { atoms: [], labels: [], line: null }
+};
 
 function getJobId() {
   const params = new URLSearchParams(window.location.search);
@@ -96,33 +97,46 @@ function updateMeasurementStatus(message) {
   if (el) el.textContent = message;
 }
 
-function clearMeasurement() {
-  measurementAtoms = [];
-
-  if (viewer) {
-    for (const label of measurementLabels) {
-      viewer.removeLabel(label);
-    }
-    if (measurementLine) {
-      viewer.removeShape(measurementLine);
-    }
-  }
-
-  measurementLabels = [];
-  measurementLine = null;
-  updateMeasurementStatus(measureMode ? "Select atom 1 of 2" : "Measurement off");
-
-  if (viewer) viewer.render();
+function getMeasurementViewer(which) {
+  return which === "original" ? originalViewer : viewer;
 }
 
-function handleMeasurementClick(atom) {
-  if (!measureMode || !atom) return;
+function clearMeasurement(which = null) {
+  const keys = which ? [which] : Object.keys(measurementState);
 
-  if (measurementAtoms.length === 2) {
-    clearMeasurement();
+  for (const key of keys) {
+    const targetViewer = getMeasurementViewer(key);
+    const state = measurementState[key];
+    state.atoms = [];
+
+    if (targetViewer) {
+      for (const label of state.labels) {
+        targetViewer.removeLabel(label);
+      }
+      if (state.line) {
+        targetViewer.removeShape(state.line);
+      }
+      targetViewer.render();
+    }
+
+    state.labels = [];
+    state.line = null;
   }
 
-  measurementAtoms.push({
+  updateMeasurementStatus(measureMode ? "Select atom 1 of 2" : "Measurement off");
+}
+
+function handleMeasurementClick(which, atom) {
+  if (!measureMode || !atom) return;
+  const targetViewer = getMeasurementViewer(which);
+  const state = measurementState[which];
+  if (!targetViewer || !state) return;
+
+  if (state.atoms.length === 2) {
+    clearMeasurement(which);
+  }
+
+  state.atoms.push({
     index: atom.index,
     serial: atom.serial,
     elem: atom.elem,
@@ -131,25 +145,25 @@ function handleMeasurementClick(atom) {
     z: atom.z
   });
 
-  const pickNumber = measurementAtoms.length;
-  const marker = viewer.addLabel(`${pickNumber}: ${formatAtomLabel(atom)}`, {
+  const pickNumber = state.atoms.length;
+  const marker = targetViewer.addLabel(`${pickNumber}: ${formatAtomLabel(atom)}`, {
     position: { x: atom.x, y: atom.y, z: atom.z },
     backgroundColor: "#111827",
     fontColor: "white",
     backgroundOpacity: 0.85,
     fontSize: 12
   });
-  measurementLabels.push(marker);
+  state.labels.push(marker);
 
-  if (measurementAtoms.length === 1) {
-    updateMeasurementStatus("Select atom 2 of 2");
-    viewer.render();
+  if (state.atoms.length === 1) {
+    updateMeasurementStatus(`Select atom 2 of 2 (${which} structure)`);
+    targetViewer.render();
     return;
   }
 
-  const [atomA, atomB] = measurementAtoms;
+  const [atomA, atomB] = state.atoms;
   const distance = distanceBetweenAtoms(atomA, atomB);
-  measurementLine = viewer.addLine({
+  state.line = targetViewer.addLine({
     start: { x: atomA.x, y: atomA.y, z: atomA.z },
     end: { x: atomB.x, y: atomB.y, z: atomB.z },
     color: "#7c3aed",
@@ -162,16 +176,16 @@ function handleMeasurementClick(atom) {
     y: (atomA.y + atomB.y) / 2,
     z: (atomA.z + atomB.z) / 2
   };
-  const distanceLabel = viewer.addLabel(`${distance.toFixed(3)} A`, {
+  const distanceLabel = targetViewer.addLabel(`${distance.toFixed(3)} A`, {
     position: midpoint,
     backgroundColor: "#7c3aed",
     fontColor: "white",
     backgroundOpacity: 0.9,
     fontSize: 12
   });
-  measurementLabels.push(distanceLabel);
-  updateMeasurementStatus(`Distance: ${distance.toFixed(3)} A`);
-  viewer.render();
+  state.labels.push(distanceLabel);
+  updateMeasurementStatus(`Distance (${which}): ${distance.toFixed(3)} A`);
+  targetViewer.render();
 }
 
 function parseXYZTrajectory(xyzText) {
@@ -404,6 +418,10 @@ function renderOriginalStructure(preserveView = false) {
     buildDisplayXYZ(originalStructure, originalLattice, `Original structure | ${cellRepeat.x} x ${cellRepeat.y} x ${cellRepeat.z}`),
     "xyz"
   );
+  clearMeasurement("original");
+  originalViewer.setClickable({}, true, function(atom) {
+    handleMeasurementClick("original", atom);
+  });
   applyStyleToViewer(originalViewer);
   addLatticeBox(originalViewer, getDisplayLattice(originalLattice));
   addAxes(originalViewer, getDisplayLattice(originalLattice));
@@ -434,9 +452,9 @@ function renderFrame(index, preserveView = false) {
     buildDisplayXYZ(frame.xyz, currentLattice, `${frame.comment} | ${cellRepeat.x} x ${cellRepeat.y} x ${cellRepeat.z}`),
     "xyz"
   );
-  clearMeasurement();
+  clearMeasurement("current");
   viewer.setClickable({}, true, function(atom) {
-    handleMeasurementClick(atom);
+    handleMeasurementClick("current", atom);
   });
 
   applyStyleToViewer(viewer);
