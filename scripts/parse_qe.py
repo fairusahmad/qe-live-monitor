@@ -12,8 +12,8 @@ force_target_pattern = re.compile(r'criteria:\s*energy\s*<\s*[-0-9.Ee+]+\s+Ry,\s
 bfgs_pattern = re.compile(r'number of bfgs steps\s+=\s+(\d+)', re.IGNORECASE)
 scf_pattern = re.compile(r'number of scf cycles\s+=\s+(\d+)', re.IGNORECASE)
 
-cell_header_pattern = re.compile(r'^CELL_PARAMETERS\s*\((.*?)\)', re.IGNORECASE)
-atomic_header_pattern = re.compile(r'^ATOMIC_POSITIONS\s*\((.*?)\)', re.IGNORECASE)
+cell_header_pattern = re.compile(r'^CELL_PARAMETERS\s*[\(\{](.*?)[\)\}]', re.IGNORECASE)
+atomic_header_pattern = re.compile(r'^ATOMIC_POSITIONS\s*[\(\{](.*?)[\)\}]', re.IGNORECASE)
 alat_value_pattern = re.compile(r'alat\s*=\s*([-0-9.Ee+]+)', re.IGNORECASE)
 
 alat_line_pattern = re.compile(r'lattice parameter \(alat\)\s*=\s*([-0-9.Ee+]+)\s+a\.u\.', re.IGNORECASE)
@@ -237,26 +237,31 @@ def find_fallback_cell_block(qe_output):
             return block, inp
     return None, None
 
+def parse_qe_input_file(input_file):
+    lines = read_file_lines_if_exists(input_file)
+    if not lines:
+        return None
+
+    cell_block = find_latest_cell_block_in_lines(lines)
+    position_blocks = find_position_blocks_in_lines(lines, cell_block)
+    if not position_blocks:
+        return None
+
+    return {
+        "input_file": input_file,
+        "cell_block": cell_block,
+        "position_block": position_blocks[0],
+        "atoms_ang": position_blocks[0]["atoms_ang"],
+    }
+
 def parse_input_structure(qe_output):
     for inp in guess_input_files_from_output(qe_output):
-        lines = read_file_lines_if_exists(inp)
-        if not lines:
-            continue
-
-        cell_block = find_latest_cell_block_in_lines(lines)
         try:
-            position_blocks = find_position_blocks_in_lines(lines, cell_block)
+            parsed = parse_qe_input_file(inp)
         except ValueError:
             continue
-        if not position_blocks:
-            continue
-
-        return {
-            "input_file": inp,
-            "cell_block": cell_block,
-            "position_block": position_blocks[0],
-            "atoms_ang": position_blocks[0]["atoms_ang"],
-        }
+        if parsed is not None:
+            return parsed
 
     return None
 
