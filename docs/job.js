@@ -47,6 +47,17 @@ function updateOriginalStructureSource() {
   el.textContent = `Source: ${originalInputFile ?? "not available"}`;
 }
 
+function useTrajectoryAsOriginalFallback() {
+  if (!trajectoryFrames.length) return;
+  originalStructure = trajectoryFrames[0].xyz;
+  if (!originalLattice) {
+    originalLattice = currentLattice;
+  }
+  if (!originalInputFile) {
+    originalInputFile = "fallback from trajectory.xyz step 1";
+  }
+}
+
 function initViewer() {
   if (!viewer) {
     viewer = $3Dmol.createViewer("viewer", { backgroundColor: "white" });
@@ -710,6 +721,10 @@ async function refreshJob() {
       } catch (e) {
         originalLattice = null;
         originalInputFile = null;
+      }
+
+      if (!originalStructure) {
+        useTrajectoryAsOriginalFallback();
       }
 
       updateOriginalStructureSource();
