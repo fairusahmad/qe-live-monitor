@@ -19,6 +19,7 @@ let measurementState = {
   current: { atoms: [], labels: [], line: null },
   original: { atoms: [], labels: [], line: null }
 };
+let viewersLinked = false;
 
 function getJobId() {
   const params = new URLSearchParams(window.location.search);
@@ -46,6 +47,21 @@ function updateOriginalStructureSource() {
   const el = document.getElementById("originalStructureSource");
   if (!el) return;
   el.textContent = `Source: ${originalInputFile ?? "not available"}`;
+}
+
+function enableMiddleMousePan(containerId) {
+  const el = document.getElementById(containerId);
+  if (!el || el.dataset.middlePanBound === "true") return;
+
+  const preventAutoScroll = (event) => {
+    if (event.button === 1) {
+      event.preventDefault();
+    }
+  };
+
+  el.addEventListener("mousedown", preventAutoScroll);
+  el.addEventListener("auxclick", preventAutoScroll);
+  el.dataset.middlePanBound = "true";
 }
 
 function useTrajectoryAsOriginalFallback() {
@@ -76,6 +92,15 @@ function initViewer() {
 
   if (!originalViewer) {
     originalViewer = $3Dmol.createViewer("originalViewer", { backgroundColor: "white" });
+  }
+
+  enableMiddleMousePan("viewer");
+  enableMiddleMousePan("originalViewer");
+
+  if (!viewersLinked && viewer && originalViewer) {
+    viewer.linkViewer(originalViewer);
+    originalViewer.linkViewer(viewer);
+    viewersLinked = true;
   }
 }
 
