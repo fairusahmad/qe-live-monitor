@@ -20,6 +20,7 @@ let measurementState = {
   original: { atoms: [], labels: [], line: null }
 };
 let syncViewsEnabled = true;
+let isApplyingSyncedView = false;
 
 function getJobId() {
   const params = new URLSearchParams(window.location.search);
@@ -72,8 +73,25 @@ function updateSyncViewsButton() {
 
 function applyViewerLinkState() {
   if (!viewer || !originalViewer) return;
-  viewer.linkViewer(syncViewsEnabled ? originalViewer : null);
-  originalViewer.linkViewer(syncViewsEnabled ? viewer : null);
+  if (!syncViewsEnabled) {
+    viewer.setViewChangeCallback(null);
+    originalViewer.setViewChangeCallback(null);
+    return;
+  }
+
+  viewer.setViewChangeCallback((view) => {
+    if (isApplyingSyncedView) return;
+    isApplyingSyncedView = true;
+    originalViewer.setView(view, true);
+    isApplyingSyncedView = false;
+  });
+
+  originalViewer.setViewChangeCallback((view) => {
+    if (isApplyingSyncedView) return;
+    isApplyingSyncedView = true;
+    viewer.setView(view, true);
+    isApplyingSyncedView = false;
+  });
 }
 
 function useTrajectoryAsOriginalFallback() {
