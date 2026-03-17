@@ -99,6 +99,27 @@
       align-items: center;
       margin-top: 12px;
     }
+    .chart-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 12px;
+      align-items: center;
+      margin-bottom: 12px;
+      font-size: 13px;
+    }
+    .chart-controls label {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: #374151;
+    }
+    .chart-controls input[type="number"] {
+      width: 88px;
+      padding: 6px 8px;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      background: white;
+    }
     .stepbox {
       display: inline-block;
       min-width: 160px;
@@ -127,11 +148,25 @@
     <div class="charts-row">
       <div class="card">
         <h2>Energy History</h2>
+        <div class="chart-controls">
+          <label>X min <input id="energyXMin" type="number" step="any" placeholder="auto"></label>
+          <label>X max <input id="energyXMax" type="number" step="any" placeholder="auto"></label>
+          <label>Y min <input id="energyYMin" type="number" step="any" placeholder="auto"></label>
+          <label>Y max <input id="energyYMax" type="number" step="any" placeholder="auto"></label>
+          <button id="energyAxisReset" type="button">Reset Axes</button>
+        </div>
         <canvas id="energyChart"></canvas>
       </div>
 
       <div class="card">
         <h2>Gradient Error History</h2>
+        <div class="chart-controls">
+          <label>X min <input id="gradientXMin" type="number" step="any" placeholder="auto"></label>
+          <label>X max <input id="gradientXMax" type="number" step="any" placeholder="auto"></label>
+          <label>Y min <input id="gradientYMin" type="number" step="any" placeholder="auto"></label>
+          <label>Y max <input id="gradientYMax" type="number" step="any" placeholder="auto"></label>
+          <button id="gradientAxisReset" type="button">Reset Axes</button>
+        </div>
         <canvas id="gradientChart"></canvas>
       </div>
     </div>

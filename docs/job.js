@@ -3,6 +3,11 @@ let originalViewer = null;
 let energyChart = null;
 let gradientChart = null;
 let currentJob = null;
+const HISTORY_POINT_LIMIT = 100;
+let energySeriesData = [];
+let gradientSeriesData = [];
+let gradientTargetValue = null;
+let chartControlsBound = false;
 
 let trajectoryFrames = [];
 let originalStructure = null;
@@ -21,6 +26,22 @@ let measurementState = {
 };
 let syncViewsEnabled = true;
 let isApplyingSyncedView = false;
+const chartControlIds = {
+  energy: {
+    xMin: "energyXMin",
+    xMax: "energyXMax",
+    yMin: "energyYMin",
+    yMax: "energyYMax",
+    reset: "energyAxisReset"
+  },
+  gradient: {
+    xMin: "gradientXMin",
+    xMax: "gradientXMax",
+    yMin: "gradientYMin",
+    yMax: "gradientYMax",
+    reset: "gradientAxisReset"
+  }
+};
 
 function getJobId() {
   const params = new URLSearchParams(window.location.search);
@@ -623,8 +644,104 @@ function parseSeriesCSV(csv) {
   return data;
 }
 
-function drawSeriesChart(canvasId, existingChart, data, label, color, yTitle, targetValue = null, targetLabel = null) {
-  const visibleData = data.slice(-10);
+function parseAxisValue(inputId) {
+  const input = document.getElementById(inputId);
+  if (!input) return undefined;
+  const value = input.value.trim();
+  if (!value) return undefined;
+
+  const parsed = Number(value);
+  return Number.isFinite(parsed) ? parsed : undefined;
+}
+
+function getAxisBounds(chartKey) {
+  const ids = chartControlIds[chartKey];
+  if (!ids) return null;
+
+  return {
+    x: {
+      min: parseAxisValue(ids.xMin),
+      max: parseAxisValue(ids.xMax)
+    },
+    y: {
+      min: parseAxisValue(ids.yMin),
+      max: parseAxisValue(ids.yMax)
+    }
+  };
+}
+
+function resetAxisInputs(chartKey) {
+  const ids = chartControlIds[chartKey];
+  if (!ids) return;
+
+  [ids.xMin, ids.xMax, ids.yMin, ids.yMax].forEach((inputId) => {
+    const input = document.getElementById(inputId);
+    if (input) input.value = "";
+  });
+}
+
+function redrawCharts() {
+  if (energySeriesData.length > 0) {
+    energyChart = drawSeriesChart(
+      "energyChart",
+      energyChart,
+      energySeriesData,
+      "Total Energy (Ry)",
+      "#2563eb",
+      "Energy (Ry)",
+      null,
+      null,
+      getAxisBounds("energy")
+    );
+  } else if (energyChart) {
+    energyChart.destroy();
+    energyChart = null;
+  }
+
+  if (gradientSeriesData.length > 0) {
+    gradientChart = drawSeriesChart(
+      "gradientChart",
+      gradientChart,
+      gradientSeriesData,
+      "Gradient Error (Ry/Bohr)",
+      "#16a34a",
+      "Gradient Error (Ry/Bohr)",
+      gradientTargetValue,
+      "Target Gradient Error (Ry/Bohr)",
+      getAxisBounds("gradient")
+    );
+  } else if (gradientChart) {
+    gradientChart.destroy();
+    gradientChart = null;
+  }
+}
+
+function bindChartControls() {
+  if (chartControlsBound) return;
+
+  ["energy", "gradient"].forEach((chartKey) => {
+    const ids = chartControlIds[chartKey];
+
+    [ids.xMin, ids.xMax, ids.yMin, ids.yMax].forEach((inputId) => {
+      const input = document.getElementById(inputId);
+      if (!input) return;
+      input.addEventListener("change", redrawCharts);
+    });
+
+    const resetButton = document.getElementById(ids.reset);
+    if (resetButton) {
+      resetButton.addEventListener("click", () => {
+        resetAxisInputs(chartKey);
+        redrawCharts();
+      });
+    }
+  });
+
+  chartControlsBound = true;
+}
+
+function drawSeriesChart(canvasId, existingChart, data, label, color, yTitle, targetValue = null, targetLabel = null, axisBounds = null) {
+  const visibleData = data.slice(-HISTORY_POINT_LIMIT);
   const ctx = document.getElementById(canvasId).getContext("2d");
   if (existingChart) existingChart.destroy();
 
@@ -659,8 +776,16 @@ function drawSeriesChart(canvasId, existingChart, data, label, color, yTitle, ta
       responsive: true,
       maintainAspectRatio: true,
       scales: {
-        x: { title: { display: true, text: "Step" } },
-        y: { title: { display: true, text: yTitle } }
+        x: {
+          title: { display: true, text: "Step" },
+          min: axisBounds?.x?.min,
+          max: axisBounds?.x?.max
+        },
+        y: {
+          title: { display: true, text: yTitle },
+          min: axisBounds?.y?.min,
+          max: axisBounds?.y?.max
+        }
       }
     }
   });
@@ -716,44 +841,24 @@ async function refreshJob() {
   try {
     const csv = await loadText(`data/${job.job_id}/energy.csv`);
     const parsed = parseSeriesCSV(csv);
-    if (parsed.length > 0) {
-      energyChart = drawSeriesChart(
-        "energyChart",
-        energyChart,
-        parsed,
-        "Total Energy (Ry)",
-        "#2563eb",
-        "Energy (Ry)"
-      );
-    }
+    energySeriesData = parsed;
+    redrawCharts();
   } catch (e) {
+    energySeriesData = [];
+    redrawCharts();
     console.error(e);
   }
 
   try {
     const csv = await loadText(`data/${job.job_id}/gradient_error.csv`);
     const parsed = parseSeriesCSV(csv);
-    if (parsed.length > 0) {
-      gradientChart = drawSeriesChart(
-        "gradientChart",
-        gradientChart,
-        parsed,
-        "Gradient Error (Ry/Bohr)",
-        "#16a34a",
-        "Gradient Error (Ry/Bohr)",
-        status.target_gradient_error_ry_bohr ?? null,
-        "Target Gradient Error (Ry/Bohr)"
-      );
-    }
-    else if (gradientChart) {
-      gradientChart.destroy();
-      gradientChart = null;
-    }
+    gradientSeriesData = parsed;
+    gradientTargetValue = status.target_gradient_error_ry_bohr ?? null;
+    redrawCharts();
   } catch (e) {
-    if (gradientChart) {
-      gradientChart.destroy();
-      gradientChart = null;
-    }
+    gradientSeriesData = [];
+    gradientTargetValue = null;
+    redrawCharts();
     console.error(e);
   }
 
@@ -825,6 +930,8 @@ async function main() {
     document.getElementById("status").innerHTML = "No job selected.";
     return;
   }
+
+  bindChartControls();
 
   try {
     await refreshJob();
