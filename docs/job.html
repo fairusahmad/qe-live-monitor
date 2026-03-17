@@ -153,6 +153,13 @@
           <label>X max <input id="energyXMax" type="number" step="any" placeholder="auto"></label>
           <label>Y min <input id="energyYMin" type="number" step="any" placeholder="auto"></label>
           <label>Y max <input id="energyYMax" type="number" step="any" placeholder="auto"></label>
+          <label>Y range
+            <select id="energyYRangePercent">
+              <option value="10" selected>10%</option>
+              <option value="20">20%</option>
+              <option value="100">100%</option>
+            </select>
+          </label>
           <button id="energyAxisReset" type="button">Reset Axes</button>
         </div>
         <canvas id="energyChart"></canvas>
@@ -165,6 +172,13 @@
           <label>X max <input id="gradientXMax" type="number" step="any" placeholder="auto"></label>
           <label>Y min <input id="gradientYMin" type="number" step="any" placeholder="auto"></label>
           <label>Y max <input id="gradientYMax" type="number" step="any" placeholder="auto"></label>
+          <label>Y range
+            <select id="gradientYRangePercent">
+              <option value="10" selected>10%</option>
+              <option value="20">20%</option>
+              <option value="100">100%</option>
+            </select>
+          </label>
           <button id="gradientAxisReset" type="button">Reset Axes</button>
         </div>
         <canvas id="gradientChart"></canvas>

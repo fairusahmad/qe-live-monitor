@@ -32,6 +32,7 @@ const chartControlIds = {
     xMax: "energyXMax",
     yMin: "energyYMin",
     yMax: "energyYMax",
+    yRangePercent: "energyYRangePercent",
     reset: "energyAxisReset"
   },
   gradient: {
@@ -39,6 +40,7 @@ const chartControlIds = {
     xMax: "gradientXMax",
     yMin: "gradientYMin",
     yMax: "gradientYMax",
+    yRangePercent: "gradientYRangePercent",
     reset: "gradientAxisReset"
   }
 };
@@ -670,6 +672,39 @@ function getAxisBounds(chartKey) {
   };
 }
 
+function parseRangePercent(inputId) {
+  const input = document.getElementById(inputId);
+  if (!input) return 10;
+  const parsed = Number(input.value);
+  return Number.isFinite(parsed) && parsed > 0 ? parsed : 10;
+}
+
+function getAutoYBounds(data, rangePercent, targetValue = null) {
+  const values = data.map(point => point.value);
+  if (targetValue !== null && Number.isFinite(targetValue)) {
+    values.push(targetValue);
+  }
+  if (values.length === 0) return {};
+
+  const minValue = Math.min(...values);
+  const maxValue = Math.max(...values);
+  const span = maxValue - minValue;
+
+  if (span === 0) {
+    const padding = Math.abs(minValue) > 0 ? Math.abs(minValue) * 0.1 : 1;
+    return {
+      min: minValue - padding,
+      max: maxValue + padding
+    };
+  }
+
+  const clampedPercent = Math.max(0, Math.min(rangePercent, 100));
+  return {
+    min: minValue,
+    max: minValue + (span * clampedPercent / 100)
+  };
+}
+
 function resetAxisInputs(chartKey) {
   const ids = chartControlIds[chartKey];
   if (!ids) return;
@@ -735,6 +770,11 @@ function bindChartControls() {
         redrawCharts();
       });
     }
+
+    const yRangeSelect = document.getElementById(ids.yRangePercent);
+    if (yRangeSelect) {
+      yRangeSelect.addEventListener("change", redrawCharts);
+    }
   });
 
   chartControlsBound = true;
@@ -744,6 +784,12 @@ function drawSeriesChart(canvasId, existingChart, data, label, color, yTitle, ta
   const visibleData = data.slice(-HISTORY_POINT_LIMIT);
   const ctx = document.getElementById(canvasId).getContext("2d");
   if (existingChart) existingChart.destroy();
+  const ids = chartControlIds[canvasId === "energyChart" ? "energy" : "gradient"];
+  const autoYBounds = ids
+    ? getAutoYBounds(visibleData, parseRangePercent(ids.yRangePercent), targetValue)
+    : {};
+  const resolvedYMin = axisBounds?.y?.min ?? autoYBounds.min;
+  const resolvedYMax = axisBounds?.y?.max ?? autoYBounds.max;
 
   const datasets = [{
     label,
@@ -783,8 +829,8 @@ function drawSeriesChart(canvasId, existingChart, data, label, color, yTitle, ta
         },
         y: {
           title: { display: true, text: yTitle },
-          min: axisBounds?.y?.min,
-          max: axisBounds?.y?.max
+          min: resolvedYMin,
+          max: resolvedYMax
         }
       }
     }
