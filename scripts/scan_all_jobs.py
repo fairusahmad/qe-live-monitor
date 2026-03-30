@@ -13,6 +13,7 @@ JOBS = [
     ("Slab__Ni_Cu_only", "Slab / Ni_Cu_only", os.path.join(BASE_DIR, "Slab", "Ni_Cu_only")),
     ("Adsorption__Ni_ads", "Adsorption / Ni_ads", os.path.join(BASE_DIR, "Adsorption", "Ni_ads")),
     ("Adsorption__Ni_Cu_ads", "Adsorption / Ni_Cu_ads", os.path.join(BASE_DIR, "Adsorption", "Ni_Cu_ads")),
+    ("Glycerol", "Glycerol", os.path.join(BASE_DIR, "Glycerol")),
     ("DOS", "DOS", os.path.join(BASE_DIR, "DOS")),
     ("NEB", "NEB", os.path.join(BASE_DIR, "NEB")),
 ]
