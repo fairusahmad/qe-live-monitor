@@ -1,22 +1,13 @@
 import os
 import json
+import re
 from parse_qe import export_qe_run
 
-BASE_DIR = "/media/node1/Fairus2TB/fairus/Nguyen"
-DASHBOARD_DIR = "/media/node1/Fairus2TB/fairus/qe-live-monitor"
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+REPO_DIR = os.path.dirname(SCRIPT_DIR)
+BASE_DIR = os.environ.get("QE_BASE_DIR", "/media/node1/Fairus2TB/fairus/Nguyen")
+DASHBOARD_DIR = os.environ.get("QE_DASHBOARD_DIR", REPO_DIR)
 DATA_DIR = os.path.join(DASHBOARD_DIR, "docs", "data")
-
-JOBS = [
-    ("Bulk__Ni", "Bulk / Ni", os.path.join(BASE_DIR, "Bulk", "Ni")),
-    ("Bulk__Cu", "Bulk / Cu", os.path.join(BASE_DIR, "Bulk", "Cu")),
-    ("Slab__Ni_only", "Slab / Ni_only", os.path.join(BASE_DIR, "Slab", "Ni_only")),
-    ("Slab__Ni_Cu_only", "Slab / Ni_Cu_only", os.path.join(BASE_DIR, "Slab", "Ni_Cu_only")),
-    ("Adsorption__Ni_ads", "Adsorption / Ni_ads", os.path.join(BASE_DIR, "Adsorption", "Ni_ads")),
-    ("Adsorption__Ni_Cu_ads", "Adsorption / Ni_Cu_ads", os.path.join(BASE_DIR, "Adsorption", "Ni_Cu_ads")),
-    ("Glycerol", "Glycerol", os.path.join(BASE_DIR, "Glycerol")),
-    ("DOS", "DOS", os.path.join(BASE_DIR, "DOS")),
-    ("NEB", "NEB", os.path.join(BASE_DIR, "NEB")),
-]
 
 # Ordered to match your notebook workflow
 OUTPUT_PRIORITY = [
@@ -40,6 +31,27 @@ OUTPUT_PRIORITY = [
     "pw.out",
     "neb.out",
 ]
+
+JOB_MARKER_SUFFIXES = (
+    ".out",
+    ".pw.x",
+    ".x",
+    ".cif",
+    ".xsf",
+    ".upf",
+)
+
+JOB_MARKER_PREFIXES = (
+    "input.",
+    "nscf_input.",
+    "bands_input.",
+)
+
+SKIP_DIR_NAMES = {
+    ".git",
+    "__pycache__",
+    "output",
+}
 
 STRUCTURE_FRIENDLY = {
     "output_relax.pw.x",
@@ -74,11 +86,76 @@ def find_output_file(job_dir):
 
     return None
 
+def natural_sort_key(value):
+    return [int(part) if part.isdigit() else part.lower() for part in re.split(r"(\d+)", value)]
+
+def make_job_id(relative_path):
+    parts = [segment for segment in relative_path.split(os.sep) if segment]
+    safe_parts = [re.sub(r"[^A-Za-z0-9_-]+", "_", segment) for segment in parts]
+    return "__".join(safe_parts)
+
+def iter_child_dirs(path):
+    try:
+        with os.scandir(path) as entries:
+            child_dirs = [
+                entry.path for entry in entries
+                if entry.is_dir() and entry.name not in SKIP_DIR_NAMES and not entry.name.startswith(".")
+            ]
+    except FileNotFoundError:
+        return []
+
+    return sorted(child_dirs, key=natural_sort_key)
+
+def dir_has_job_markers(path):
+    try:
+        with os.scandir(path) as entries:
+            for entry in entries:
+                if not entry.is_file():
+                    continue
+
+                name = entry.name
+                lower_name = name.lower()
+                if lower_name.endswith(JOB_MARKER_SUFFIXES):
+                    return True
+                if lower_name.startswith(JOB_MARKER_PREFIXES):
+                    return True
+    except FileNotFoundError:
+        return False
+
+    return False
+
+def discover_jobs(base_dir):
+    if not os.path.isdir(base_dir):
+        return []
+
+    jobs = []
+    stack = iter_child_dirs(base_dir)
+
+    while stack:
+        current_dir = stack.pop(0)
+        child_dirs = iter_child_dirs(current_dir)
+        has_job_markers = dir_has_job_markers(current_dir)
+        is_leaf = len(child_dirs) == 0
+
+        if has_job_markers or is_leaf:
+            relative_path = os.path.relpath(current_dir, base_dir)
+            jobs.append((
+                make_job_id(relative_path),
+                relative_path.replace(os.sep, " / "),
+                current_dir,
+            ))
+
+        stack[0:0] = child_dirs
+
+    jobs.sort(key=lambda item: natural_sort_key(item[1]))
+    return jobs
+
 def main():
     os.makedirs(DATA_DIR, exist_ok=True)
     jobs_summary = []
+    jobs = discover_jobs(BASE_DIR)
 
-    for job_id, label, job_dir in JOBS:
+    for job_id, label, job_dir in jobs:
         item = {
             "job_id": job_id,
             "label": label,
@@ -143,7 +220,7 @@ def main():
     with open(os.path.join(DATA_DIR, "jobs.json"), "w", encoding="utf-8") as f:
         json.dump(jobs_summary, f, indent=2)
 
-    print("Updated docs/data/jobs.json")
+    print(f"Updated docs/data/jobs.json with {len(jobs_summary)} jobs")
 
 if __name__ == "__main__":
     main()
