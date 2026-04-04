@@ -1,113 +1,300 @@
-&CONTROL
-calculation = 'relax'
-!dipfield = .TRUE.
-forc_conv_thr = 8d-4
-nstep = 100
-outdir = './output/'
-prefix = 'VLAB'
-pseudo_dir = '/home/node1/PSP/PseudosP/pslibrary-master/pbe/PSEUDOPOTENTIALS/'
-restart_mode = 'from_scratch'
-!tefield = .TRUE.
-tprnfor = .TRUE.
-verbosity = 'high'
-wf_collect = .TRUE.
-/
+        12    0   0   0
+        13    0   0   0
+        14    0   0   0
+        15    0   0   0
+        16    0   0   0
+        17    0   0   0
+        18    0   0   0
+        19    1   1   1
+        20    1   1   1
+        21    1   1   1
+        22    1   1   1
+        23    1   1   1
+        24    1   1   1
+        25    1   1   1
+        26    1   1   1
+        27    1   1   1
+        28    1   1   1
+        29    1   1   1
+        30    1   1   1
+        31    1   1   1
+        32    1   1   1
+        33    1   1   1
+        34    1   1   1
+        35    1   1   1
+        36    1   1   1
+        37    1   1   1
+        38    1   1   1
 
-&SYSTEM
-degauss = 0.02
-!eamp = 0
-ecutrho = 400
-ecutwfc = 50
-!edir = 3
-!emaxpos = 0.89525
-!eopreg = 0.02095
-ibrav = 0
-nat = 50
-noinv = .FALSE.
-noncolin = .FALSE.
-nosym = .TRUE.
-nspin = 1
-ntyp = 4
-occupations = 'smearing'
-vdw_corr = 'grimme-d3'
-/
+     --------------------------------------------
+     DFT-D3 Dispersion Correction (3-body terms):
+     --------------------------------------------
+       Reference C6 values for interpolation: 
 
-&ELECTRONS
-conv_thr = 1e-07
-electron_maxstep = 150
-mixing_beta = 0.05
-mixing_mode = 'plain'
-scf_must_converge = .TRUE.
-startingwfc = 'random'
-/
+         atom   Coordination number   C6
+         H          0.912             6.05
+         H          0.000            15.18
+         O          0.000            31.01
+         O          0.993            25.63
+         O          1.989            20.74
+         Ni         0.000          1149.49
+         Ni         1.794           356.66
+         Ni         6.546           257.56
+         Ni         6.292           283.75
 
-&IONS
-ion_dynamics = 'bfgs'
-upscale = 100
-/
+       Values used:
 
-ATOMIC_SPECIES
-Ni 58.7 Ni.pbe-n-rrkjus_psl.1.0.0.UPF !41 236
-O 15.9994 O.pbe-n-rrkjus_psl.1.0.0.UPF !47 323
-C 12.011 C.pbe-n-rrkjus_psl.1.0.0.UPF !40 326
-H 1.00797 H.pbe-rrkjus_psl.1.0.0.UPF !46 221
+         atom   Coordination number  R0_AB[au]  C6      C8
+         Ni         6.539            3.162    268.63  22509.41
+         Ni         6.539            3.162    268.63  22509.41
+         Ni         6.539            3.162    268.63  22509.41
+         Ni         6.539            3.162    268.63  22509.41
+         Ni         6.539            3.162    268.63  22509.41
+         Ni         6.539            3.162    268.63  22509.41
+         Ni         6.539            3.162    268.63  22509.41
+         Ni         6.539            3.162    268.63  22509.41
+         Ni         6.539            3.162    268.63  22509.41
+         Ni         8.445            3.162    257.96  21614.90
+         Ni         8.445            3.162    257.96  21614.90
+         Ni         8.445            3.162    257.96  21614.90
+         Ni         8.445            3.162    257.96  21614.90
+         Ni         8.445            3.162    257.96  21614.90
+         Ni         8.445            3.162    257.96  21614.90
+         Ni         8.445            3.162    257.96  21614.90
+         Ni         8.445            3.162    257.96  21614.90
+         Ni         8.445            3.162    257.96  21614.90
+         Ni         8.445            3.162    257.96  21614.85
+         Ni         8.447            3.162    257.95  21614.73
+         Ni         8.445            3.162    257.96  21614.88
+         Ni         8.446            3.162    257.96  21614.82
+         Ni         8.445            3.162    257.96  21614.85
+         Ni         8.445            3.162    257.96  21614.89
+         Ni         8.445            3.162    257.96  21614.89
+         Ni         8.445            3.162    257.96  21614.88
+         Ni         8.445            3.162    257.96  21614.88
+         Ni         6.540            3.162    268.62  22508.44
+         Ni         6.565            3.162    268.30  22481.23
+         Ni         6.567            3.162    268.28  22479.59
+         Ni         6.564            3.162    268.31  22482.77
+         Ni         7.559            3.162    259.77  21766.84
+         Ni         6.567            3.162    268.28  22479.61
+         Ni         6.564            3.162    268.31  22482.79
+         Ni         6.565            3.162    268.30  22481.26
+         Ni         6.540            3.162    268.62  22508.44
+         O          2.156            2.345     20.76    419.03
+         H          1.017            2.062      6.17     74.54
 
-K_POINTS {automatic}
-3 3 1 0 0 0
+         Molecular C6 ( Ry / a.u.^6 ) =    348560.53
 
-CELL_PARAMETERS {angstrom}
-7.3718980000 0.0000000000 0.0000000000
-3.6859490000 6.3842509421 0.0000000000
-0.0000000000 0.0000000000 33.0191290000
 
-ATOMIC_POSITIONS {angstrom}
-Ni 0 0 10.000000018687981 0 0 0
-Ni 1.2286496543801702 2.128083626088395 10.000000018687981 0 0 0
-Ni 2.4572993456198304 4.2561673160193 10.000000018687981 0 0 0
-Ni 2.45729930876034 0 10.000000018687981 0 0 0
-Ni 3.6859489631405102 2.128083626088395 10.000000018687981 0 0 0
-Ni 4.91459865438017 4.2561673160193 10.000000018687981 0 0 0
-Ni 4.91459869123966 0 10.000000018687981 0 0 0
-Ni 6.14324834561983 2.128083626088395 10.000000018687981 0 0 0
-Ni 7.37189803685949 4.2561673160193 10.000000018687981 0 0 0
-Ni 1.6381995391735602 1.4187224173922637 12.006376426293091 0 0 0
-Ni 2.8668492304132203 3.5468061073231683 12.006376426293091 0 0 0
-Ni 4.095498884793391 5.674889733411564 12.006376426293091 0 0 0
-Ni 4.0954988479339 1.4187224173922637 12.006376426293091 0 0 0
-Ni 5.32414853917356 3.5468061073231683 12.006376426293091 0 0 0
-Ni 6.5527981935537305 5.674889733411564 12.006376426293091 0 0 0
-Ni 6.55279823041322 1.4187224173922637 12.006376426293091 0 0 0
-Ni 7.78144792165288 3.5468061073231683 12.006376426293091 0 0 0
-Ni 9.01009757603305 5.674889733411564 12.006376426293091 0 0 0
-Ni 2.04774942396695 0.7093612086961318 14.012752573706909
-Ni 3.2763990783471204 2.8374448347845274 14.012752573706909
-Ni 4.5050487695867805 4.965528524715432 14.012752573706909
-Ni 4.505048806446269 0.7093612086961318 14.012752573706909
-Ni 5.73369846082644 2.8374448347845274 14.012752573706909
-Ni 6.9623481520661 4.965528524715432 14.012752573706909
-Ni 6.96234811520661 0.7093612086961318 14.012752573706909
-Ni 8.190997769586781 2.8374448347845274 14.012752573706909
-Ni 9.419647460826441 4.965528524715432 14.012752573706909
-Ni 0 0 16.01912898131202
-Ni 1.2286496543801702 2.128083626088395 16.01912898131202
-Ni 2.4572993456198304 4.2561673160193 16.01912898131202
-Ni 2.45729930876034 0 16.01912898131202
-Ni 3.6859489631405102 2.128083626088395 16.01912898131202
-Ni 4.91459865438017 4.2561673160193 16.01912898131202
-Ni 4.91459869123966 0 16.01912898131202
-Ni 6.14324834561983 2.128083626088395 16.01912898131202
-Ni 7.37189803685949 4.2561673160193 16.01912898131202
-O 4.33946341 0.6800913024311225 20.435600270000002
-O 3.85266341 2.0249912924311237 18.06030039
-O 3.85116341 2.019691222431123 22.87220039
-C 3.8340634099999997 2.0169911724311236 20.45900052
-C 4.32576341 2.7273911624311236 19.20470039
-C 4.33426341 2.7071913324311234 21.72280027
-H 2.7422634099999996 1.9327912024311233 20.46240039
-H 5.41936341 2.748091332431123 19.15150039
-H 3.95086341 3.753991312431123 19.15730027
-H 3.98296341 3.742991272431123 21.76610039
-H 5.42846341 2.6963913424311237 21.76910039
-H 5.31086341 0.7260913224311226 20.43770039
-H 4.18796341 1.1138912124311227 18.11830052
-H 4.19116341 2.4927911524311233 23.650800520000004
+   Crystallographic axes
+
+     site n.     atom                  positions (cryst. coord.)
+         1        Ni     tau(   1) = (  0.0000000  0.0000000  0.3568990  )
+         2        Ni     tau(   2) = ( -0.0000000  0.3333333  0.3568990  )
+         3        Ni     tau(   3) = (  0.0000000  0.6666667  0.3568990  )
+         4        Ni     tau(   4) = (  0.3333333  0.0000000  0.3568990  )
+         5        Ni     tau(   5) = (  0.3333333  0.3333333  0.3568990  )
+         6        Ni     tau(   6) = (  0.3333333  0.6666667  0.3568990  )
+         7        Ni     tau(   7) = (  0.6666667  0.0000000  0.3568990  )
+         8        Ni     tau(   8) = (  0.6666667  0.3333333  0.3568990  )
+         9        Ni     tau(   9) = (  0.6666667  0.6666667  0.3568990  )
+        10        Ni     tau(  10) = (  0.1111111  0.2222222  0.4285064  )
+        11        Ni     tau(  11) = (  0.1111111  0.5555556  0.4285064  )
+        12        Ni     tau(  12) = (  0.1111111  0.8888889  0.4285064  )
+        13        Ni     tau(  13) = (  0.4444444  0.2222222  0.4285064  )
+        14        Ni     tau(  14) = (  0.4444444  0.5555556  0.4285064  )
+        15        Ni     tau(  15) = (  0.4444444  0.8888889  0.4285064  )
+        16        Ni     tau(  16) = (  0.7777778  0.2222222  0.4285064  )
+        17        Ni     tau(  17) = (  0.7777778  0.5555556  0.4285064  )
+        18        Ni     tau(  18) = (  0.7777778  0.8888889  0.4285064  )
+        19        Ni     tau(  19) = (  0.2222222  0.1111111  0.5001138  )
+        20        Ni     tau(  20) = (  0.2222222  0.4444444  0.5001138  )
+        21        Ni     tau(  21) = (  0.2222222  0.7777778  0.5001138  )
+        22        Ni     tau(  22) = (  0.5555556  0.1111111  0.5001138  )
+        23        Ni     tau(  23) = (  0.5555556  0.4444444  0.5001138  )
+        24        Ni     tau(  24) = (  0.5555556  0.7777778  0.5001138  )
+        25        Ni     tau(  25) = (  0.8888889  0.1111111  0.5001138  )
+        26        Ni     tau(  26) = (  0.8888889  0.4444444  0.5001138  )
+        27        Ni     tau(  27) = (  0.8888889  0.7777778  0.5001138  )
+        28        Ni     tau(  28) = (  0.0000000  0.0000000  0.5717212  )
+        29        Ni     tau(  29) = ( -0.0000000  0.3333333  0.5717212  )
+        30        Ni     tau(  30) = (  0.0000000  0.6666667  0.5717212  )
+        31        Ni     tau(  31) = (  0.3333333  0.0000000  0.5717212  )
+        32        Ni     tau(  32) = (  0.3333333  0.3333333  0.5717212  )
+        33        Ni     tau(  33) = (  0.3333333  0.6666667  0.5717212  )
+        34        Ni     tau(  34) = (  0.6666667  0.0000000  0.5717212  )
+        35        Ni     tau(  35) = (  0.6666667  0.3333333  0.5717212  )
+        36        Ni     tau(  36) = (  0.6666667  0.6666667  0.5717212  )
+        37        O      tau(  37) = (  0.3319456  0.3360804  0.6194866  )
+        38        H      tau(  38) = (  0.3307138  0.3371969  0.6541058  )
+
+     number of k points=     5  Gaussian smearing, width (Ry)=  0.0200
+                       cart. coord. in units 2pi/alat
+        k(    1) = (   0.0000000   0.0000000   0.0000000), wk =   0.2222222
+        k(    2) = (   0.0000000   0.3849002   0.0000000), wk =   0.4444444
+        k(    3) = (   0.3333333  -0.1924501   0.0000000), wk =   0.4444444
+        k(    4) = (   0.3333333   0.1924501   0.0000000), wk =   0.4444444
+        k(    5) = (   0.3333333  -0.5773503   0.0000000), wk =   0.4444444
+
+                       cryst. coord.
+        k(    1) = (   0.0000000   0.0000000   0.0000000), wk =   0.2222222
+        k(    2) = (   0.0000000   0.3333333   0.0000000), wk =   0.4444444
+        k(    3) = (   0.3333333  -0.0000000   0.0000000), wk =   0.4444444
+        k(    4) = (   0.3333333   0.3333333   0.0000000), wk =   0.4444444
+        k(    5) = (   0.3333333  -0.3333333   0.0000000), wk =   0.4444444
+
+     Dense  grid:  1202545 G-vectors     FFT dimensions: (  90,  90, 360)
+
+     Smooth grid:   425051 G-vectors     FFT dimensions: (  64,  64, 240)
+
+     Dynamical RAM for                 wfc:       4.71 MB
+
+     Dynamical RAM for     wfc (w. buffer):      28.29 MB
+
+     Dynamical RAM for           str. fact:       1.45 MB
+
+     Dynamical RAM for           local pot:       0.00 MB
+
+     Dynamical RAM for          nlocal pot:      14.04 MB
+
+     Dynamical RAM for                qrad:       4.82 MB
+
+     Dynamical RAM for          rho,v,vnew:       3.30 MB
+
+     Dynamical RAM for               rhoin:       1.10 MB
+
+     Dynamical RAM for            rho*nmix:       7.73 MB
+
+     Dynamical RAM for           G-vectors:       1.90 MB
+
+     Dynamical RAM for          h,s,v(r/c):       2.24 MB
+
+     Dynamical RAM for          <psi|beta>:       2.22 MB
+
+     Dynamical RAM for                 psi:       9.43 MB
+
+     Dynamical RAM for                hpsi:       9.43 MB
+
+     Dynamical RAM for                spsi:       9.43 MB
+
+     Dynamical RAM for      wfcinit/wfcrot:      10.55 MB
+
+     Dynamical RAM for           addusdens:     107.22 MB
+
+     Dynamical RAM for          addusforce:     141.41 MB
+
+     Estimated static dynamical RAM per process >      59.91 MB
+
+     Estimated max dynamical RAM per process >     209.04 MB
+
+     Estimated total dynamical RAM >       7.76 GB
+
+     Check: negative core charge=   -0.000001
+
+     Initial potential from superposition of free atoms
+
+     starting charge     366.9910, renormalised to     367.0000
+
+     negative rho (up, down):  2.328E-03 0.000E+00
+     Starting wfcs are random
+
+     total cpu time spent up to now is        3.9 secs
+
+     per-process dynamical memory:   123.3 Mb
+
+     Self-consistent Calculation
+
+     iteration #  1     ecut=    50.00 Ry     beta= 0.05
+     Davidson diagonalization with overlap
+
+---- Real-time Memory Report at c_bands before calling an iterative solver
+           249 MiB given to the printing process from OS
+           120 MiB allocation reported by mallinfo(arena+hblkhd)
+        157756 MiB available memory on the node where the printing process lives
+------------------
+     ethr =  1.00E-02,  avg # of iterations = 13.4
+
+     negative rho (up, down):  2.046E-03 0.000E+00
+
+     total cpu time spent up to now is       42.0 secs
+
+     total energy              =   -3652.75154426 Ry
+     estimated scf accuracy    <      11.81855823 Ry
+
+     iteration #  2     ecut=    50.00 Ry     beta= 0.05
+     Davidson diagonalization with overlap
+
+---- Real-time Memory Report at c_bands before calling an iterative solver
+           577 MiB given to the printing process from OS
+           163 MiB allocation reported by mallinfo(arena+hblkhd)
+        156347 MiB available memory on the node where the printing process lives
+------------------
+     ethr =  3.22E-03,  avg # of iterations =  1.4
+
+     negative rho (up, down):  2.037E-03 0.000E+00
+
+     total cpu time spent up to now is       50.3 secs
+
+     total energy              =   -3653.24693119 Ry
+     estimated scf accuracy    <      21.95589709 Ry
+
+     iteration #  3     ecut=    50.00 Ry     beta= 0.05
+     Davidson diagonalization with overlap
+
+---- Real-time Memory Report at c_bands before calling an iterative solver
+           588 MiB given to the printing process from OS
+           163 MiB allocation reported by mallinfo(arena+hblkhd)
+        156377 MiB available memory on the node where the printing process lives
+------------------
+     ethr =  3.22E-03,  avg # of iterations =  1.0
+
+     negative rho (up, down):  2.046E-03 0.000E+00
+
+     total cpu time spent up to now is       58.2 secs
+
+     total energy              =   -3653.42998195 Ry
+     estimated scf accuracy    <      22.71237318 Ry
+
+     iteration #  4     ecut=    50.00 Ry     beta= 0.05
+     Davidson diagonalization with overlap
+
+---- Real-time Memory Report at c_bands before calling an iterative solver
+           603 MiB given to the printing process from OS
+           165 MiB allocation reported by mallinfo(arena+hblkhd)
+        156369 MiB available memory on the node where the printing process lives
+------------------
+     ethr =  3.22E-03,  avg # of iterations =  1.2
+
+     negative rho (up, down):  2.065E-03 0.000E+00
+
+     total cpu time spent up to now is       66.1 secs
+
+     total energy              =   -3653.53186548 Ry
+     estimated scf accuracy    <       5.61779736 Ry
+
+     iteration #  5     ecut=    50.00 Ry     beta= 0.05
+     Davidson diagonalization with overlap
+
+---- Real-time Memory Report at c_bands before calling an iterative solver
+           612 MiB given to the printing process from OS
+           165 MiB allocation reported by mallinfo(arena+hblkhd)
+        156200 MiB available memory on the node where the printing process lives
+------------------
+     ethr =  1.53E-03,  avg # of iterations =  1.0
+
+     negative rho (up, down):  2.108E-03 0.000E+00
+
+     total cpu time spent up to now is       74.1 secs
+
+     total energy              =   -3653.21168464 Ry
+     estimated scf accuracy    <       1.81203256 Ry
+
+     iteration #  6     ecut=    50.00 Ry     beta= 0.05
+     Davidson diagonalization with overlap
+
+---- Real-time Memory Report at c_bands before calling an iterative solver
+           619 MiB given to the printing process from OS
+           165 MiB allocation reported by mallinfo(arena+hblkhd)
+        156196 MiB available memory on the node where the printing process lives
+------------------
