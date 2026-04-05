@@ -1,141 +1,70 @@
-------------------
-     ethr =  1.61E-09,  avg # of iterations =  2.0
 
-     negative rho (up, down):  6.199E-03 0.000E+00
-
-     total cpu time spent up to now is      283.7 secs
-
-     total energy              =    -143.89375388 Ry
-     estimated scf accuracy    <       0.00000042 Ry
-
-     iteration # 54     ecut=    50.00 Ry     beta= 0.10
-     Davidson diagonalization with overlap
-
----- Real-time Memory Report at c_bands before calling an iterative solver
-           392 MiB given to the printing process from OS
-           226 MiB allocation reported by mallinfo(arena+hblkhd)
-        153778 MiB available memory on the node where the printing process lives
-------------------
-     ethr =  1.11E-09,  avg # of iterations =  2.0
-
-     negative rho (up, down):  6.210E-03 0.000E+00
-
-     total cpu time spent up to now is      288.5 secs
-
-     total energy              =    -143.89375388 Ry
-     estimated scf accuracy    <       0.00000017 Ry
-
-     iteration # 55     ecut=    50.00 Ry     beta= 0.10
-     Davidson diagonalization with overlap
-
----- Real-time Memory Report at c_bands before calling an iterative solver
-           392 MiB given to the printing process from OS
-           226 MiB allocation reported by mallinfo(arena+hblkhd)
-        153786 MiB available memory on the node where the printing process lives
-------------------
-     ethr =  4.57E-10,  avg # of iterations =  4.0
-
-     negative rho (up, down):  6.204E-03 0.000E+00
-
-     total cpu time spent up to now is      293.2 secs
-
-     End of self-consistent calculation
-
-          k = 0.0000 0.0000 0.0000 (272820 PWs)   bands (ev):
-
-   -26.1283 -25.5975 -25.1900 -19.0336 -16.7017 -15.2624 -13.1733 -12.4460
-   -12.2513 -11.4244 -11.0969 -10.5088  -9.6635  -8.8590  -7.9965  -7.7735
-    -6.7769  -6.4199  -6.0998
-
-     occupation numbers 
-     1.0000   1.0000   1.0000   1.0000   1.0000   1.0000   1.0000   1.0000
-     1.0000   1.0000   1.0000   1.0000   1.0000   1.0000   1.0000   1.0000
-     1.0000   1.0000   1.0000
-
-     highest occupied level (ev):    -6.0998
-
-!    total energy              =    -143.89375389 Ry
-     estimated scf accuracy    <       0.00000006 Ry
-
-     The total energy is the sum of the following terms:
-     one-electron contribution =    -636.94542764 Ry
-     hartree contribution      =     324.47899276 Ry
-     xc contribution           =     -42.00302058 Ry
-     ewald contribution        =     210.58638937 Ry
-     DFT-D3 Dispersion         =      -0.01068779 Ry
-
-     convergence has been achieved in  55 iterations
-
-     negative rho (up, down):  6.204E-03 0.000E+00
-
-     Forces acting on atoms (cartesian axes, Ry/au):
-
-     atom    1 type  1   force =     0.00917474   -0.02475028   -0.00988653
-     atom    2 type  1   force =     0.02073267    0.01240087   -0.00820260
-     atom    3 type  1   force =    -0.01407495   -0.00903970   -0.00996071
-     atom    4 type  2   force =    -0.02196375    0.00823203    0.04400231
-     atom    5 type  2   force =     0.01089596   -0.01527022   -0.02138429
-     atom    6 type  2   force =    -0.01085965    0.00183514   -0.01560123
-     atom    7 type  3   force =     0.00092145   -0.00007354   -0.00302476
-     atom    8 type  3   force =    -0.01483481    0.00686883    0.01585084
-     atom    9 type  3   force =     0.00554721    0.00491543   -0.00360223
-     atom   10 type  3   force =     0.01033828    0.01592566    0.00024446
-     atom   11 type  3   force =     0.01502979    0.00521777    0.01559417
-     atom   12 type  3   force =    -0.00469682    0.00031818    0.00264478
-     atom   13 type  3   force =    -0.00647217   -0.00206534   -0.00296948
-     atom   14 type  3   force =     0.00026207   -0.00451483   -0.00370472
+     atom    1 type  1   force =     0.00273521   -0.00004742   -0.00211434
+     atom    2 type  1   force =     0.00231003    0.00504660    0.00042761
+     atom    3 type  1   force =    -0.00334771    0.00412337   -0.00091991
+     atom    4 type  2   force =     0.00602443   -0.00737694   -0.00252381
+     atom    5 type  2   force =    -0.00043059    0.00331691    0.00525386
+     atom    6 type  2   force =    -0.00124568    0.00055935    0.00349070
+     atom    7 type  3   force =    -0.00301818    0.00014238    0.01012467
+     atom    8 type  3   force =    -0.00676878    0.00399101   -0.00446515
+     atom    9 type  3   force =     0.00375930   -0.00421798   -0.00215486
+     atom   10 type  3   force =     0.00535371    0.00177870    0.00158431
+     atom   11 type  3   force =     0.00421222    0.00520591   -0.00022478
+     atom   12 type  3   force =    -0.00418192   -0.00663691    0.00279993
+     atom   13 type  3   force =    -0.00109778   -0.00028699   -0.00687608
+     atom   14 type  3   force =    -0.00430425   -0.00559798   -0.00440216
      The non-local contrib.  to forces
-     atom    1 type  1   force =     0.06106598    1.93303018    1.38753349
-     atom    2 type  1   force =    -1.72591780   -0.89599542    1.37843526
-     atom    3 type  1   force =    -0.05162133    1.99750060    1.38518120
-     atom    4 type  2   force =    -0.03838502   -0.33763808    0.24208089
-     atom    5 type  2   force =     0.30072484   -0.19330654   -0.13417615
-     atom    6 type  2   force =    -0.32019636   -0.16907581   -0.13047464
-     atom    7 type  3   force =     0.00030420    0.00650448    0.07842321
-     atom    8 type  3   force =    -0.00617887   -0.00218833   -0.07577158
-     atom    9 type  3   force =    -0.00363903   -0.07302740    0.02620246
-     atom   10 type  3   force =     0.00395571   -0.07217374    0.02500667
-     atom   11 type  3   force =     0.00484686    0.00073847   -0.07583921
-     atom   12 type  3   force =     0.00047698   -0.00009377   -0.10798360
-     atom   13 type  3   force =     0.00309788    0.10335890   -0.03513594
-     atom   14 type  3   force =     0.08953508   -0.04979883   -0.03586019
+     atom    1 type  1   force =    -0.01195774    1.94269677    1.42260177
+     atom    2 type  1   force =    -1.79373964   -0.90362029    1.35365045
+     atom    3 type  1   force =    -0.04777851    2.01816895    1.40929801
+     atom    4 type  2   force =    -0.00918246   -0.34820410    0.19804353
+     atom    5 type  2   force =     0.28975500   -0.18298106   -0.10672009
+     atom    6 type  2   force =    -0.30177979   -0.17511500   -0.11419100
+     atom    7 type  3   force =    -0.00115953    0.00613417    0.07553790
+     atom    8 type  3   force =    -0.00343898   -0.00334200   -0.07171467
+     atom    9 type  3   force =    -0.00335619   -0.07178382    0.02487482
+     atom   10 type  3   force =     0.00153880   -0.07066131    0.02355152
+     atom   11 type  3   force =     0.00168452    0.00038222   -0.07295836
+     atom   12 type  3   force =     0.00205321   -0.00280532   -0.10725523
+     atom   13 type  3   force =     0.00645849    0.10201496   -0.03490016
+     atom   14 type  3   force =     0.08884099   -0.05092883   -0.03719860
      The ionic contribution  to forces
-     atom    1 type  1   force =    -0.26361235  -14.73250437    0.05521832
-     atom    2 type  1   force =    13.85646460    0.24458345   -4.69877757
-     atom    3 type  1   force =   -10.75870777   -4.77847419   -4.75319058
-     atom    4 type  2   force =    -0.22804901    2.15153194   -4.26274659
-     atom    5 type  2   force =     1.94957394    6.30430736    2.50437473
-     atom    6 type  2   force =    -1.76615495    5.75398720    2.56010540
-     atom    7 type  3   force =    -0.03418022   -0.12558772   -3.89065317
-     atom    8 type  3   force =     0.79000671    0.93989826    3.49076777
-     atom    9 type  3   force =     0.67183831    3.55254480   -0.80135939
-     atom   10 type  3   force =    -0.61118099    3.56313269   -0.72973013
-     atom   11 type  3   force =    -0.75135109    0.78175950    3.51330395
-     atom   12 type  3   force =    -0.03795084   -1.33398216    4.70950795
-     atom   13 type  3   force =     1.55284207   -4.08710034    1.13637819
-     atom   14 type  3   force =    -4.36953841    1.76590358    1.16680112
+     atom    1 type  1   force =    -0.10546679  -14.62869316   -0.10624152
+     atom    2 type  1   force =    13.83354845    0.30686400   -4.66415472
+     atom    3 type  1   force =   -10.62303548   -4.82971510   -4.80960776
+     atom    4 type  2   force =    -0.25791165    2.10063039   -3.92044004
+     atom    5 type  2   force =     1.92082403    6.15811968    2.41103555
+     atom    6 type  2   force =    -1.90933923    5.77936897    2.53980201
+     atom    7 type  3   force =    -0.01144452   -0.11374314   -3.82648591
+     atom    8 type  3   force =     0.74006320    0.95489694    3.40525349
+     atom    9 type  3   force =     0.65478558    3.51266650   -0.78142747
+     atom   10 type  3   force =    -0.56705053    3.51491049   -0.70388037
+     atom   11 type  3   force =    -0.70552127    0.78657363    3.44923162
+     atom   12 type  3   force =    -0.08718822   -1.26827693    4.69081001
+     atom   13 type  3   force =     1.46536324   -4.05987289    1.11650353
+     atom   14 type  3   force =    -4.34762680    1.78627061    1.19960159
      The local contribution  to forces
-     atom    1 type  1   force =     0.21255630   12.79154407   -1.44191221
-     atom    2 type  1   force =   -12.12496170    0.65754607    3.32393543
-     atom    3 type  1   force =    10.79712019    2.78912965    3.36977496
-     atom    4 type  2   force =     0.24381718   -1.81294075    4.07027636
-     atom    5 type  2   force =    -2.23292174   -6.13123269   -2.39490321
-     atom    6 type  2   force =     2.06878231   -5.58791919   -2.44862458
-     atom    7 type  3   force =     0.03481360    0.11892018    3.80933731
-     atom    8 type  3   force =    -0.79838721   -0.93100728   -3.39944214
-     atom    9 type  3   force =    -0.66240593   -3.47472014    0.77152139
-     atom   10 type  3   force =     0.61717809   -3.47527875    0.70495468
-     atom   11 type  3   force =     0.76117742   -0.77735316   -3.42218441
-     atom   12 type  3   force =     0.03277329    1.33463775   -4.59879264
-     atom   13 type  3   force =    -1.56271594    3.98178311   -1.10413724
-     atom   14 type  3   force =     4.28029868   -1.72042630   -1.13455868
+     atom    1 type  1   force =     0.12038495   12.70273427   -1.30754002
+     atom    2 type  1   force =   -12.05300854    0.59540704    3.32243220
+     atom    3 type  1   force =    10.66790707    2.83296942    3.41123119
+     atom    4 type  2   force =     0.27315353   -1.76762842    3.72479909
+     atom    5 type  2   force =    -2.20464003   -5.97663926   -2.30180118
+     atom    6 type  2   force =     2.20301035   -5.60841328   -2.42512127
+     atom    7 type  3   force =     0.00961839    0.10763642    3.76119951
+     atom    8 type  3   force =    -0.74308544   -0.94772683   -3.33833015
+     atom    9 type  3   force =    -0.64739220   -3.44523107    0.75435127
+     atom   10 type  3   force =     0.57047177   -3.44270857    0.68187571
+     atom   11 type  3   force =     0.70768125   -0.78183274   -3.37680630
+     atom   12 type  3   force =     0.08095967    1.26465140   -4.58072202
+     atom   13 type  3   force =    -1.47320520    3.95766404   -1.08842974
+     atom   14 type  3   force =     4.25446275   -1.74076625   -1.16674416
      The core correction contribution to forces
-     atom    1 type  1   force =    -0.00052168   -0.01646698   -0.01093652
-     atom    2 type  1   force =     0.01482308    0.00659457   -0.01152776
-     atom    3 type  1   force =    -0.00037568   -0.01675697   -0.01157143
-     atom    4 type  2   force =     0.00082563    0.00760951   -0.00532193
-     atom    5 type  2   force =    -0.00676208    0.00456822    0.00334578
-     atom    6 type  2   force =     0.00689936    0.00452855    0.00337655
+     atom    1 type  1   force =     0.00012253   -0.01663579   -0.01121572
+     atom    2 type  1   force =     0.01540419    0.00669747   -0.01131105
+     atom    3 type  1   force =    -0.00048715   -0.01695529   -0.01179341
+     atom    4 type  2   force =     0.00025080    0.00798370   -0.00473340
+     atom    5 type  2   force =    -0.00657546    0.00444486    0.00273433
+     atom    6 type  2   force =     0.00706526    0.00440782    0.00298383
      atom    7 type  3   force =     0.00000000    0.00000000    0.00000000
      atom    8 type  3   force =     0.00000000    0.00000000    0.00000000
      atom    9 type  3   force =     0.00000000    0.00000000    0.00000000
@@ -160,69 +89,70 @@
      atom   13 type  3   force =     0.00000000    0.00000000    0.00000000
      atom   14 type  3   force =     0.00000000    0.00000000    0.00000000
      The SCF correction term to forces
-     atom    1 type  1   force =    -0.00001138   -0.00013810   -0.00009049
-     atom    2 type  1   force =     0.00011377   -0.00000074   -0.00005884
-     atom    3 type  1   force =    -0.00034974   -0.00007814    0.00004891
-     atom    4 type  2   force =     0.00004406   -0.00016888   -0.00002094
-     atom    5 type  2   force =     0.00005619   -0.00000711   -0.00002707
-     atom    6 type  2   force =    -0.00003682   -0.00001413    0.00001416
-     atom    7 type  3   force =     0.00000564   -0.00001707    0.00000503
-     atom    8 type  3   force =     0.00001000   -0.00000059   -0.00000905
-     atom    9 type  3   force =     0.00001204   -0.00000682   -0.00000174
-     atom   10 type  3   force =    -0.00001086    0.00000861   -0.00000538
-     atom   11 type  3   force =    -0.00001318   -0.00000658    0.00000815
-     atom   12 type  3   force =     0.00000019   -0.00001842   -0.00006133
-     atom   13 type  3   force =     0.00000430    0.00000629   -0.00001157
-     atom   14 type  3   force =    -0.00001153   -0.00001346   -0.00000514
+     atom    1 type  1   force =    -0.00003411    0.00006773   -0.00002905
+     atom    2 type  1   force =    -0.00010468    0.00004206    0.00002135
+     atom    3 type  1   force =     0.00020213    0.00004867    0.00016213
+     atom    4 type  2   force =    -0.00002910    0.00000142    0.00003727
+     atom    5 type  2   force =    -0.00001096   -0.00002890    0.00000060
+     atom    6 type  2   force =    -0.00003932   -0.00003337    0.00000647
+     atom    7 type  3   force =    -0.00000283   -0.00000023    0.00000118
+     atom    8 type  3   force =    -0.00000476   -0.00000244   -0.00000422
+     atom    9 type  3   force =    -0.00000360   -0.00000351    0.00000143
+     atom   10 type  3   force =     0.00000200   -0.00001917    0.00000909
+     atom   11 type  3   force =     0.00000058   -0.00000240   -0.00001894
+     atom   12 type  3   force =    -0.00000378    0.00000703   -0.00001128
+     atom   13 type  3   force =    -0.00001037    0.00000400    0.00000140
+     atom   14 type  3   force =     0.00003798   -0.00000204    0.00000619
 
      DFT-D3 dispersion contribution to forces:
-     atom    1 type  1   force =    -0.00030963   -0.00020515    0.00030205
-     atom    2 type  1   force =     0.00020321   -0.00031713   -0.00020796
-     atom    3 type  1   force =    -0.00014813   -0.00035071   -0.00020262
-     atom    4 type  2   force =    -0.00022409   -0.00015179   -0.00026431
-     atom    5 type  2   force =     0.00021731    0.00041048    0.00000279
-     atom    6 type  2   force =    -0.00016069    0.00033844    0.00000304
-     atom    7 type  3   force =    -0.00002928    0.00011652   -0.00013598
-     atom    8 type  3   force =    -0.00029293    0.00017671    0.00030700
-     atom    9 type  3   force =    -0.00026569    0.00013492    0.00003621
-     atom   10 type  3   force =     0.00038883    0.00024679    0.00001978
-     atom   11 type  3   force =     0.00036227    0.00008947    0.00030686
-     atom   12 type  3   force =    -0.00000394   -0.00021530   -0.00002444
-     atom   13 type  3   force =     0.00029201   -0.00010337   -0.00006176
-     atom   14 type  3   force =    -0.00002924   -0.00016989   -0.00008067
+     atom    1 type  1   force =    -0.00031107   -0.00021058    0.00030036
+     atom    2 type  1   force =     0.00021281   -0.00033704   -0.00022045
+     atom    3 type  1   force =    -0.00015322   -0.00038663   -0.00021992
+     atom    4 type  2   force =    -0.00025415   -0.00015329   -0.00024010
+     atom    5 type  2   force =     0.00021940    0.00040824   -0.00000518
+     atom    6 type  2   force =    -0.00016040    0.00035086    0.00000082
+     atom    7 type  3   force =    -0.00002713    0.00012180   -0.00013786
+     atom    8 type  3   force =    -0.00030024    0.00017199    0.00032056
+     atom    9 type  3   force =    -0.00027172    0.00014057    0.00003526
+     atom   10 type  3   force =     0.00039424    0.00026391    0.00001852
+     atom   11 type  3   force =     0.00036970    0.00009187    0.00031737
+     atom   12 type  3   force =    -0.00000023   -0.00020644   -0.00003140
+     atom   13 type  3   force =     0.00029862   -0.00009044   -0.00006096
+     atom   14 type  3   force =    -0.00001661   -0.00016481   -0.00007702
 
-     Total force =     0.084002     Total SCF correction =     0.000466
+     Total force =     0.026800     Total SCF correction =     0.000313
 
-     DFT-D3 dispersion Force =     0.001436
+     DFT-D3 dispersion Force =     0.001473
+     Energy error            =      1.8E-03 Ry
+     Gradient error          =      1.0E-02 Ry/Bohr
 
-     BFGS Geometry Optimization
-     Energy error            =      7.1E-03 Ry
-     Gradient error          =      4.4E-02 Ry/Bohr
+     number of scf cycles    =   3
+     number of bfgs steps    =   2
 
-     number of scf cycles    =   1
-     number of bfgs steps    =   0
+     energy             old  =    -143.8970988423 Ry
+     energy             new  =    -143.8988997192 Ry
 
-     energy             new  =    -143.8937538867 Ry
+     CASE: energy            _new < energy            _old
 
-     new trust radius        =       0.0498635712 bohr
-     new conv_thr            =       0.0000001000 Ry
+     new trust radius        =       0.0215305788 bohr
+     new conv_thr            =       0.0000000180 Ry
 
 
 ATOMIC_POSITIONS (angstrom)
-O               12.5883836870       10.9253242651       12.5662825242
-O               14.9697997543       12.2898838015       12.0803736224
-O               10.1394803566       12.2732378665       12.0779432676
-C               12.5485056605       12.2796776210       12.0893992692
-C               13.8201943941       12.9776407553       12.5464981686
-C               11.2905819469       12.9664926933       12.5580584368
-H               12.5572161093       12.1910825338       10.9727136142
-H               13.8597782572       13.0100564072       13.6598021516
-H               13.8647640819       14.0149226944       12.1810080309
-H               11.2584992808       14.0097490208       12.2151436130
-H               11.2579819214       12.9574827207       13.6687663306
-H               12.5789430482       10.9845899407       13.5443138054
-H               14.8974034476       11.3711285334       12.4184428667
-H                9.3684670541       12.7487322583       12.4212537987
+O               12.5971126953       10.9113559070       12.5677252598
+O               14.9867357807       12.2934266063       12.0766320573
+O               10.1307521127       12.2691434723       12.0673329514
+C               12.5446096314       12.2691224214       12.0903878852
+C               13.8273050430       12.9781969499       12.5500304986
+C               11.2752622562       12.9702657360       12.5644101078
+H               12.5539546839       12.1928616542       10.9947720718
+H               13.8421666062       13.0192465621       13.6595327858
+H               13.8722235317       14.0114028748       12.1762485070
+H               11.2721542427       14.0231602776       12.2162121126
+H               11.2729727417       12.9675456484       13.6733962697
+H               12.5711186794       10.9751838047       13.5424805963
+H               14.8926422740       11.3773546176       12.4053626299
+H                9.3609887212       12.7417345795       12.4154757666
 
 
 
@@ -230,9 +160,9 @@ H                9.3684670541       12.7487322583       12.4212537987
      XML data file
      NEW-OLD atomic charge density approx. for the potential
 
-     negative rho (up, down):  6.264E-03 0.000E+00
+     negative rho (up, down):  6.228E-03 0.000E+00
 
-     total cpu time spent up to now is      299.0 secs
+     total cpu time spent up to now is      583.1 secs
 
      per-process dynamical memory:   206.1 Mb
 
@@ -242,59 +172,129 @@ H                9.3684670541       12.7487322583       12.4212537987
      Davidson diagonalization with overlap
 
 ---- Real-time Memory Report at c_bands before calling an iterative solver
-           521 MiB given to the printing process from OS
+           603 MiB given to the printing process from OS
            201 MiB allocation reported by mallinfo(arena+hblkhd)
-        154234 MiB available memory on the node where the printing process lives
+        154238 MiB available memory on the node where the printing process lives
 ------------------
-     ethr =  1.00E-06,  avg # of iterations = 10.0
+     ethr =  1.00E-06,  avg # of iterations =  9.0
 
-     negative rho (up, down):  6.252E-03 0.000E+00
+     negative rho (up, down):  6.223E-03 0.000E+00
 
-     total cpu time spent up to now is      305.9 secs
+     total cpu time spent up to now is      589.5 secs
 
-     total energy              =    -143.89721176 Ry
-     estimated scf accuracy    <       0.00109198 Ry
+     total energy              =    -143.89975900 Ry
+     estimated scf accuracy    <       0.00026456 Ry
 
      iteration #  2     ecut=    50.00 Ry     beta= 0.10
      Davidson diagonalization with overlap
 
 ---- Real-time Memory Report at c_bands before calling an iterative solver
-           521 MiB given to the printing process from OS
+           603 MiB given to the printing process from OS
            212 MiB allocation reported by mallinfo(arena+hblkhd)
-        153719 MiB available memory on the node where the printing process lives
+        153699 MiB available memory on the node where the printing process lives
 ------------------
-     ethr =  2.87E-06,  avg # of iterations =  1.0
+     ethr =  6.96E-07,  avg # of iterations =  1.0
 
-     negative rho (up, down):  6.426E-03 0.000E+00
+     negative rho (up, down):  6.259E-03 0.000E+00
 
-     total cpu time spent up to now is      310.4 secs
+     total cpu time spent up to now is      594.0 secs
 
-     total energy              =    -143.89686321 Ry
-     estimated scf accuracy    <       0.00079590 Ry
+     total energy              =    -143.89968569 Ry
+     estimated scf accuracy    <       0.00019783 Ry
 
      iteration #  3     ecut=    50.00 Ry     beta= 0.10
      Davidson diagonalization with overlap
 
 ---- Real-time Memory Report at c_bands before calling an iterative solver
-           521 MiB given to the printing process from OS
+           603 MiB given to the printing process from OS
            214 MiB allocation reported by mallinfo(arena+hblkhd)
-        153715 MiB available memory on the node where the printing process lives
+        153689 MiB available memory on the node where the printing process lives
 ------------------
-     ethr =  2.09E-06,  avg # of iterations =  3.0
+     ethr =  5.21E-07,  avg # of iterations =  4.0
 
-     negative rho (up, down):  6.360E-03 0.000E+00
+     negative rho (up, down):  6.243E-03 0.000E+00
 
-     total cpu time spent up to now is      315.4 secs
+     total cpu time spent up to now is      599.0 secs
 
-     total energy              =    -143.89705192 Ry
-     estimated scf accuracy    <       0.00006441 Ry
+     total energy              =    -143.89972724 Ry
+     estimated scf accuracy    <       0.00002052 Ry
 
      iteration #  4     ecut=    50.00 Ry     beta= 0.10
      Davidson diagonalization with overlap
 
 ---- Real-time Memory Report at c_bands before calling an iterative solver
-           521 MiB given to the printing process from OS
+           603 MiB given to the printing process from OS
            216 MiB allocation reported by mallinfo(arena+hblkhd)
-        153676 MiB available memory on the node where the printing process lives
+        153659 MiB available memory on the node where the printing process lives
 ------------------
-     ethr =  1.69E-07,  avg # of iterations =  8.0
+     ethr =  5.40E-08,  avg # of iterations =  7.0
+
+     negative rho (up, down):  6.235E-03 0.000E+00
+
+     total cpu time spent up to now is      604.4 secs
+
+     total energy              =    -143.89975227 Ry
+     estimated scf accuracy    <       0.00004555 Ry
+
+     iteration #  5     ecut=    50.00 Ry     beta= 0.10
+     Davidson diagonalization with overlap
+
+---- Real-time Memory Report at c_bands before calling an iterative solver
+           603 MiB given to the printing process from OS
+           217 MiB allocation reported by mallinfo(arena+hblkhd)
+        153599 MiB available memory on the node where the printing process lives
+------------------
+     ethr =  5.40E-08,  avg # of iterations =  2.0
+
+     negative rho (up, down):  6.247E-03 0.000E+00
+
+     total cpu time spent up to now is      609.1 secs
+
+     total energy              =    -143.89972828 Ry
+     estimated scf accuracy    <       0.00006145 Ry
+
+     iteration #  6     ecut=    50.00 Ry     beta= 0.10
+     Davidson diagonalization with overlap
+
+---- Real-time Memory Report at c_bands before calling an iterative solver
+           603 MiB given to the printing process from OS
+           219 MiB allocation reported by mallinfo(arena+hblkhd)
+        153535 MiB available memory on the node where the printing process lives
+------------------
+     ethr =  5.40E-08,  avg # of iterations =  3.0
+
+     negative rho (up, down):  6.253E-03 0.000E+00
+
+     total cpu time spent up to now is      614.2 secs
+
+     total energy              =    -143.89973141 Ry
+     estimated scf accuracy    <       0.00000944 Ry
+
+     iteration #  7     ecut=    50.00 Ry     beta= 0.10
+     Davidson diagonalization with overlap
+
+---- Real-time Memory Report at c_bands before calling an iterative solver
+           603 MiB given to the printing process from OS
+           221 MiB allocation reported by mallinfo(arena+hblkhd)
+        153456 MiB available memory on the node where the printing process lives
+------------------
+     ethr =  2.48E-08,  avg # of iterations =  3.0
+
+     negative rho (up, down):  6.242E-03 0.000E+00
+
+     total cpu time spent up to now is      619.3 secs
+
+     total energy              =    -143.89973616 Ry
+     estimated scf accuracy    <       0.00000235 Ry
+
+     iteration #  8     ecut=    50.00 Ry     beta= 0.10
+     Davidson diagonalization with overlap
+
+---- Real-time Memory Report at c_bands before calling an iterative solver
+           603 MiB given to the printing process from OS
+           223 MiB allocation reported by mallinfo(arena+hblkhd)
+        153405 MiB available memory on the node where the printing process lives
+------------------
+     ethr =  6.17E-09,  avg # of iterations =  7.0
+
+     negative rho (up, down):  6.234E-03 0.000E+00
