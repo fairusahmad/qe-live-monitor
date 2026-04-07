@@ -1,3 +1,11 @@
+         9        Ni     tau(   9) = (   1.0000000   0.5773503   1.3565028  )
+        10        Ni     tau(  10) = (   0.2222222   0.1924501   1.6286683  )
+        11        Ni     tau(  11) = (   0.3888889   0.4811252   1.6286683  )
+        12        Ni     tau(  12) = (   0.5555556   0.7698004   1.6286683  )
+        13        Ni     tau(  13) = (   0.5555556   0.1924501   1.6286683  )
+        14        Ni     tau(  14) = (   0.7222222   0.4811252   1.6286683  )
+        15        Ni     tau(  15) = (   0.8888889   0.7698004   1.6286683  )
+        16        Ni     tau(  16) = (   0.8888889   0.1924501   1.6286683  )
         17        Ni     tau(  17) = (   1.0555556   0.4811252   1.6286683  )
         18        Ni     tau(  18) = (   1.2222222   0.7698004   1.6286683  )
         19        Ni     tau(  19) = (   0.2777778   0.0962250   1.9008338  )
@@ -206,28 +214,20 @@
         71        Cu     tau(  71) = (  0.7777778  0.5555556  0.5718835  )
         72        Cu     tau(  72) = (  0.7777778  0.8888889  0.5718835  )
 
-     number of k points=     9  Gaussian smearing, width (Ry)=  0.0200
+     number of k points=     5  Gaussian smearing, width (Ry)=  0.0200
                        cart. coord. in units 2pi/alat
         k(    1) = (   0.0000000   0.0000000   0.0000000), wk =   0.2222222
-        k(    2) = (   0.0000000   0.3849002   0.0000000), wk =   0.2222222
-        k(    3) = (   0.0000000  -0.3849002   0.0000000), wk =   0.2222222
-        k(    4) = (   0.3333333  -0.1924501   0.0000000), wk =   0.2222222
-        k(    5) = (   0.3333333   0.1924501   0.0000000), wk =   0.2222222
-        k(    6) = (   0.3333333  -0.5773503   0.0000000), wk =   0.2222222
-        k(    7) = (  -0.3333333   0.1924501   0.0000000), wk =   0.2222222
-        k(    8) = (  -0.3333333   0.5773503   0.0000000), wk =   0.2222222
-        k(    9) = (  -0.3333333  -0.1924501   0.0000000), wk =   0.2222222
+        k(    2) = (   0.0000000   0.3849002   0.0000000), wk =   0.4444444
+        k(    3) = (   0.3333333  -0.1924501   0.0000000), wk =   0.4444444
+        k(    4) = (   0.3333333   0.1924501   0.0000000), wk =   0.4444444
+        k(    5) = (   0.3333333  -0.5773503   0.0000000), wk =   0.4444444
 
                        cryst. coord.
         k(    1) = (   0.0000000   0.0000000   0.0000000), wk =   0.2222222
-        k(    2) = (   0.0000000   0.3333333   0.0000000), wk =   0.2222222
-        k(    3) = (   0.0000000  -0.3333333   0.0000000), wk =   0.2222222
-        k(    4) = (   0.3333333   0.0000000   0.0000000), wk =   0.2222222
-        k(    5) = (   0.3333333   0.3333333   0.0000000), wk =   0.2222222
-        k(    6) = (   0.3333333  -0.3333333   0.0000000), wk =   0.2222222
-        k(    7) = (  -0.3333333  -0.0000000   0.0000000), wk =   0.2222222
-        k(    8) = (  -0.3333333   0.3333333   0.0000000), wk =   0.2222222
-        k(    9) = (  -0.3333333  -0.3333333   0.0000000), wk =   0.2222222
+        k(    2) = (   0.0000000   0.3333333   0.0000000), wk =   0.4444444
+        k(    3) = (   0.3333333   0.0000000   0.0000000), wk =   0.4444444
+        k(    4) = (   0.3333333   0.3333333   0.0000000), wk =   0.4444444
+        k(    5) = (   0.3333333  -0.3333333   0.0000000), wk =   0.4444444
 
      Dense  grid:  1804237 G-vectors     FFT dimensions: (  90,  90, 512)
 
@@ -235,7 +235,7 @@
 
      Dynamical RAM for                 wfc:      14.53 MB
 
-     Dynamical RAM for     wfc (w. buffer):     145.34 MB
+     Dynamical RAM for     wfc (w. buffer):      87.20 MB
 
      Dynamical RAM for           str. fact:       1.45 MB
 
@@ -269,11 +269,11 @@
 
      Dynamical RAM for          addusforce:     212.06 MB
 
-     Estimated static dynamical RAM per process >     207.19 MB
+     Estimated static dynamical RAM per process >     149.05 MB
 
-     Estimated max dynamical RAM per process >     430.84 MB
+     Estimated max dynamical RAM per process >     372.70 MB
 
-     Estimated total dynamical RAM >      15.99 GB
+     Estimated total dynamical RAM >      13.83 GB
 
      Check: negative core charge=   -0.000001
 
@@ -284,9 +284,9 @@
      negative rho (up, down):  3.968E-03 0.000E+00
      Starting wfcs are  648 randomized atomic wfcs
 
-     total cpu time spent up to now is       30.6 secs
+     total cpu time spent up to now is       17.9 secs
 
-     per-process dynamical memory:   300.7 Mb
+     per-process dynamical memory:   223.6 Mb
 
      Self-consistent Calculation
 
@@ -294,7 +294,7 @@
      Davidson diagonalization with overlap
 
 ---- Real-time Memory Report at c_bands before calling an iterative solver
-           504 MiB given to the printing process from OS
-           293 MiB allocation reported by mallinfo(arena+hblkhd)
-        157808 MiB available memory on the node where the printing process lives
+           415 MiB given to the printing process from OS
+           218 MiB allocation reported by mallinfo(arena+hblkhd)
+        160459 MiB available memory on the node where the printing process lives
 ------------------
