@@ -1,124 +1,300 @@
-&CONTROL
- calculation = 'relax'
- forc_conv_thr = 8.0d-4
- nstep = 100
- outdir = './output/'
- prefix = 'NiCu_glycerol_ads'
- pseudo_dir = '/home/node1/PSP/PseudosP/pslibrary-master/pbe/PSEUDOPOTENTIALS/'
- restart_mode = 'from_scratch'
- tprnfor = .true.
- verbosity = 'high'
- wf_collect = .true.
-/
+        78    1   1   1
+        79    1   1   1
+        80    1   1   1
+        81    1   1   1
+        82    1   1   1
+        83    1   1   1
+        84    1   1   1
+        85    1   1   1
+        86    1   1   1
 
-&SYSTEM
- ibrav = 0
- nat = 86
- ntyp = 5
+     --------------------------------------------
+     DFT-D3 Dispersion Correction (3-body terms):
+     --------------------------------------------
+       Reference C6 values for interpolation: 
 
- ecutwfc = 50
- ecutrho = 400
+         atom   Coordination number   C6
+         H          0.912             6.05
+         H          0.000            15.18
+         C          0.000            98.23
+         C          0.987            86.49
+         C          1.998            58.72
+         C          2.999            51.56
+         C          3.984            36.41
+         O          0.000            31.01
+         O          0.993            25.63
+         O          1.989            20.74
+         Ni         0.000          1149.49
+         Ni         1.794           356.66
+         Ni         6.546           257.56
+         Ni         6.292           283.75
+         Cu         0.000           674.36
+         Cu         0.958           349.99
 
- occupations = 'smearing'
- degauss = 0.02
+       Values used:
 
- nspin = 2
- starting_magnetization(1) = 0.50   ! Ni
- starting_magnetization(2) = 0.00   ! Cu
- starting_magnetization(3) = 0.00   ! O
- starting_magnetization(4) = 0.00   ! C
- starting_magnetization(5) = 0.00   ! H
+         atom   Coordination number  R0_AB[au]  C6      C8
+         Ni         6.538            3.162    268.65  22510.95
+         Ni         6.538            3.162    268.65  22510.95
+         Ni         6.538            3.162    268.65  22510.95
+         Ni         6.538            3.162    268.65  22510.95
+         Ni         6.538            3.162    268.65  22510.96
+         Ni         6.538            3.162    268.65  22510.95
+         Ni         6.538            3.162    268.65  22510.95
+         Ni         6.538            3.162    268.65  22510.95
+         Ni         6.538            3.162    268.65  22510.95
+         Ni         8.076            3.162    258.38  21650.38
+         Ni         8.075            3.162    258.38  21650.60
+         Ni         8.076            3.162    258.38  21650.39
+         Ni         8.075            3.162    258.38  21650.57
+         Ni         8.076            3.162    258.38  21650.39
+         Ni         8.077            3.162    258.38  21650.36
+         Ni         8.076            3.162    258.38  21650.40
+         Ni         8.076            3.162    258.38  21650.40
+         Ni         8.075            3.162    258.38  21650.60
+         Ni         8.153            3.162    258.27  21640.77
+         Ni         8.151            3.162    258.27  21641.07
+         Ni         8.153            3.162    258.27  21640.81
+         Ni         8.151            3.162    258.27  21641.08
+         Ni         8.153            3.162    258.27  21640.83
+         Ni         8.153            3.162    258.27  21640.81
+         Ni         8.153            3.162    258.27  21640.82
+         Ni         8.153            3.162    258.27  21640.81
+         Ni         8.150            3.162    258.27  21641.10
+         Ni         8.537            3.162    257.89  21609.35
+         Ni         8.537            3.162    257.89  21609.33
+         Ni         8.534            3.162    257.89  21609.50
+         Ni         8.537            3.162    257.89  21609.34
+         Ni         8.534            3.162    257.89  21609.50
+         Ni         8.537            3.162    257.89  21609.36
+         Ni         8.534            3.162    257.89  21609.51
+         Ni         8.537            3.162    257.89  21609.36
+         Ni         8.537            3.162    257.89  21609.35
+         Cu         7.933            3.119    349.99  28675.33
+         Cu         7.928            3.119    349.99  28675.33
+         Cu         7.933            3.119    349.99  28675.33
+         Cu         7.928            3.119    349.99  28675.33
+         Cu         7.933            3.119    349.99  28675.33
+         Cu         7.933            3.119    349.99  28675.33
+         Cu         7.933            3.119    349.99  28675.33
+         Cu         7.934            3.119    349.99  28675.33
+         Cu         7.928            3.119    349.99  28675.33
+         Cu         7.524            3.119    349.99  28675.33
+         Cu         7.525            3.119    349.99  28675.33
+         Cu         7.524            3.119    349.99  28675.33
+         Cu         7.525            3.119    349.99  28675.33
+         Cu         7.524            3.119    349.99  28675.33
+         Cu         7.524            3.119    349.99  28675.33
+         Cu         7.524            3.119    349.99  28675.33
+         Cu         7.524            3.119    349.99  28675.33
+         Cu         7.525            3.119    349.99  28675.33
+         Cu         8.399            3.119    349.99  28675.33
+         Cu         8.399            3.119    349.99  28675.33
+         Cu         8.401            3.119    349.99  28675.33
+         Cu         8.400            3.119    349.99  28675.33
+         Cu         8.401            3.119    349.99  28675.33
+         Cu         8.400            3.119    349.99  28675.33
+         Cu         8.401            3.119    349.99  28675.33
+         Cu         8.400            3.119    349.99  28675.33
+         Cu         8.399            3.119    349.99  28675.33
+         Cu         6.884            3.119    349.99  28675.33
+         Cu         6.889            3.119    349.99  28675.33
+         Cu         6.910            3.119    349.99  28675.33
+         Cu         6.884            3.119    349.99  28675.33
+         Cu         7.803            3.119    349.99  28675.33
+         Cu         6.908            3.119    349.99  28675.33
+         Cu         6.889            3.119    349.99  28675.33
+         Cu         6.892            3.119    349.99  28675.33
+         Cu         6.879            3.119    349.99  28675.33
+         O          2.041            2.345     20.80    419.70
+         O          2.911            2.345     20.74    418.58
+         O          2.013            2.345     20.81    419.97
+         C          4.049            2.750     36.58   1057.83
+         C          4.079            2.750     36.54   1056.87
+         C          4.050            2.750     36.57   1057.79
+         H          1.005            2.062      6.18     74.66
+         H          1.003            2.062      6.18     74.68
+         H          1.003            2.062      6.18     74.68
+         H          1.001            2.062      6.18     74.71
+         H          1.001            2.062      6.18     74.71
+         H          1.008            2.062      6.17     74.63
+         H          1.098            2.062      6.12     73.94
+         H          1.007            2.062      6.17     74.64
 
- nosym = .true.
- noinv = .false.
- noncolin = .false.
+         Molecular C6 ( Ry / a.u.^6 ) =   1695457.57
 
- vdw_corr = 'grimme-d3'
-/
 
-&ELECTRONS
- conv_thr = 1.0d-7
- electron_maxstep = 150
- mixing_beta = 0.05
- mixing_mode = 'plain'
- scf_must_converge = .true.
- startingwfc = 'random'
-/
+   Crystallographic axes
 
-&IONS
- ion_dynamics = 'bfgs'
- upscale = 100
-/
+     site n.     atom                  positions (cryst. coord.)
+         1        Ni     tau(   1) = (  0.0000000  0.0000000  0.2378425  )
+         2        Ni     tau(   2) = (  0.9999999  0.3333335  0.2378425  )
+         3        Ni     tau(   3) = (  0.9999999  0.6666670  0.2378425  )
+         4        Ni     tau(   4) = (  0.3333333  0.0000000  0.2378425  )
+         5        Ni     tau(   5) = (  0.3333333  0.3333335  0.2378425  )
+         6        Ni     tau(   6) = (  0.3333332  0.6666670  0.2378425  )
+         7        Ni     tau(   7) = (  0.6666667  0.0000000  0.2378425  )
+         8        Ni     tau(   8) = (  0.6666666  0.3333335  0.2378425  )
+         9        Ni     tau(   9) = (  0.6666665  0.6666670  0.2378425  )
+        10        Ni     tau(  10) = (  0.1111111  0.2222223  0.2855626  )
+        11        Ni     tau(  11) = (  0.1111110  0.5555558  0.2855626  )
+        12        Ni     tau(  12) = (  0.1111109  0.8888893  0.2855626  )
+        13        Ni     tau(  13) = (  0.4444444  0.2222223  0.2855626  )
+        14        Ni     tau(  14) = (  0.4444443  0.5555558  0.2855626  )
+        15        Ni     tau(  15) = (  0.4444442  0.8888893  0.2855626  )
+        16        Ni     tau(  16) = (  0.7777777  0.2222223  0.2855626  )
+        17        Ni     tau(  17) = (  0.7777777  0.5555558  0.2855626  )
+        18        Ni     tau(  18) = (  0.7777776  0.8888893  0.2855626  )
+        19        Ni     tau(  19) = (  0.2222222  0.1111112  0.3369815  )
+        20        Ni     tau(  20) = (  0.2222221  0.4444447  0.3370101  )
+        21        Ni     tau(  21) = (  0.2222220  0.7777782  0.3369858  )
+        22        Ni     tau(  22) = (  0.5555555  0.1111112  0.3370109  )
+        23        Ni     tau(  23) = (  0.5555555  0.4444447  0.3369884  )
+        24        Ni     tau(  24) = (  0.5555554  0.7777782  0.3369874  )
+        25        Ni     tau(  25) = (  0.8888889  0.1111112  0.3369878  )
+        26        Ni     tau(  26) = (  0.8888888  0.4444447  0.3369876  )
+        27        Ni     tau(  27) = (  0.8888887  0.7777782  0.3370130  )
+        28        Ni     tau(  28) = (  0.0581771  0.9418360  0.3862307  )
+        29        Ni     tau(  29) = (  0.0581821  0.2751665  0.3862267  )
+        30        Ni     tau(  30) = (  0.0581742  0.6085042  0.3862781  )
+        31        Ni     tau(  31) = (  0.3914970  0.9418460  0.3862286  )
+        32        Ni     tau(  32) = (  0.3914964  0.2751669  0.3862759  )
+        33        Ni     tau(  33) = (  0.3914936  0.6085022  0.3862328  )
+        34        Ni     tau(  34) = (  0.7248357  0.9418432  0.3862793  )
+        35        Ni     tau(  35) = (  0.7248286  0.2751728  0.3862341  )
+        36        Ni     tau(  36) = (  0.7248301  0.6085163  0.3862326  )
+        37        Cu     tau(  37) = (  0.2253090  0.1080208  0.4366750  )
+        38        Cu     tau(  38) = (  0.2253068  0.4413528  0.4367480  )
+        39        Cu     tau(  39) = (  0.2253129  0.7746890  0.4366785  )
+        40        Cu     tau(  40) = (  0.5586346  0.1080089  0.4367489  )
+        41        Cu     tau(  41) = (  0.5586323  0.4413399  0.4366815  )
+        42        Cu     tau(  42) = (  0.5586399  0.7746798  0.4366766  )
+        43        Cu     tau(  43) = (  0.8919754  0.1080198  0.4366766  )
+        44        Cu     tau(  44) = (  0.8919774  0.4413518  0.4366691  )
+        45        Cu     tau(  45) = (  0.8919803  0.7746923  0.4367505  )
+        46        Cu     tau(  46) = (  0.2222222  0.1111112  0.4945214  )
+        47        Cu     tau(  47) = (  0.2222221  0.4444447  0.4946203  )
+        48        Cu     tau(  48) = (  0.2222220  0.7777782  0.4945274  )
+        49        Cu     tau(  49) = (  0.5555555  0.1111112  0.4946217  )
+        50        Cu     tau(  50) = (  0.5555555  0.4444447  0.4945309  )
+        51        Cu     tau(  51) = (  0.5555554  0.7777782  0.4945245  )
+        52        Cu     tau(  52) = (  0.8888889  0.1111112  0.4945242  )
+        53        Cu     tau(  53) = (  0.8888888  0.4444447  0.4945128  )
+        54        Cu     tau(  54) = (  0.8888887  0.7777782  0.4946237  )
+        55        Cu     tau(  55) = (  0.0000000  0.0000000  0.5477798  )
+        56        Cu     tau(  56) = (  0.9999999  0.3333335  0.5477686  )
+        57        Cu     tau(  57) = (  0.9999999  0.6666670  0.5478808  )
+        58        Cu     tau(  58) = (  0.3333333  0.0000000  0.5477731  )
+        59        Cu     tau(  59) = (  0.3333333  0.3333335  0.5478767  )
+        60        Cu     tau(  60) = (  0.3333332  0.6666670  0.5477813  )
+        61        Cu     tau(  61) = (  0.6666667  0.0000000  0.5478777  )
+        62        Cu     tau(  62) = (  0.6666666  0.3333335  0.5477845  )
+        63        Cu     tau(  63) = (  0.6666665  0.6666670  0.5477761  )
+        64        Cu     tau(  64) = (  0.1655231  0.1678092  0.5991697  )
+        65        Cu     tau(  65) = (  0.1655227  0.5011371  0.5992699  )
+        66        Cu     tau(  66) = (  0.1655138  0.8344684  0.5991797  )
+        67        Cu     tau(  67) = (  0.4988536  0.1678086  0.5992675  )
+        68        Cu     tau(  68) = (  0.4988475  0.5011392  0.5991824  )
+        69        Cu     tau(  69) = (  0.4988534  0.8344793  0.5991737  )
+        70        Cu     tau(  70) = (  0.8321846  0.1678007  0.5991814  )
+        71        Cu     tau(  71) = (  0.8321934  0.5011399  0.5991709  )
+        72        Cu     tau(  72) = (  0.8321829  0.8344757  0.5992699  )
+        73        O      tau(  73) = (  0.6256375  0.3491706  0.7020833  )
+        74        O      tau(  74) = (  0.4542734  0.5598297  0.6455886  )
+        75        O      tau(  75) = (  0.4544850  0.5589995  0.7600360  )
+        76        C      tau(  76) = (  0.4523768  0.5585766  0.7026399  )
+        77        C      tau(  77) = (  0.4634391  0.6698504  0.6728073  )
+        78        C      tau(  78) = (  0.4661742  0.6666864  0.7326984  )
+        79        H      tau(  79) = (  0.3108682  0.5453879  0.7027207  )
+        80        H      tau(  80) = (  0.6101651  0.6730928  0.6715420  )
+        81        H      tau(  81) = (  0.3321828  0.8306525  0.6716799  )
+        82        H      tau(  82) = (  0.3373987  0.8289295  0.7337283  )
+        83        H      tau(  83) = (  0.6154485  0.6649948  0.7337996  )
+        84        H      tau(  84) = (  0.7538056  0.3563758  0.7021333  )
+        85        H      tau(  85) = (  0.5711122  0.4171190  0.6469681  )
+        86        H      tau(  86) = (  0.4635540  0.6331037  0.7785544  )
 
-ATOMIC_SPECIES
-Ni 58.7    Ni.pbe-n-rrkjus_psl.1.0.0.UPF
-Cu 63.546  Cu.pbe-dn-rrkjus_psl.1.0.0.UPF
-O  15.9994 O.pbe-n-rrkjus_psl.1.0.0.UPF
-C  12.011  C.pbe-n-rrkjus_psl.1.0.0.UPF
-H  1.00797 H.pbe-rrkjus_psl.1.0.0.UPF
+     number of k points=     5  Gaussian smearing, width (Ry)=  0.0200
+                       cart. coord. in units 2pi/alat
+        k(    1) = (   0.0000000   0.0000000   0.0000000), wk =   0.2222222
+        k(    2) = (   0.0000000   0.3849004   0.0000000), wk =   0.4444444
+        k(    3) = (   0.3333333  -0.1924502   0.0000000), wk =   0.4444444
+        k(    4) = (   0.3333333   0.1924502   0.0000000), wk =   0.4444444
+        k(    5) = (   0.3333333  -0.5773505   0.0000000), wk =   0.4444444
 
-K_POINTS automatic
-3 3 1 0 0 0
+                       cryst. coord.
+        k(    1) = (   0.0000000   0.0000000   0.0000000), wk =   0.2222222
+        k(    2) = (   0.0000000   0.3333333   0.0000000), wk =   0.4444444
+        k(    3) = (   0.3333333   0.0000000   0.0000000), wk =   0.4444444
+        k(    4) = (   0.3333333   0.3333333   0.0000000), wk =   0.4444444
+        k(    5) = (   0.3333333  -0.3333333   0.0000000), wk =   0.4444444
 
-&CONTROL
- calculation = 'relax'
- forc_conv_thr = 8.0d-4
- nstep = 100
- outdir = './output/'
- prefix = 'NiCu_glycerol_ads'
- pseudo_dir = '/home/node1/PSP/PseudosP/pslibrary-master/pbe/PSEUDOPOTENTIALS/'
- restart_mode = 'from_scratch'
- tprnfor = .true.
- verbosity = 'high'
- wf_collect = .true.
-/
+     Dense  grid:  1804237 G-vectors     FFT dimensions: (  90,  90, 512)
 
-&SYSTEM
- ibrav = 0
- nat = 86
- ntyp = 5
+     Smooth grid:   637929 G-vectors     FFT dimensions: (  64,  64, 360)
 
- ecutwfc = 50
- ecutrho = 400
+     Dynamical RAM for                 wfc:      15.24 MB
 
- occupations = 'smearing'
- degauss = 0.02
+     Dynamical RAM for     wfc (w. buffer):      91.43 MB
 
- nspin = 2
- starting_magnetization(1) = 0.50   ! Ni
- starting_magnetization(2) = 0.00   ! Cu
- starting_magnetization(3) = 0.00   ! O
- starting_magnetization(4) = 0.00   ! C
- starting_magnetization(5) = 0.00   ! H
+     Dynamical RAM for           str. fact:       3.62 MB
 
- nosym = .true.
- noinv = .false.
- noncolin = .false.
+     Dynamical RAM for           local pot:       0.00 MB
 
- vdw_corr = 'grimme-d3'
-/
+     Dynamical RAM for          nlocal pot:      43.54 MB
 
-&ELECTRONS
- conv_thr = 1.0d-7
- electron_maxstep = 150
- mixing_beta = 0.05
- mixing_mode = 'plain'
- scf_must_converge = .true.
- startingwfc = 'random'
-/
+     Dynamical RAM for                qrad:       8.03 MB
 
-&IONS
- ion_dynamics = 'bfgs'
- upscale = 100
-/
+     Dynamical RAM for          rho,v,vnew:       4.77 MB
 
-ATOMIC_SPECIES
-Ni 58.7    Ni.pbe-n-rrkjus_psl.1.0.0.UPF
-Cu 63.546  Cu.pbe-dn-rrkjus_psl.1.0.0.UPF
-O  15.9994 O.pbe-n-rrkjus_psl.1.0.0.UPF
-C  12.011  C.pbe-n-rrkjus_psl.1.0.0.UPF
-H  1.00797 H.pbe-rrkjus_psl.1.0.0.UPF
+     Dynamical RAM for               rhoin:       1.59 MB
 
-K_POINTS automatic
-3 3 1 0 0 0
+     Dynamical RAM for            rho*nmix:      11.59 MB
 
+     Dynamical RAM for           G-vectors:       2.85 MB
+
+     Dynamical RAM for          h,s,v(r/c):       1.65 MB
+
+     Dynamical RAM for          <psi|beta>:       9.88 MB
+
+     Dynamical RAM for                 psi:      30.48 MB
+
+     Dynamical RAM for                hpsi:      30.48 MB
+
+     Dynamical RAM for                spsi:      30.48 MB
+
+     Dynamical RAM for      wfcinit/wfcrot:      35.67 MB
+
+     Dynamical RAM for           addusdens:     160.84 MB
+
+     Dynamical RAM for          addusforce:     212.06 MB
+
+     Estimated static dynamical RAM per process >     164.49 MB
+
+     Estimated max dynamical RAM per process >     388.14 MB
+
+     Estimated total dynamical RAM >      14.40 GB
+
+     Check: negative core charge=   -0.000001
+
+     Initial potential from superposition of free atoms
+
+     starting charge     793.9825, renormalised to     794.0000
+
+     negative rho (up, down):  2.350E-03 0.000E+00
+     Starting wfcs are random
+
+     total cpu time spent up to now is       14.4 secs
+
+     per-process dynamical memory:   267.8 Mb
+
+     Self-consistent Calculation
+
+     iteration #  1     ecut=    50.00 Ry     beta= 0.10
+     Davidson diagonalization with overlap
+
+---- Real-time Memory Report at c_bands before calling an iterative solver
+           402 MiB given to the printing process from OS
+           261 MiB allocation reported by mallinfo(arena+hblkhd)
+        153929 MiB available memory on the node where the printing process lives
+------------------
