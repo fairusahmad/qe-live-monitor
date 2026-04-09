@@ -1,11 +1,16 @@
 #!/usr/bin/env bash
-set -e
+set -euo pipefail
 
-cd /media/node1/Fairus2TB/fairus/qe-live-monitor
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+cd "$SCRIPT_DIR"
+
+log() {
+  echo "[$(date '+%Y-%m-%d %H:%M:%S')] $*"
+}
 
 while true; do
-  echo "[$(date '+%Y-%m-%d %H:%M:%S')] Starting update cycle..."
-  ./update_and_push.sh || true
-  echo "[$(date '+%Y-%m-%d %H:%M:%S')] Sleeping for 300 seconds."
+  log "Starting update cycle..."
+  ./update_and_push.sh || log "Update cycle failed; retrying after sleep."
+  log "Sleeping for 300 seconds."
   sleep 300
 done
