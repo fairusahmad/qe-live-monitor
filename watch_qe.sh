@@ -14,3 +14,4 @@ while true; do
   log "Sleeping for 300 seconds."
   sleep 300
 done
+
