@@ -51,3 +51,4 @@ else
   log "Pushing changes..."
   push_with_diagnostics
 fi
+
