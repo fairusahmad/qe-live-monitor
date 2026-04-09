@@ -34,7 +34,7 @@ push_with_diagnostics() {
 log "Fetching latest changes..."
 git fetch origin
 log "Rebasing onto origin/main..."
-git pull --rebase origin main
+git pull --rebase --autostash origin main
 
 log "Scanning QE jobs..."
 python3 scripts/scan_all_jobs.py
@@ -47,7 +47,7 @@ else
   log "Committing dashboard updates..."
   git commit -m "Update QE dashboard data"
   log "Syncing with origin/main before push..."
-  git pull --rebase origin main
+  git pull --rebase --autostash origin main
   log "Pushing changes..."
   push_with_diagnostics
 fi
