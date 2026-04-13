@@ -1,300 +1,300 @@
-     --------------------------------------------
-     DFT-D3 Dispersion Correction (3-body terms):
-     --------------------------------------------
-       Reference C6 values for interpolation: 
+     total energy              =   -8183.96555852 Ry
+     estimated scf accuracy    <       0.00000496 Ry
 
-         atom   Coordination number   C6
-         H          0.912             6.05
-         H          0.000            15.18
-         C          0.000            98.23
-         C          0.987            86.49
-         C          1.998            58.72
-         C          2.999            51.56
-         C          3.984            36.41
-         O          0.000            31.01
-         O          0.993            25.63
-         O          1.989            20.74
-         Ni         0.000          1149.49
-         Ni         1.794           356.66
-         Ni         6.546           257.56
-         Ni         6.292           283.75
-         Cu         0.000           674.36
-         Cu         0.958           349.99
-
-       Values used:
-
-         atom   Coordination number  R0_AB[au]  C6      C8
-         Ni         6.541            3.162    268.61  22507.76
-         Ni         6.541            3.162    268.61  22507.77
-         Ni         6.541            3.162    268.61  22507.76
-         Ni         6.541            3.162    268.61  22507.76
-         Ni         6.541            3.162    268.61  22507.77
-         Ni         6.541            3.162    268.61  22507.77
-         Ni         6.541            3.162    268.61  22507.76
-         Ni         6.541            3.162    268.61  22507.77
-         Ni         6.541            3.162    268.61  22507.77
-         Ni         8.447            3.162    257.95  21614.73
-         Ni         8.447            3.162    257.95  21614.73
-         Ni         8.447            3.162    257.95  21614.73
-         Ni         8.447            3.162    257.95  21614.73
-         Ni         8.447            3.162    257.95  21614.73
-         Ni         8.447            3.162    257.95  21614.73
-         Ni         8.447            3.162    257.95  21614.73
-         Ni         8.447            3.162    257.95  21614.73
-         Ni         8.447            3.162    257.95  21614.73
-         Ni         8.650            3.162    257.82  21603.81
-         Ni         8.650            3.162    257.82  21603.81
-         Ni         8.650            3.162    257.82  21603.80
-         Ni         8.650            3.162    257.82  21603.81
-         Ni         8.650            3.162    257.82  21603.80
-         Ni         8.650            3.162    257.82  21603.81
-         Ni         8.650            3.162    257.82  21603.80
-         Ni         8.650            3.162    257.82  21603.81
-         Ni         8.650            3.162    257.82  21603.81
-         Ni         8.767            3.162    257.77  21599.22
-         Ni         8.767            3.162    257.77  21599.22
-         Ni         8.767            3.162    257.77  21599.22
-         Ni         8.767            3.162    257.77  21599.22
-         Ni         8.767            3.162    257.77  21599.22
-         Ni         8.767            3.162    257.77  21599.22
-         Ni         8.767            3.162    257.77  21599.22
-         Ni         8.767            3.162    257.77  21599.22
-         Ni         8.767            3.162    257.77  21599.22
-         Cu         8.064            3.119    349.99  28675.33
-         Cu         8.064            3.119    349.99  28675.33
-         Cu         8.064            3.119    349.99  28675.33
-         Cu         8.064            3.119    349.99  28675.33
-         Cu         8.064            3.119    349.99  28675.33
-         Cu         8.064            3.119    349.99  28675.33
-         Cu         8.064            3.119    349.99  28675.33
-         Cu         8.064            3.119    349.99  28675.33
-         Cu         8.064            3.119    349.99  28675.33
-         Cu         8.058            3.119    349.99  28675.33
-         Cu         8.058            3.119    349.99  28675.33
-         Cu         8.058            3.119    349.99  28675.33
-         Cu         8.058            3.119    349.99  28675.33
-         Cu         8.058            3.119    349.99  28675.33
-         Cu         8.058            3.119    349.99  28675.33
-         Cu         8.058            3.119    349.99  28675.33
-         Cu         8.058            3.119    349.99  28675.33
-         Cu         8.058            3.119    349.99  28675.33
-         Cu         9.136            3.119    349.99  28675.33
-         Cu         9.136            3.119    349.99  28675.33
-         Cu         9.136            3.119    349.99  28675.33
-         Cu         9.136            3.119    349.99  28675.33
-         Cu         9.136            3.119    349.99  28675.33
-         Cu         9.137            3.119    349.99  28675.33
-         Cu         9.136            3.119    349.99  28675.33
-         Cu         9.137            3.119    349.99  28675.33
-         Cu         9.136            3.119    349.99  28675.33
-         Cu         7.118            3.119    349.99  28675.33
-         Cu         7.129            3.119    349.99  28675.33
-         Cu         7.139            3.119    349.99  28675.33
-         Cu         7.130            3.119    349.99  28675.33
-         Cu         8.282            3.119    349.99  28675.33
-         Cu         7.150            3.119    349.99  28675.33
-         Cu         7.143            3.119    349.99  28675.33
-         Cu         7.138            3.119    349.99  28675.33
-         Cu         7.118            3.119    349.99  28675.33
-         O          2.042            2.345     20.80    419.69
-         O          3.086            2.345     20.74    418.58
-         O          2.013            2.345     20.81    419.97
-         C          4.051            2.750     36.57   1057.78
-         C          4.104            2.750     36.52   1056.20
-         C          4.051            2.750     36.57   1057.78
-         H          1.005            2.062      6.18     74.66
-         H          1.005            2.062      6.18     74.67
-         H          1.005            2.062      6.18     74.67
-         H          1.001            2.062      6.18     74.71
-         H          1.001            2.062      6.18     74.71
-         H          1.009            2.062      6.17     74.63
-         H          1.185            2.062      6.09     73.58
-         H          1.007            2.062      6.17     74.64
-
-         Molecular C6 ( Ry / a.u.^6 ) =   1693481.23
-
-
-   Crystallographic axes
-
-     site n.     atom                  positions (cryst. coord.)
-         1        Ni     tau(   1) = (  0.0000000  0.0000000  0.2378425  )
-         2        Ni     tau(   2) = (  0.9999999  0.3333335  0.2378425  )
-         3        Ni     tau(   3) = (  0.9999999  0.6666670  0.2378425  )
-         4        Ni     tau(   4) = (  0.3333333  0.0000000  0.2378425  )
-         5        Ni     tau(   5) = (  0.3333333  0.3333335  0.2378425  )
-         6        Ni     tau(   6) = (  0.3333332  0.6666670  0.2378425  )
-         7        Ni     tau(   7) = (  0.6666667  0.0000000  0.2378425  )
-         8        Ni     tau(   8) = (  0.6666666  0.3333335  0.2378425  )
-         9        Ni     tau(   9) = (  0.6666665  0.6666670  0.2378425  )
-        10        Ni     tau(  10) = (  0.1111111  0.2222223  0.2855626  )
-        11        Ni     tau(  11) = (  0.1111110  0.5555558  0.2855626  )
-        12        Ni     tau(  12) = (  0.1111109  0.8888893  0.2855626  )
-        13        Ni     tau(  13) = (  0.4444444  0.2222223  0.2855626  )
-        14        Ni     tau(  14) = (  0.4444443  0.5555558  0.2855626  )
-        15        Ni     tau(  15) = (  0.4444442  0.8888893  0.2855626  )
-        16        Ni     tau(  16) = (  0.7777777  0.2222223  0.2855626  )
-        17        Ni     tau(  17) = (  0.7777777  0.5555558  0.2855626  )
-        18        Ni     tau(  18) = (  0.7777776  0.8888893  0.2855626  )
-        19        Ni     tau(  19) = (  0.2222222  0.1111112  0.3332828  )
-        20        Ni     tau(  20) = (  0.2222221  0.4444447  0.3332828  )
-        21        Ni     tau(  21) = (  0.2222220  0.7777782  0.3332828  )
-        22        Ni     tau(  22) = (  0.5555555  0.1111112  0.3332828  )
-        23        Ni     tau(  23) = (  0.5555555  0.4444447  0.3332828  )
-        24        Ni     tau(  24) = (  0.5555554  0.7777782  0.3332828  )
-        25        Ni     tau(  25) = (  0.8888889  0.1111112  0.3332828  )
-        26        Ni     tau(  26) = (  0.8888888  0.4444447  0.3332828  )
-        27        Ni     tau(  27) = (  0.8888887  0.7777782  0.3332828  )
-        28        Ni     tau(  28) = (  0.0602161 -0.0602161  0.3813717  )
-        29        Ni     tau(  29) = (  1.0602163  0.2731221  0.3813749  )
-        30        Ni     tau(  30) = (  1.0602116  0.6064494  0.3813747  )
-        31        Ni     tau(  31) = (  0.3935509 -0.0602118  0.3813747  )
-        32        Ni     tau(  32) = (  0.3935490  0.2731193  0.3813746  )
-        33        Ni     tau(  33) = (  0.3935436  0.6064566  0.3813714  )
-        34        Ni     tau(  34) = (  0.7268781 -0.0602164  0.3813749  )
-        35        Ni     tau(  35) = (  0.7268842  0.2731159  0.3813714  )
-        36        Ni     tau(  36) = (  0.7268807  0.6064513  0.3813746  )
-        37        Cu     tau(  37) = (  0.2289044  0.1044275  0.4309430  )
-        38        Cu     tau(  38) = (  0.2289058  0.4377614  0.4309427  )
-        39        Cu     tau(  39) = (  0.2289058  0.7710944  0.4309389  )
-        40        Cu     tau(  40) = (  0.5622377  0.1044284  0.4309429  )
-        41        Cu     tau(  41) = (  0.5622387  0.4377614  0.4309376  )
-        42        Cu     tau(  42) = (  0.5622386  0.7710945  0.4309427  )
-        43        Cu     tau(  43) = (  0.8955716  0.1044284  0.4309385  )
-        44        Cu     tau(  44) = (  0.8955715  0.4377625  0.4309429  )
-        45        Cu     tau(  45) = (  0.8955724  0.7710959  0.4309430  )
-        46        Cu     tau(  46) = (  0.2222222  0.1111112  0.4883034  )
-        47        Cu     tau(  47) = (  0.2222221  0.4444447  0.4883032  )
-        48        Cu     tau(  48) = (  0.2222220  0.7777782  0.4882984  )
-        49        Cu     tau(  49) = (  0.5555555  0.1111112  0.4883032  )
-        50        Cu     tau(  50) = (  0.5555555  0.4444447  0.4882974  )
-        51        Cu     tau(  51) = (  0.5555554  0.7777782  0.4883032  )
-        52        Cu     tau(  52) = (  0.8888889  0.1111112  0.4882980  )
-        53        Cu     tau(  53) = (  0.8888888  0.4444447  0.4883032  )
-        54        Cu     tau(  54) = (  0.8888887  0.7777782  0.4883034  )
-        55        Cu     tau(  55) = (  0.0541672 -0.0541673  0.5387059  )
-        56        Cu     tau(  56) = (  1.0541668  0.2791660  0.5387116  )
-        57        Cu     tau(  57) = (  1.0541677  0.6124996  0.5387116  )
-        58        Cu     tau(  58) = (  0.3875007 -0.0541678  0.5387116  )
-        59        Cu     tau(  59) = (  0.3875004  0.2791659  0.5387115  )
-        60        Cu     tau(  60) = (  0.3875014  0.6124988  0.5387056  )
-        61        Cu     tau(  61) = (  0.7208342 -0.0541669  0.5387116  )
-        62        Cu     tau(  62) = (  0.7208336  0.2791665  0.5387055  )
-        63        Cu     tau(  63) = (  0.7208341  0.6124998  0.5387115  )
-        64        Cu     tau(  64) = (  0.2202229  0.1131104  0.5880665  )
-        65        Cu     tau(  65) = (  0.2202227  0.4464435  0.5880665  )
-        66        Cu     tau(  66) = (  0.2202233  0.7797769  0.5880607  )
-        67        Cu     tau(  67) = (  0.5535558  0.1131103  0.5880664  )
-        68        Cu     tau(  68) = (  0.5535563  0.4464438  0.5880606  )
-        69        Cu     tau(  69) = (  0.5535566  0.7797775  0.5880665  )
-        70        Cu     tau(  70) = (  0.8868891  0.1131109  0.5880608  )
-        71        Cu     tau(  71) = (  0.8868897  0.4464444  0.5880664  )
-        72        Cu     tau(  72) = (  0.8868895  0.7797774  0.5880665  )
-        73        O      tau(  73) = (  0.7193573  0.2556458  0.6856864  )
-        74        O      tau(  74) = (  0.5479932  0.4663049  0.6291916  )
-        75        O      tau(  75) = (  0.5482048  0.4654748  0.7436391  )
-        76        C      tau(  76) = (  0.5460967  0.4650518  0.6862429  )
-        77        C      tau(  77) = (  0.5571590  0.5763257  0.6564103  )
-        78        C      tau(  78) = (  0.5598940  0.5731617  0.7163014  )
-        79        H      tau(  79) = (  0.4045880  0.4518631  0.6863238  )
-        80        H      tau(  80) = (  0.7038849  0.5795681  0.6551450  )
-        81        H      tau(  81) = (  0.4259026  0.7371278  0.6552830  )
-        82        H      tau(  82) = (  0.4311185  0.7354048  0.7173313  )
-        83        H      tau(  83) = (  0.7091684  0.5714700  0.7174027  )
-        84        H      tau(  84) = (  0.8475254  0.2628511  0.6857363  )
-        85        H      tau(  85) = (  0.6648321  0.3235943  0.6305711  )
-        86        H      tau(  86) = (  0.5572738  0.5395790  0.7621575  )
-
-     number of k points=     1  Gaussian smearing, width (Ry)=  0.0200
-                       cart. coord. in units 2pi/alat
-        k(    1) = (   0.0000000   0.0000000   0.0000000), wk =   2.0000000
-
-                       cryst. coord.
-        k(    1) = (   0.0000000   0.0000000   0.0000000), wk =   2.0000000
-
-     Dense  grid:   902119 G-vectors     FFT dimensions: (  90,  90, 512)
-
-     Smooth grid:   318965 G-vectors     FFT dimensions: (  64,  64, 360)
-
-     Dynamical RAM for                 wfc:       7.62 MB
-
-     Dynamical RAM for     wfc (w. buffer):       7.62 MB
-
-     Dynamical RAM for           str. fact:       1.81 MB
-
-     Dynamical RAM for           local pot:       0.00 MB
-
-     Dynamical RAM for          nlocal pot:      21.77 MB
-
-     Dynamical RAM for                qrad:       8.03 MB
-
-     Dynamical RAM for          rho,v,vnew:       3.68 MB
-
-     Dynamical RAM for               rhoin:       1.23 MB
-
-     Dynamical RAM for            rho*nmix:       5.79 MB
-
-     Dynamical RAM for           G-vectors:       1.42 MB
-
-     Dynamical RAM for          h,s,v(r/c):       0.83 MB
-
-     Dynamical RAM for          <psi|beta>:       4.94 MB
-
-     Dynamical RAM for                 psi:      15.24 MB
-
-     Dynamical RAM for                hpsi:      15.24 MB
-
-     Dynamical RAM for                spsi:      15.24 MB
-
-     Dynamical RAM for      wfcinit/wfcrot:      20.43 MB
-
-     Dynamical RAM for           addusdens:      80.38 MB
-
-     Dynamical RAM for          addusforce:     106.05 MB
-
-     Estimated static dynamical RAM per process >      52.05 MB
-
-     Estimated max dynamical RAM per process >     163.90 MB
-
-     Estimated total dynamical RAM >       6.08 GB
-
-     Atomic positions and unit cell read from directory:
-     ./output/NiCu_glycerol_ads.save/
-     Atomic positions from file used, from input discarded
- 
-
-     Check: negative core charge=   -0.000001
-
-     The initial density is read from file :
-     ./output/NiCu_glycerol_ads.save/charge-density
-
-
-     negative rho (up, down):  2.891E-03 0.000E+00
-     Starting wfcs are random
-
-     total cpu time spent up to now is        2.7 secs
-
-     per-process dynamical memory:   121.7 Mb
-
-     Self-consistent Calculation
-
-     iteration #  1     ecut=    50.00 Ry     beta= 0.04
+     iteration # 17     ecut=    50.00 Ry     beta= 0.04
      Davidson diagonalization with overlap
 
 ---- Real-time Memory Report at c_bands before calling an iterative solver
-           255 MiB given to the printing process from OS
-           118 MiB allocation reported by mallinfo(arena+hblkhd)
-        144831 MiB available memory on the node where the printing process lives
+           531 MiB given to the printing process from OS
+           140 MiB allocation reported by mallinfo(arena+hblkhd)
+        143185 MiB available memory on the node where the printing process lives
 ------------------
-     c_bands:  2 eigenvalues not converged
-     ethr =  1.00E-05,  avg # of iterations = 40.0
+     ethr =  4.18E-10,  avg # of iterations =  2.0
 
-     Threshold (ethr) on eigenvalues was too large:
-     Diagonalizing with lowered threshold
+     negative rho (up, down):  2.904E-03 0.000E+00
 
+     total cpu time spent up to now is      285.6 secs
+
+     total energy              =   -8183.96555836 Ry
+     estimated scf accuracy    <       0.00000236 Ry
+
+     iteration # 18     ecut=    50.00 Ry     beta= 0.04
      Davidson diagonalization with overlap
 
 ---- Real-time Memory Report at c_bands before calling an iterative solver
-           450 MiB given to the printing process from OS
-           127 MiB allocation reported by mallinfo(arena+hblkhd)
-        144510 MiB available memory on the node where the printing process lives
+           531 MiB given to the printing process from OS
+           140 MiB allocation reported by mallinfo(arena+hblkhd)
+        143206 MiB available memory on the node where the printing process lives
+------------------
+     ethr =  2.98E-10,  avg # of iterations =  2.0
+
+     negative rho (up, down):  2.904E-03 0.000E+00
+
+     total cpu time spent up to now is      289.9 secs
+
+     total energy              =   -8183.96555823 Ry
+     estimated scf accuracy    <       0.00000178 Ry
+
+     iteration # 19     ecut=    50.00 Ry     beta= 0.04
+     Davidson diagonalization with overlap
+
+---- Real-time Memory Report at c_bands before calling an iterative solver
+           531 MiB given to the printing process from OS
+           140 MiB allocation reported by mallinfo(arena+hblkhd)
+        143187 MiB available memory on the node where the printing process lives
+------------------
+     ethr =  2.24E-10,  avg # of iterations =  5.0
+
+     negative rho (up, down):  2.904E-03 0.000E+00
+
+     total cpu time spent up to now is      294.6 secs
+
+     total energy              =   -8183.96555832 Ry
+     estimated scf accuracy    <       0.00000098 Ry
+
+     iteration # 20     ecut=    50.00 Ry     beta= 0.04
+     Davidson diagonalization with overlap
+
+---- Real-time Memory Report at c_bands before calling an iterative solver
+           531 MiB given to the printing process from OS
+           140 MiB allocation reported by mallinfo(arena+hblkhd)
+        143196 MiB available memory on the node where the printing process lives
+------------------
+     ethr =  1.24E-10,  avg # of iterations =  4.0
+
+     negative rho (up, down):  2.904E-03 0.000E+00
+
+     total cpu time spent up to now is      299.2 secs
+
+     total energy              =   -8183.96555839 Ry
+     estimated scf accuracy    <       0.00000073 Ry
+
+     iteration # 21     ecut=    50.00 Ry     beta= 0.04
+     Davidson diagonalization with overlap
+
+---- Real-time Memory Report at c_bands before calling an iterative solver
+           531 MiB given to the printing process from OS
+           140 MiB allocation reported by mallinfo(arena+hblkhd)
+        143198 MiB available memory on the node where the printing process lives
+------------------
+     ethr =  9.15E-11,  avg # of iterations =  5.0
+
+     negative rho (up, down):  2.904E-03 0.000E+00
+
+     total cpu time spent up to now is      303.9 secs
+
+     total energy              =   -8183.96555843 Ry
+     estimated scf accuracy    <       0.00000056 Ry
+
+     iteration # 22     ecut=    50.00 Ry     beta= 0.04
+     Davidson diagonalization with overlap
+
+---- Real-time Memory Report at c_bands before calling an iterative solver
+           531 MiB given to the printing process from OS
+           140 MiB allocation reported by mallinfo(arena+hblkhd)
+        143177 MiB available memory on the node where the printing process lives
+------------------
+     ethr =  7.03E-11,  avg # of iterations =  2.0
+
+     negative rho (up, down):  2.904E-03 0.000E+00
+
+     total cpu time spent up to now is      308.3 secs
+
+     total energy              =   -8183.96555849 Ry
+     estimated scf accuracy    <       0.00000036 Ry
+
+     iteration # 23     ecut=    50.00 Ry     beta= 0.04
+     Davidson diagonalization with overlap
+
+---- Real-time Memory Report at c_bands before calling an iterative solver
+           531 MiB given to the printing process from OS
+           140 MiB allocation reported by mallinfo(arena+hblkhd)
+        143190 MiB available memory on the node where the printing process lives
+------------------
+     ethr =  4.55E-11,  avg # of iterations =  6.0
+
+     negative rho (up, down):  2.904E-03 0.000E+00
+
+     total cpu time spent up to now is      313.0 secs
+
+     total energy              =   -8183.96555852 Ry
+     estimated scf accuracy    <       0.00000077 Ry
+
+     iteration # 24     ecut=    50.00 Ry     beta= 0.04
+     Davidson diagonalization with overlap
+
+---- Real-time Memory Report at c_bands before calling an iterative solver
+           531 MiB given to the printing process from OS
+           140 MiB allocation reported by mallinfo(arena+hblkhd)
+        143201 MiB available memory on the node where the printing process lives
+------------------
+     ethr =  4.55E-11,  avg # of iterations =  2.0
+
+     negative rho (up, down):  2.904E-03 0.000E+00
+
+     total cpu time spent up to now is      317.4 secs
+
+     total energy              =   -8183.96555853 Ry
+     estimated scf accuracy    <       0.00000045 Ry
+
+     iteration # 25     ecut=    50.00 Ry     beta= 0.04
+     Davidson diagonalization with overlap
+
+---- Real-time Memory Report at c_bands before calling an iterative solver
+           531 MiB given to the printing process from OS
+           140 MiB allocation reported by mallinfo(arena+hblkhd)
+        143202 MiB available memory on the node where the printing process lives
+------------------
+     ethr =  4.55E-11,  avg # of iterations =  1.0
+
+     negative rho (up, down):  2.903E-03 0.000E+00
+
+     total cpu time spent up to now is      321.4 secs
+
+     total energy              =   -8183.96555854 Ry
+     estimated scf accuracy    <       0.00000021 Ry
+
+     iteration # 26     ecut=    50.00 Ry     beta= 0.04
+     Davidson diagonalization with overlap
+
+---- Real-time Memory Report at c_bands before calling an iterative solver
+           531 MiB given to the printing process from OS
+           140 MiB allocation reported by mallinfo(arena+hblkhd)
+        143192 MiB available memory on the node where the printing process lives
+------------------
+     ethr =  2.70E-11,  avg # of iterations =  2.0
+
+     negative rho (up, down):  2.903E-03 0.000E+00
+
+     total cpu time spent up to now is      325.8 secs
+
+     total energy              =   -8183.96555855 Ry
+     estimated scf accuracy    <       0.00000019 Ry
+
+     iteration # 27     ecut=    50.00 Ry     beta= 0.04
+     Davidson diagonalization with overlap
+
+---- Real-time Memory Report at c_bands before calling an iterative solver
+           531 MiB given to the printing process from OS
+           140 MiB allocation reported by mallinfo(arena+hblkhd)
+        143200 MiB available memory on the node where the printing process lives
+------------------
+     ethr =  2.34E-11,  avg # of iterations =  1.0
+
+     negative rho (up, down):  2.903E-03 0.000E+00
+
+     total cpu time spent up to now is      330.0 secs
+
+     total energy              =   -8183.96555856 Ry
+     estimated scf accuracy    <       0.00000023 Ry
+
+     iteration # 28     ecut=    50.00 Ry     beta= 0.04
+     Davidson diagonalization with overlap
+
+---- Real-time Memory Report at c_bands before calling an iterative solver
+           531 MiB given to the printing process from OS
+           140 MiB allocation reported by mallinfo(arena+hblkhd)
+        143181 MiB available memory on the node where the printing process lives
+------------------
+     ethr =  2.34E-11,  avg # of iterations =  1.0
+
+     negative rho (up, down):  2.903E-03 0.000E+00
+
+     total cpu time spent up to now is      334.0 secs
+
+     total energy              =   -8183.96555857 Ry
+     estimated scf accuracy    <       0.00000005 Ry
+
+     iteration # 29     ecut=    50.00 Ry     beta= 0.04
+     Davidson diagonalization with overlap
+
+---- Real-time Memory Report at c_bands before calling an iterative solver
+           531 MiB given to the printing process from OS
+           140 MiB allocation reported by mallinfo(arena+hblkhd)
+        143197 MiB available memory on the node where the printing process lives
+------------------
+     ethr =  6.81E-12,  avg # of iterations =  5.0
+
+     negative rho (up, down):  2.903E-03 0.000E+00
+
+     total cpu time spent up to now is      338.7 secs
+
+     total energy              =   -8183.96555857 Ry
+     estimated scf accuracy    <       0.00000003 Ry
+
+     iteration # 30     ecut=    50.00 Ry     beta= 0.04
+     Davidson diagonalization with overlap
+
+---- Real-time Memory Report at c_bands before calling an iterative solver
+           531 MiB given to the printing process from OS
+           140 MiB allocation reported by mallinfo(arena+hblkhd)
+        143196 MiB available memory on the node where the printing process lives
+------------------
+     ethr =  3.72E-12,  avg # of iterations =  5.0
+
+     negative rho (up, down):  2.903E-03 0.000E+00
+
+     total cpu time spent up to now is      343.3 secs
+
+     total energy              =   -8183.96555857 Ry
+     estimated scf accuracy    <       0.00000002 Ry
+
+     iteration # 31     ecut=    50.00 Ry     beta= 0.04
+     Davidson diagonalization with overlap
+
+---- Real-time Memory Report at c_bands before calling an iterative solver
+           531 MiB given to the printing process from OS
+           140 MiB allocation reported by mallinfo(arena+hblkhd)
+        143186 MiB available memory on the node where the printing process lives
+------------------
+     ethr =  2.78E-12,  avg # of iterations =  2.0
+
+     negative rho (up, down):  2.903E-03 0.000E+00
+
+     total cpu time spent up to now is      347.7 secs
+
+     total energy              =   -8183.96555858 Ry
+     estimated scf accuracy    <          8.5E-09 Ry
+
+     iteration # 32     ecut=    50.00 Ry     beta= 0.04
+     Davidson diagonalization with overlap
+
+---- Real-time Memory Report at c_bands before calling an iterative solver
+           531 MiB given to the printing process from OS
+           140 MiB allocation reported by mallinfo(arena+hblkhd)
+        143171 MiB available memory on the node where the printing process lives
+------------------
+     ethr =  1.07E-12,  avg # of iterations =  5.0
+
+     negative rho (up, down):  2.903E-03 0.000E+00
+
+     total cpu time spent up to now is      352.4 secs
+
+     total energy              =   -8183.96555858 Ry
+     estimated scf accuracy    <          5.9E-09 Ry
+
+     iteration # 33     ecut=    50.00 Ry     beta= 0.04
+     Davidson diagonalization with overlap
+
+---- Real-time Memory Report at c_bands before calling an iterative solver
+           531 MiB given to the printing process from OS
+           140 MiB allocation reported by mallinfo(arena+hblkhd)
+        143193 MiB available memory on the node where the printing process lives
+------------------
+     ethr =  7.38E-13,  avg # of iterations =  2.0
+
+     negative rho (up, down):  2.903E-03 0.000E+00
+
+     total cpu time spent up to now is      356.8 secs
+
+     total energy              =   -8183.96555858 Ry
+     estimated scf accuracy    <          6.2E-09 Ry
+
+     iteration # 34     ecut=    50.00 Ry     beta= 0.04
+     Davidson diagonalization with overlap
+
+---- Real-time Memory Report at c_bands before calling an iterative solver
+           531 MiB given to the printing process from OS
+           140 MiB allocation reported by mallinfo(arena+hblkhd)
+        143181 MiB available memory on the node where the printing process lives
 ------------------
