@@ -3,6 +3,94 @@ async function loadJobs() {
   return await res.json();
 }
 
+function formatEnergy(value) {
+  return Number.isFinite(value) ? value.toFixed(8) : "-";
+}
+
+function buildEnergyOptions(jobs) {
+  return jobs
+    .filter((job) => Number.isFinite(job.latest_energy_ry))
+    .map((job) => ({
+      value: job.job_id,
+      label: `${job.label} (${formatEnergy(job.latest_energy_ry)} Ry)`,
+      energy: job.latest_energy_ry
+    }));
+}
+
+function populateSelect(select, options, preferredIndex) {
+  select.innerHTML = "";
+
+  for (const option of options) {
+    const el = document.createElement("option");
+    el.value = option.value;
+    el.textContent = option.label;
+    el.dataset.energy = String(option.energy);
+    select.appendChild(el);
+  }
+
+  if (!options.length) {
+    const empty = document.createElement("option");
+    empty.textContent = "No converged energies available";
+    empty.value = "";
+    select.appendChild(empty);
+    select.disabled = true;
+    return;
+  }
+
+  select.disabled = false;
+  select.selectedIndex = Math.min(preferredIndex, options.length - 1);
+}
+
+function updateCalculator() {
+  const selectIds = ["energyA", "energyB", "energyC"];
+  const chosen = selectIds.map((id) => {
+    const select = document.getElementById(id);
+    const selectedOption = select.options[select.selectedIndex];
+    if (!selectedOption) {
+      return { label: "-", energy: NaN };
+    }
+
+    return {
+      label: selectedOption.textContent,
+      energy: Number(selectedOption.dataset.energy)
+    };
+  });
+
+  const [energyA, energyB, energyC] = chosen;
+  const formulaEl = document.getElementById("energyFormula");
+  const resultEl = document.getElementById("energyResult");
+
+  formulaEl.textContent = `${energyA.label} - ${energyB.label} - ${energyC.label}`;
+
+  if (chosen.every((item) => Number.isFinite(item.energy))) {
+    resultEl.textContent = `${formatEnergy(energyA.energy - energyB.energy - energyC.energy)} Ry`;
+  } else {
+    resultEl.textContent = "-";
+  }
+}
+
+function renderCalculator(jobs) {
+  const options = buildEnergyOptions(jobs);
+  const selectIds = ["energyA", "energyB", "energyC"];
+
+  selectIds.forEach((id, index) => {
+    const select = document.getElementById(id);
+    const previousValue = select.value;
+    populateSelect(select, options, index);
+
+    if (previousValue && options.some((option) => option.value === previousValue)) {
+      select.value = previousValue;
+    }
+
+    if (!select.dataset.bound) {
+      select.addEventListener("change", updateCalculator);
+      select.dataset.bound = "true";
+    }
+  });
+
+  updateCalculator();
+}
+
 function renderJobs(jobs) {
   const el = document.getElementById("jobs");
   el.innerHTML = "";
@@ -32,8 +120,11 @@ function renderJobs(jobs) {
 async function main() {
   try {
     const jobs = await loadJobs();
+    renderCalculator(jobs);
     renderJobs(jobs);
   } catch (e) {
+    document.getElementById("energyFormula").textContent = "Unable to load energy data";
+    document.getElementById("energyResult").textContent = "-";
     document.getElementById("jobs").innerHTML = "<p>Failed to load jobs.json</p>";
     console.error(e);
   }

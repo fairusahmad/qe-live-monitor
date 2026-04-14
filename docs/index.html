@@ -7,6 +7,7 @@
   <style>
     body { font-family: Arial, sans-serif; margin: 24px; background: #f6f7fb; color: #222; }
     h1 { margin-bottom: 6px; }
+    .page { display: grid; gap: 18px; }
     .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
     .card {
       background: white; border-radius: 14px; padding: 16px;
@@ -18,14 +19,54 @@
       display: inline-block; padding: 8px 12px; margin-top: 10px;
       background: #1f6feb; color: white; text-decoration: none; border-radius: 8px;
     }
+    .calculator-form { display: grid; gap: 12px; }
+    .calculator-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+    .field label {
+      display: block; font-size: 13px; font-weight: bold; margin-bottom: 6px;
+    }
+    .field select {
+      width: 100%; padding: 10px 12px; border: 1px solid #c8d0de; border-radius: 8px;
+      background: #fff; font: inherit;
+    }
+    .formula { font-size: 14px; color: #4f5b70; }
+    .result {
+      font-size: 24px; font-weight: bold; color: #103c8a;
+    }
     .bad { color: #b00020; }
     .ok { color: #0a7a2f; }
   </style>
 </head>
 <body>
-  <h1>Quantum ESPRESSO Dashboard</h1>
-  <p>Auto-discovered QE jobs from your project folders</p>
-  <div id="jobs" class="grid"></div>
-  <script src="app.js?v=20260310-force-1"></script>
+  <div class="page">
+    <div>
+      <h1>Quantum ESPRESSO Dashboard</h1>
+      <p>Auto-discovered QE jobs from your project folders</p>
+    </div>
+
+    <section class="card">
+      <div class="title">Energy Calculator</div>
+      <div class="calculator-form">
+        <div class="calculator-grid">
+          <div class="field">
+            <label for="energyA">Energy A</label>
+            <select id="energyA"></select>
+          </div>
+          <div class="field">
+            <label for="energyB">Energy B</label>
+            <select id="energyB"></select>
+          </div>
+          <div class="field">
+            <label for="energyC">Energy C</label>
+            <select id="energyC"></select>
+          </div>
+        </div>
+        <div class="formula" id="energyFormula">A - B - C</div>
+        <div class="result" id="energyResult">-</div>
+      </div>
+    </section>
+
+    <div id="jobs" class="grid"></div>
+  </div>
+  <script src="app.js?v=20260414-energy-calc-1"></script>
 </body>
 </html>
