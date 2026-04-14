@@ -3,8 +3,14 @@ async function loadJobs() {
   return await res.json();
 }
 
+const RY_TO_EV = 13.6057039763;
+
 function formatEnergy(value) {
   return Number.isFinite(value) ? value.toFixed(8) : "-";
+}
+
+function ryToEv(value) {
+  return Number.isFinite(value) ? value * RY_TO_EV : NaN;
 }
 
 function buildEnergyOptions(jobs) {
@@ -12,8 +18,8 @@ function buildEnergyOptions(jobs) {
     .filter((job) => Number.isFinite(job.latest_energy_ry))
     .map((job) => ({
       value: job.job_id,
-      label: `${job.label} (${formatEnergy(job.latest_energy_ry)} Ry)`,
-      energy: job.latest_energy_ry
+      label: `${job.label} (${formatEnergy(ryToEv(job.latest_energy_ry))} eV)`,
+      energy: ryToEv(job.latest_energy_ry)
     }));
 }
 
@@ -63,7 +69,7 @@ function updateCalculator() {
   formulaEl.textContent = `${energyA.label} - ${energyB.label} - ${energyC.label}`;
 
   if (chosen.every((item) => Number.isFinite(item.energy))) {
-    resultEl.textContent = `${formatEnergy(energyA.energy - energyB.energy - energyC.energy)} Ry`;
+    resultEl.textContent = `${formatEnergy(energyA.energy - energyB.energy - energyC.energy)} eV`;
   } else {
     resultEl.textContent = "-";
   }
