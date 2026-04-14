@@ -1,0 +1,72 @@
+&CONTROL
+ calculation = 'relax'
+ forc_conv_thr = 5.0d-4
+ nstep = 100
+ outdir = './output/'
+ prefix = 'glycerol'
+ pseudo_dir = '/home/node1/PSP/PseudosP/pslibrary-master/pbe/PSEUDOPOTENTIALS/'
+ restart_mode = 'from_scratch'
+ tprnfor = .true.
+ verbosity = 'high'
+ wf_collect = .true.
+/
+
+&SYSTEM
+ ibrav = 0
+ nat = 14
+ ntyp = 3
+
+ ecutwfc = 50
+ ecutrho = 400
+
+ occupations = 'fixed'
+ nspin = 1
+
+ nosym = .true.
+ noinv = .false.
+ noncolin = .false.
+
+ vdw_corr = 'grimme-d3'
+/
+
+&ELECTRONS
+ conv_thr = 1.0d-7
+ electron_maxstep = 150
+ mixing_beta = 0.10
+ mixing_mode = 'plain'
+ scf_must_converge = .true.
+ startingwfc = 'random'
+/
+
+&IONS
+ ion_dynamics = 'bfgs'
+ upscale = 100
+/
+
+ATOMIC_SPECIES
+O 15.9994  O.pbe-n-rrkjus_psl.1.0.0.UPF
+C 12.011   C.pbe-n-rrkjus_psl.1.0.0.UPF
+H 1.00797  H.pbe-rrkjus_psl.1.0.0.UPF
+
+K_POINTS gamma
+
+CELL_PARAMETERS angstrom
+25.0000000000 0.0000000000 0.0000000000
+12.5000000000 21.6506350946 0.0000000000
+0.0000000000 0.0000000000 25.0000000000
+
+ATOMIC_POSITIONS angstrom
+O 12.5835286250 10.9384215476 12.5715142500
+O 14.9588285000 12.2833215441 12.0847142500
+O 10.1469285000 12.2780214686 12.0832142500
+C 12.5601283750 12.2753214179 12.0661142500
+C 13.8144285000 12.9857214071 12.5578142500
+C 11.2963286250 12.9655215810 12.5663142500
+H 12.5567285000 12.1911214485 10.9743142500
+H 13.8676285000 13.0064215793 13.6514142500
+H 13.8618286250 14.0123215606 12.1829142500
+H 11.2530285000 14.0013215225 12.2150142500
+H 11.2500285000 12.9547215947 13.6605142500
+H 12.5814285000 10.9844215694 13.5429142500
+H 14.9008283750 11.3722214666 12.4200142500
+H  9.3683283750 12.7511214039 12.4232142500
