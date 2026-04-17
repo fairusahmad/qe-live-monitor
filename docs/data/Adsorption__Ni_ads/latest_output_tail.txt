@@ -1,300 +1,300 @@
-     iteration # 29     ecut=    50.00 Ry     beta= 0.01
+     new conv_thr            =            1.0E-10 Ry
+
+
+ATOMIC_POSITIONS (angstrom)
+Ni               0.0000000000        0.0000000000       10.0000000187    0   0   0
+Ni               1.2286496544        2.1280836261       10.0000000187    0   0   0
+Ni               2.4572993456        4.2561673160       10.0000000187    0   0   0
+Ni               2.4572993088        0.0000000000       10.0000000187    0   0   0
+Ni               3.6859489631        2.1280836261       10.0000000187    0   0   0
+Ni               4.9145986544        4.2561673160       10.0000000187    0   0   0
+Ni               4.9145986912        0.0000000000       10.0000000187    0   0   0
+Ni               6.1432483456        2.1280836261       10.0000000187    0   0   0
+Ni               7.3718980369        4.2561673160       10.0000000187    0   0   0
+Ni               1.6381995392        1.4187224174       12.0063764263    0   0   0
+Ni               2.8668492304        3.5468061073       12.0063764263    0   0   0
+Ni               4.0954988848        5.6748897334       12.0063764263    0   0   0
+Ni               4.0954988479        1.4187224174       12.0063764263    0   0   0
+Ni               5.3241485392        3.5468061073       12.0063764263    0   0   0
+Ni               6.5527981936        5.6748897334       12.0063764263    0   0   0
+Ni               6.5527982304        1.4187224174       12.0063764263    0   0   0
+Ni               7.7814479217        3.5468061073       12.0063764263    0   0   0
+Ni               9.0100975760        5.6748897334       12.0063764263    0   0   0
+Ni               2.2516038664        0.3562485209       14.0176456028    0   0   0
+Ni               3.4802476365        2.4843745586       14.0183791162    0   0   0
+Ni               4.7089381109        4.6123818264       14.0169952596    0   0   0
+Ni               4.7088899085        0.3562448836       14.0174492137    0   0   0
+Ni               5.9375765867        2.4843175622       14.0172270338    0   0   0
+Ni               7.1661917015        4.6124553567       14.0183791162    0   0   0
+Ni               7.1661864210        0.3563029066       14.0178601745    0   0   0
+Ni               8.3948849266        2.4843550995       14.0174492137    0   0   0
+Ni               9.6235247977        4.6124290550       14.0176456028    0   0   0
+Ni               0.9429408304       -0.3867052125       15.9284737550
+Ni               2.2321442693        1.7788937338       16.0173955688
+Ni               3.4824447899        3.8656501947       15.9236895403
+Ni               3.5290837588       -0.3975915197       15.9678208767
+Ni               4.6153760337        1.7107211400       15.9192125553
+Ni               5.9282903741        3.9417514979       16.1894356396
+Ni               5.9236195458       -0.3125431904       16.0131254353
+Ni               7.2023639903        1.7315224323       15.9382139722
+Ni               8.3198307524        3.8440247924       15.9470365663
+O                6.1395304851        2.3907598838       20.4439508514
+O                5.6157323525        3.6408634303       18.1355177356
+O                5.5632776884        3.8747087908       22.8905480343
+C                5.6969444561        3.7616695589       20.5128370154
+C                6.0867283847        4.4720516599       19.2184170311
+C                6.1891762102        4.4790741065       21.7568166851
+H                4.5989705855        3.6872379197       20.5602588606
+H                7.1787004192        4.6147077127       19.1314739302
+H                5.5958512682        5.4458112871       19.0959342945
+H                5.9274667165        5.5493660669       21.6823188315
+H                7.2933669746        4.4095688463       21.8167841703
+H                7.1101728281        2.3821101076       20.5380043387
+H                5.8281066872        2.7079092357       18.3664121140
+H                5.9247381698        4.2708931629       23.6992608312
+
+
+
+     Writing config-only to output data dir ./output/VLAB.save/ :
+     XML data file
+     NEW-OLD atomic charge density approx. for the potential
+
+     Check: negative core charge=   -0.000002
+
+     negative rho (up, down):  2.341E-03 0.000E+00
+
+     total cpu time spent up to now is     9194.6 secs
+
+     per-process dynamical memory:   142.0 Mb
+
+     Self-consistent Calculation
+
+     iteration #  1     ecut=    50.00 Ry     beta= 0.01
      Davidson diagonalization with overlap
 
 ---- Real-time Memory Report at c_bands before calling an iterative solver
            513 MiB given to the printing process from OS
            138 MiB allocation reported by mallinfo(arena+hblkhd)
-        138685 MiB available memory on the node where the printing process lives
+        138516 MiB available memory on the node where the printing process lives
 ------------------
-     ethr =  1.66E-11,  avg # of iterations =  2.0
+     ethr =  1.00E-06,  avg # of iterations =  5.0
 
-     negative rho (up, down):  2.365E-03 0.000E+00
+     negative rho (up, down):  2.341E-03 0.000E+00
 
-     total cpu time spent up to now is     8872.7 secs
+     total cpu time spent up to now is     9197.2 secs
 
-     total energy              =   -3763.83839520 Ry
-     estimated scf accuracy    <       0.00000004 Ry
+     total energy              =   -3763.83861655 Ry
+     estimated scf accuracy    <       0.00044100 Ry
 
-     iteration # 30     ecut=    50.00 Ry     beta= 0.01
+     iteration #  2     ecut=    50.00 Ry     beta= 0.01
      Davidson diagonalization with overlap
 
 ---- Real-time Memory Report at c_bands before calling an iterative solver
            513 MiB given to the printing process from OS
            138 MiB allocation reported by mallinfo(arena+hblkhd)
-        138698 MiB available memory on the node where the printing process lives
+        138478 MiB available memory on the node where the printing process lives
 ------------------
-     ethr =  1.04E-11,  avg # of iterations =  2.0
+     ethr =  1.11E-07,  avg # of iterations =  2.0
 
-     negative rho (up, down):  2.365E-03 0.000E+00
+     negative rho (up, down):  2.341E-03 0.000E+00
 
-     total cpu time spent up to now is     8874.6 secs
+     total cpu time spent up to now is     9198.8 secs
 
-     total energy              =   -3763.83839520 Ry
-     estimated scf accuracy    <       0.00000003 Ry
+     total energy              =   -3763.83862311 Ry
+     estimated scf accuracy    <       0.00036858 Ry
 
-     iteration # 31     ecut=    50.00 Ry     beta= 0.01
+     iteration #  3     ecut=    50.00 Ry     beta= 0.01
      Davidson diagonalization with overlap
 
 ---- Real-time Memory Report at c_bands before calling an iterative solver
            513 MiB given to the printing process from OS
            138 MiB allocation reported by mallinfo(arena+hblkhd)
-        138699 MiB available memory on the node where the printing process lives
+        138517 MiB available memory on the node where the printing process lives
 ------------------
-     ethr =  7.32E-12,  avg # of iterations =  2.0
+     ethr =  9.26E-08,  avg # of iterations =  2.0
 
-     negative rho (up, down):  2.365E-03 0.000E+00
+     negative rho (up, down):  2.341E-03 0.000E+00
 
-     total cpu time spent up to now is     8876.5 secs
+     total cpu time spent up to now is     9200.4 secs
 
-     total energy              =   -3763.83839521 Ry
-     estimated scf accuracy    <       0.00000002 Ry
+     total energy              =   -3763.83862411 Ry
+     estimated scf accuracy    <       0.00033692 Ry
 
-     iteration # 32     ecut=    50.00 Ry     beta= 0.01
+     iteration #  4     ecut=    50.00 Ry     beta= 0.01
      Davidson diagonalization with overlap
 
 ---- Real-time Memory Report at c_bands before calling an iterative solver
            513 MiB given to the printing process from OS
            138 MiB allocation reported by mallinfo(arena+hblkhd)
-        138676 MiB available memory on the node where the printing process lives
+        138472 MiB available memory on the node where the printing process lives
 ------------------
-     ethr =  5.36E-12,  avg # of iterations =  4.0
+     ethr =  8.47E-08,  avg # of iterations =  1.0
 
-     negative rho (up, down):  2.365E-03 0.000E+00
+     negative rho (up, down):  2.341E-03 0.000E+00
 
-     total cpu time spent up to now is     8878.4 secs
+     total cpu time spent up to now is     9201.9 secs
 
-     total energy              =   -3763.83839521 Ry
-     estimated scf accuracy    <       0.00000002 Ry
+     total energy              =   -3763.83862106 Ry
+     estimated scf accuracy    <       0.00037301 Ry
 
-     iteration # 33     ecut=    50.00 Ry     beta= 0.01
+     iteration #  5     ecut=    50.00 Ry     beta= 0.01
      Davidson diagonalization with overlap
 
 ---- Real-time Memory Report at c_bands before calling an iterative solver
            513 MiB given to the printing process from OS
            138 MiB allocation reported by mallinfo(arena+hblkhd)
-        138656 MiB available memory on the node where the printing process lives
+        138498 MiB available memory on the node where the printing process lives
 ------------------
-     ethr =  3.82E-12,  avg # of iterations =  2.0
+     ethr =  8.47E-08,  avg # of iterations =  1.0
 
-     negative rho (up, down):  2.365E-03 0.000E+00
+     negative rho (up, down):  2.343E-03 0.000E+00
 
-     total cpu time spent up to now is     8880.2 secs
+     total cpu time spent up to now is     9203.5 secs
 
-     total energy              =   -3763.83839521 Ry
-     estimated scf accuracy    <       0.00000001 Ry
+     total energy              =   -3763.83859738 Ry
+     estimated scf accuracy    <       0.00030677 Ry
 
-     iteration # 34     ecut=    50.00 Ry     beta= 0.01
+     iteration #  6     ecut=    50.00 Ry     beta= 0.01
      Davidson diagonalization with overlap
 
 ---- Real-time Memory Report at c_bands before calling an iterative solver
            513 MiB given to the printing process from OS
            138 MiB allocation reported by mallinfo(arena+hblkhd)
-        138671 MiB available memory on the node where the printing process lives
+        138486 MiB available memory on the node where the printing process lives
 ------------------
-     ethr =  3.45E-12,  avg # of iterations =  2.0
+     ethr =  7.71E-08,  avg # of iterations =  1.0
 
-     negative rho (up, down):  2.364E-03 0.000E+00
+     negative rho (up, down):  2.352E-03 0.000E+00
 
-     total cpu time spent up to now is     8882.1 secs
+     total cpu time spent up to now is     9205.1 secs
 
-     total energy              =   -3763.83839521 Ry
-     estimated scf accuracy    <          9.1E-09 Ry
+     total energy              =   -3763.83855443 Ry
+     estimated scf accuracy    <       0.00021591 Ry
 
-     iteration # 35     ecut=    50.00 Ry     beta= 0.01
+     iteration #  7     ecut=    50.00 Ry     beta= 0.01
      Davidson diagonalization with overlap
 
 ---- Real-time Memory Report at c_bands before calling an iterative solver
            513 MiB given to the printing process from OS
            138 MiB allocation reported by mallinfo(arena+hblkhd)
-        138666 MiB available memory on the node where the printing process lives
+        138523 MiB available memory on the node where the printing process lives
 ------------------
-     ethr =  2.29E-12,  avg # of iterations =  4.0
+     ethr =  5.42E-08,  avg # of iterations =  5.0
 
-     negative rho (up, down):  2.364E-03 0.000E+00
+     negative rho (up, down):  2.353E-03 0.000E+00
 
-     total cpu time spent up to now is     8884.2 secs
+     total cpu time spent up to now is     9207.1 secs
 
-     total energy              =   -3763.83839522 Ry
-     estimated scf accuracy    <          9.2E-09 Ry
+     total energy              =   -3763.83857993 Ry
+     estimated scf accuracy    <       0.00004325 Ry
 
-     iteration # 36     ecut=    50.00 Ry     beta= 0.01
+     iteration #  8     ecut=    50.00 Ry     beta= 0.01
      Davidson diagonalization with overlap
 
 ---- Real-time Memory Report at c_bands before calling an iterative solver
            513 MiB given to the printing process from OS
            138 MiB allocation reported by mallinfo(arena+hblkhd)
-        138662 MiB available memory on the node where the printing process lives
+        138505 MiB available memory on the node where the printing process lives
 ------------------
-     ethr =  2.29E-12,  avg # of iterations =  2.0
+     ethr =  1.09E-08,  avg # of iterations =  5.0
 
-     negative rho (up, down):  2.364E-03 0.000E+00
+     negative rho (up, down):  2.353E-03 0.000E+00
 
-     total cpu time spent up to now is     8885.9 secs
+     total cpu time spent up to now is     9209.1 secs
 
-     total energy              =   -3763.83839522 Ry
-     estimated scf accuracy    <          5.7E-09 Ry
+     total energy              =   -3763.83858305 Ry
+     estimated scf accuracy    <       0.00003925 Ry
 
-     iteration # 37     ecut=    50.00 Ry     beta= 0.01
+     iteration #  9     ecut=    50.00 Ry     beta= 0.01
      Davidson diagonalization with overlap
 
 ---- Real-time Memory Report at c_bands before calling an iterative solver
            513 MiB given to the printing process from OS
            138 MiB allocation reported by mallinfo(arena+hblkhd)
-        138693 MiB available memory on the node where the printing process lives
+        138521 MiB available memory on the node where the printing process lives
 ------------------
-     ethr =  1.43E-12,  avg # of iterations =  2.0
+     ethr =  9.86E-09,  avg # of iterations =  1.0
 
-     negative rho (up, down):  2.364E-03 0.000E+00
+     negative rho (up, down):  2.354E-03 0.000E+00
 
-     total cpu time spent up to now is     8887.8 secs
+     total cpu time spent up to now is     9210.8 secs
 
-     total energy              =   -3763.83839522 Ry
-     estimated scf accuracy    <          5.1E-09 Ry
+     total energy              =   -3763.83858298 Ry
+     estimated scf accuracy    <       0.00003742 Ry
 
-     iteration # 38     ecut=    50.00 Ry     beta= 0.01
+     iteration # 10     ecut=    50.00 Ry     beta= 0.01
      Davidson diagonalization with overlap
 
 ---- Real-time Memory Report at c_bands before calling an iterative solver
            513 MiB given to the printing process from OS
            138 MiB allocation reported by mallinfo(arena+hblkhd)
-        138654 MiB available memory on the node where the printing process lives
+        138483 MiB available memory on the node where the printing process lives
 ------------------
-     ethr =  1.27E-12,  avg # of iterations =  2.0
+     ethr =  9.40E-09,  avg # of iterations =  1.0
 
-     negative rho (up, down):  2.364E-03 0.000E+00
+     negative rho (up, down):  2.356E-03 0.000E+00
 
-     total cpu time spent up to now is     8889.7 secs
+     total cpu time spent up to now is     9212.6 secs
 
-     total energy              =   -3763.83839523 Ry
-     estimated scf accuracy    <          4.7E-09 Ry
+     total energy              =   -3763.83858185 Ry
+     estimated scf accuracy    <       0.00002839 Ry
 
-     iteration # 39     ecut=    50.00 Ry     beta= 0.01
+     iteration # 11     ecut=    50.00 Ry     beta= 0.01
      Davidson diagonalization with overlap
 
 ---- Real-time Memory Report at c_bands before calling an iterative solver
            513 MiB given to the printing process from OS
            138 MiB allocation reported by mallinfo(arena+hblkhd)
-        138676 MiB available memory on the node where the printing process lives
+        138515 MiB available memory on the node where the printing process lives
 ------------------
-     ethr =  1.17E-12,  avg # of iterations =  1.0
+     ethr =  7.13E-09,  avg # of iterations =  1.0
 
-     negative rho (up, down):  2.364E-03 0.000E+00
+     negative rho (up, down):  2.358E-03 0.000E+00
 
-     total cpu time spent up to now is     8891.5 secs
+     total cpu time spent up to now is     9214.4 secs
 
-     total energy              =   -3763.83839523 Ry
-     estimated scf accuracy    <          4.1E-09 Ry
+     total energy              =   -3763.83857587 Ry
+     estimated scf accuracy    <       0.00001966 Ry
 
-     iteration # 40     ecut=    50.00 Ry     beta= 0.01
+     iteration # 12     ecut=    50.00 Ry     beta= 0.01
      Davidson diagonalization with overlap
 
 ---- Real-time Memory Report at c_bands before calling an iterative solver
            513 MiB given to the printing process from OS
            138 MiB allocation reported by mallinfo(arena+hblkhd)
-        138648 MiB available memory on the node where the printing process lives
+        138458 MiB available memory on the node where the printing process lives
 ------------------
-     ethr =  1.04E-12,  avg # of iterations =  2.0
+     ethr =  4.94E-09,  avg # of iterations =  6.0
 
-     negative rho (up, down):  2.364E-03 0.000E+00
+     negative rho (up, down):  2.358E-03 0.000E+00
 
-     total cpu time spent up to now is     8893.4 secs
+     total cpu time spent up to now is     9216.5 secs
 
-     total energy              =   -3763.83839523 Ry
-     estimated scf accuracy    <          3.3E-09 Ry
+     total energy              =   -3763.83858043 Ry
+     estimated scf accuracy    <       0.00000910 Ry
 
-     iteration # 41     ecut=    50.00 Ry     beta= 0.01
+     iteration # 13     ecut=    50.00 Ry     beta= 0.01
      Davidson diagonalization with overlap
 
 ---- Real-time Memory Report at c_bands before calling an iterative solver
            513 MiB given to the printing process from OS
            138 MiB allocation reported by mallinfo(arena+hblkhd)
-        138664 MiB available memory on the node where the printing process lives
+        138465 MiB available memory on the node where the printing process lives
 ------------------
-     ethr =  8.26E-13,  avg # of iterations =  2.0
+     ethr =  2.29E-09,  avg # of iterations =  2.0
 
-     negative rho (up, down):  2.364E-03 0.000E+00
+     negative rho (up, down):  2.358E-03 0.000E+00
 
-     total cpu time spent up to now is     8895.2 secs
+     total cpu time spent up to now is     9218.6 secs
 
-     total energy              =   -3763.83839523 Ry
-     estimated scf accuracy    <          2.5E-09 Ry
+     total energy              =   -3763.83858052 Ry
+     estimated scf accuracy    <       0.00000596 Ry
 
-     iteration # 42     ecut=    50.00 Ry     beta= 0.01
+     iteration # 14     ecut=    50.00 Ry     beta= 0.01
      Davidson diagonalization with overlap
 
 ---- Real-time Memory Report at c_bands before calling an iterative solver
            513 MiB given to the printing process from OS
            138 MiB allocation reported by mallinfo(arena+hblkhd)
-        138655 MiB available memory on the node where the printing process lives
+        138463 MiB available memory on the node where the printing process lives
 ------------------
-     ethr =  6.20E-13,  avg # of iterations =  2.0
-
-     negative rho (up, down):  2.364E-03 0.000E+00
-
-     total cpu time spent up to now is     8897.0 secs
-
-     total energy              =   -3763.83839524 Ry
-     estimated scf accuracy    <          1.5E-09 Ry
-
-     iteration # 43     ecut=    50.00 Ry     beta= 0.01
-     Davidson diagonalization with overlap
-
----- Real-time Memory Report at c_bands before calling an iterative solver
-           513 MiB given to the printing process from OS
-           138 MiB allocation reported by mallinfo(arena+hblkhd)
-        138658 MiB available memory on the node where the printing process lives
-------------------
-     ethr =  3.87E-13,  avg # of iterations =  2.0
-
-     negative rho (up, down):  2.364E-03 0.000E+00
-
-     total cpu time spent up to now is     8898.9 secs
-
-     total energy              =   -3763.83839524 Ry
-     estimated scf accuracy    <          1.0E-09 Ry
-
-     iteration # 44     ecut=    50.00 Ry     beta= 0.01
-     Davidson diagonalization with overlap
-
----- Real-time Memory Report at c_bands before calling an iterative solver
-           513 MiB given to the printing process from OS
-           138 MiB allocation reported by mallinfo(arena+hblkhd)
-        138635 MiB available memory on the node where the printing process lives
-------------------
-     ethr =  2.51E-13,  avg # of iterations =  5.0
-
-     negative rho (up, down):  2.363E-03 0.000E+00
-
-     total cpu time spent up to now is     8901.0 secs
-
-     total energy              =   -3763.83839524 Ry
-     estimated scf accuracy    <          6.2E-10 Ry
-
-     iteration # 45     ecut=    50.00 Ry     beta= 0.01
-     Davidson diagonalization with overlap
-
----- Real-time Memory Report at c_bands before calling an iterative solver
-           513 MiB given to the printing process from OS
-           138 MiB allocation reported by mallinfo(arena+hblkhd)
-        138659 MiB available memory on the node where the printing process lives
-------------------
-     ethr =  1.55E-13,  avg # of iterations =  2.0
-
-     negative rho (up, down):  2.363E-03 0.000E+00
-
-     total cpu time spent up to now is     8902.9 secs
-
-     total energy              =   -3763.83839525 Ry
-     estimated scf accuracy    <          6.7E-10 Ry
-
-     iteration # 46     ecut=    50.00 Ry     beta= 0.01
-     Davidson diagonalization with overlap
-
----- Real-time Memory Report at c_bands before calling an iterative solver
-           513 MiB given to the printing process from OS
-           138 MiB allocation reported by mallinfo(arena+hblkhd)
-        138653 MiB available memory on the node where the printing process lives
-------------------
-     ethr =  1.55E-13,  avg # of iterations =  2.0
-
-     negative rho (up, down):  2.363E-03 0.000E+00
