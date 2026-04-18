@@ -100,6 +100,24 @@ function updateOriginalStructureSource() {
   el.textContent = `Source: ${originalInputFile ?? "not available"}`;
 }
 
+function updateFixedAtomStatus() {
+  const el = document.getElementById("fixedAtomStatus");
+  if (!el) return;
+
+  if (!Array.isArray(originalConstraints) || !originalConstraints.length) {
+    el.textContent = "Fixed atoms: no if_pos constraint data found";
+    return;
+  }
+
+  const fixedCount = originalConstraints.filter((item) =>
+    item.fixed || (item.if_pos || []).some((flag) => Number(flag) === 0)
+  ).length;
+
+  el.textContent = fixedCount > 0
+    ? `Fixed atoms: ${fixedCount} highlighted`
+    : "Fixed atoms: none in input file";
+}
+
 function enableMiddleMousePan(containerId) {
   const el = document.getElementById(containerId);
   if (!el || el.dataset.middlePanBound === "true") return;
@@ -1158,6 +1176,7 @@ async function refreshJob() {
       }
 
       updateOriginalStructureSource();
+      updateFixedAtomStatus();
 
       if (trajectoryFrames.length > 0) {
         renderOriginalStructure(false);

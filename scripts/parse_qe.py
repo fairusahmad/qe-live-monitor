@@ -29,8 +29,14 @@ force_target_pattern = re.compile(r'criteria:\s*energy\s*<\s*[-0-9.Ee+]+\s+Ry,\s
 bfgs_pattern = re.compile(r'number of bfgs steps\s+=\s+(\d+)', re.IGNORECASE)
 scf_pattern = re.compile(r'number of scf cycles\s+=\s+(\d+)', re.IGNORECASE)
 
-cell_header_pattern = re.compile(r'^CELL_PARAMETERS\s*[\(\{](.*?)[\)\}]', re.IGNORECASE)
-atomic_header_pattern = re.compile(r'^ATOMIC_POSITIONS\s*[\(\{](.*?)[\)\}]', re.IGNORECASE)
+cell_header_pattern = re.compile(
+    r'^CELL_PARAMETERS(?:\s*[\(\{](.*?)[\)\}]|\s+(\S+))?',
+    re.IGNORECASE
+)
+atomic_header_pattern = re.compile(
+    r'^ATOMIC_POSITIONS(?:\s*[\(\{](.*?)[\)\}]|\s+(\S+))?',
+    re.IGNORECASE
+)
 alat_value_pattern = re.compile(r'alat\s*=\s*([-0-9.Ee+]+)', re.IGNORECASE)
 
 alat_line_pattern = re.compile(r'lattice parameter \(alat\)\s*=\s*([-0-9.Ee+]+)\s+a\.u\.', re.IGNORECASE)
@@ -53,7 +59,7 @@ def parse_cell_matrix(lines, start_idx):
     if not m:
         return None
 
-    unit_text = m.group(1).strip().lower()
+    unit_text = (m.group(1) or m.group(2) or "").strip().lower()
 
     matrix_raw = []
     for j in range(start_idx + 1, min(start_idx + 4, len(lines))):
@@ -130,7 +136,7 @@ def parse_atomic_positions_block(lines, start_idx):
     if not m:
         return None
 
-    coord_type = m.group(1).strip().lower()
+    coord_type = (m.group(1) or m.group(2) or "").strip().lower()
     atoms = []
     i = start_idx + 1
 
