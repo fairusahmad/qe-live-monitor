@@ -252,6 +252,9 @@
           <option value="1x1x1">1 x 1 x 1</option>
           <option value="2x2x1" selected>2 x 2 x 1</option>
         </select>
+        <label for="fixedGlowTransparency">Fixed glow transparency</label>
+        <input id="fixedGlowTransparency" type="range" min="0" max="100" value="66" oninput="updateFixedGlowTransparency(this.value)">
+        <span id="fixedGlowTransparencyValue">66%</span>
         <button onclick="toggleAxes()">Toggle Axes</button>
         <button id="measureToggle" onclick="toggleMeasureMode()">Measure Distance</button>
         <button onclick="clearMeasurement()">Clear Measure</button>
@@ -289,7 +292,7 @@
     </div>
   </div>
 
-  <script src="job.js?v=20260418-fixed-atom-glow-1"></script>
+  <script src="job.js?v=20260418-fixed-glow-side-view-1"></script>
 </body>
 </html>
 

@@ -20,6 +20,7 @@ let showCell = true;
 let showAxes = true;
 let currentStyle = "ballstick";
 let cellRepeat = { x: 2, y: 2, z: 1 };
+let fixedGlowTransparency = 66;
 let measureMode = false;
 let measurementState = {
   current: { atoms: [], labels: [], line: null },
@@ -393,21 +394,44 @@ function addFixedAtomGlow(targetViewer, xyzText, matrix, constraints) {
   const markers = buildFixedAtomMarkers(xyzText, matrix, constraints);
   if (!markers.length) return;
 
+  const alpha = Math.max(0, Math.min(1, 1 - fixedGlowTransparency / 100));
+  if (alpha <= 0) return;
+
   for (const marker of markers) {
     const center = { x: marker.x, y: marker.y, z: marker.z };
     targetViewer.addSphere({
       center,
       radius: 0.78,
       color: "#00d4ff",
-      alpha: 0.34
+      alpha
     });
     targetViewer.addSphere({
       center,
       radius: 0.48,
       color: "#fff176",
-      alpha: 0.28
+      alpha: Math.min(1, alpha * 0.82)
     });
   }
+}
+
+function updateFixedGlowTransparency(value) {
+  const parsed = Number(value);
+  fixedGlowTransparency = Number.isFinite(parsed)
+    ? Math.max(0, Math.min(100, parsed))
+    : 66;
+
+  const label = document.getElementById("fixedGlowTransparencyValue");
+  if (label) label.textContent = `${fixedGlowTransparency}%`;
+
+  if (originalViewer && originalStructure) {
+    renderOriginalStructure(true);
+  }
+}
+
+function applyDefaultSideView(targetViewer) {
+  if (!targetViewer) return;
+  targetViewer.zoomTo();
+  targetViewer.rotate(90, "x");
 }
 
 function buildXYZFromAtoms(atoms, comment = "Generated structure") {
@@ -598,7 +622,7 @@ function renderOriginalStructure(preserveView = false) {
   if (preserveView && savedView) {
     originalViewer.setView(savedView);
   } else {
-    originalViewer.zoomTo();
+    applyDefaultSideView(originalViewer);
   }
 
   originalViewer.resize();
@@ -633,7 +657,7 @@ function renderFrame(index, preserveView = false) {
   if (preserveView && savedView) {
     viewer.setView(savedView);
   } else {
-    viewer.zoomTo();
+    applyDefaultSideView(viewer);
   }
 
   viewer.resize();
