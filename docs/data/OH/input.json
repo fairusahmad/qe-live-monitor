@@ -1,0 +1,27 @@
+{
+  "input_file": "/media/node1/Fairus2TB/fairus/Nguyen/OH/input.pw_relax.x",
+  "input_file_name": "input.pw_relax.x",
+  "parameters": {
+    "occupations": null,
+    "degauss": null,
+    "nspin": null,
+    "nosym": null,
+    "noinv": null,
+    "noncolin": null,
+    "vdw_corr": null,
+    "conv_thr": "1.0d-7 electron_maxstep = 150 mixing_beta = 0.10 mixing_mode = 'plain' scf_must_converge = .true. startingwfc = 'random'",
+    "electron_maxstep": null,
+    "mixing_beta": null,
+    "mixing_mode": null,
+    "scf_must_converge": null,
+    "startingwfc": null,
+    "forc_conv_thr": null
+  },
+  "all_parameters": {
+    "calculation": "'relax' forc_conv_thr = 5.0d-4 nstep = 100 outdir = './output/' prefix = 'oh' pseudo_dir = '/home/node1/PSP/PseudosP/pslibrary-master/pbe/PSEUDOPOTENTIALS/' restart_mode = 'from_scratch' tprnfor = .true. verbosity = 'high' wf_collect = .true.",
+    "ibrav": "0 nat = 2 ntyp = 2 ecutwfc = 50 ecutrho = 400 occupations = 'smearing' smearing    = 'mv' degauss     = 0.01 nspin = 1 nosym = .true. noinv = .false. noncolin = .false. vdw_corr = 'grimme-d3'",
+    "conv_thr": "1.0d-7 electron_maxstep = 150 mixing_beta = 0.10 mixing_mode = 'plain' scf_must_converge = .true. startingwfc = 'random'",
+    "ion_dynamics": "'bfgs' upscale = 100"
+  },
+  "text": "&CONTROL\n calculation = 'relax'\n forc_conv_thr = 5.0d-4\n nstep = 100\n outdir = './output/'\n prefix = 'oh'\n pseudo_dir = '/home/node1/PSP/PseudosP/pslibrary-master/pbe/PSEUDOPOTENTIALS/'\n restart_mode = 'from_scratch'\n tprnfor = .true.\n verbosity = 'high'\n wf_collect = .true.\n/\n\n&SYSTEM\n ibrav = 0\n nat = 2\n ntyp = 2\n\n ecutwfc = 50\n ecutrho = 400\n\n occupations = 'smearing'\n smearing    = 'mv'\n degauss     = 0.01\n\n nspin = 1\n !tot_magnetization = 1\n\n nosym = .true.\n noinv = .false.\n noncolin = .false.\n\n vdw_corr = 'grimme-d3'\n/\n\n&ELECTRONS\n conv_thr = 1.0d-7\n electron_maxstep = 150\n mixing_beta = 0.10\n mixing_mode = 'plain'\n scf_must_converge = .true.\n startingwfc = 'random'\n/\n\n&IONS\n ion_dynamics = 'bfgs'\n upscale = 100\n/\n\nATOMIC_SPECIES\nO 15.9994  O.pbe-n-rrkjus_psl.1.0.0.UPF\nH 1.00797  H.pbe-rrkjus_psl.1.0.0.UPF\n\nK_POINTS gamma\n\nCELL_PARAMETERS angstrom\n  7.371898000   0.000000000   0.000000000\n  3.685948614   6.384247701   0.000000000\n  0.000000000   0.000000000  10.000000000\n\nATOMIC_POSITIONS angstrom\nO   5.208408450   3.095010376   5.168940729\nH   6.189868730   3.060532785   5.183878455"
+}

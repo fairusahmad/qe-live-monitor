@@ -1,0 +1,27 @@
+{
+  "input_file": "/media/node1/Fairus2TB/fairus/Nguyen/Slab/Ni_only/input.pw_relax.x",
+  "input_file_name": "input.pw_relax.x",
+  "parameters": {
+    "occupations": null,
+    "degauss": null,
+    "nspin": null,
+    "nosym": null,
+    "noinv": null,
+    "noncolin": null,
+    "vdw_corr": null,
+    "conv_thr": "1e-07 electron_maxstep = 150 mixing_beta = 0.05 mixing_mode = 'plain' scf_must_converge = .TRUE. startingwfc = 'random'",
+    "electron_maxstep": null,
+    "mixing_beta": null,
+    "mixing_mode": null,
+    "scf_must_converge": null,
+    "startingwfc": null,
+    "forc_conv_thr": null
+  },
+  "all_parameters": {
+    "calculation": "'relax' forc_conv_thr = 5d-4 nstep = 150 outdir = './output/' prefix = 'VLAB' pseudo_dir = '/home/node1/PSP/PseudosP/pslibrary-master/pbe/PSEUDOPOTENTIALS/' restart_mode = 'from_scratch' tprnfor = .TRUE. verbosity = 'high' wf_collect = .TRUE.",
+    "ibrav": "0 nat = 36 ntyp = 1 ecutwfc = 50 ecutrho = 400 occupations = 'smearing' degauss = 0.02 nspin = 1 nosym = .false. noinv = .false. noncolin = .false. vdw_corr = 'grimme-d3'",
+    "conv_thr": "1e-07 electron_maxstep = 150 mixing_beta = 0.05 mixing_mode = 'plain' scf_must_converge = .TRUE. startingwfc = 'random'",
+    "ion_dynamics": "'bfgs' upscale = 100"
+  },
+  "text": "&CONTROL\ncalculation = 'relax'\nforc_conv_thr = 5d-4\nnstep = 150\noutdir = './output/'\nprefix = 'VLAB'\npseudo_dir = '/home/node1/PSP/PseudosP/pslibrary-master/pbe/PSEUDOPOTENTIALS/'\nrestart_mode = 'from_scratch'\ntprnfor = .TRUE.\nverbosity = 'high'\nwf_collect = .TRUE.\n/\n\n&SYSTEM\n ibrav = 0\n nat = 36\n ntyp = 1\n ecutwfc = 50\n ecutrho = 400\n occupations = 'smearing'\n degauss = 0.02\n nspin = 1\n nosym = .false.\n noinv = .false.\n noncolin = .false.\n vdw_corr = 'grimme-d3'\n/\n\n&ELECTRONS\nconv_thr = 1e-07\nelectron_maxstep = 150\nmixing_beta = 0.05\nmixing_mode = 'plain'\nscf_must_converge = .TRUE.\nstartingwfc = 'random'\n/\n\n&IONS\nion_dynamics = 'bfgs'\nupscale = 100\n/\n\nATOMIC_SPECIES\nNi 58.7 Ni.pbe-n-rrkjus_psl.1.0.0.UPF !41 236\n\nK_POINTS {gamma}\n!3 3 1 0 0 0\n\nCELL_PARAMETERS {angstrom}\n7.3718980000 0.0000000000 0.0000000000\n3.6859490000 6.3842509421 0.0000000000\n0.0000000000 0.0000000000 33.0191290000\n\nATOMIC_POSITIONS {angstrom}\nNi 0 0 10.000000018687981 0 0 0\nNi 1.2286496543801702 2.128083626088395 10.000000018687981 0 0 0\nNi 2.4572993456198304 4.2561673160193 10.000000018687981 0 0 0\nNi 2.45729930876034 0 10.000000018687981 0 0 0\nNi 3.6859489631405102 2.128083626088395 10.000000018687981 0 0 0\nNi 4.91459865438017 4.2561673160193 10.000000018687981 0 0 0\nNi 4.91459869123966 0 10.000000018687981 0 0 0\nNi 6.14324834561983 2.128083626088395 10.000000018687981 0 0 0\nNi 7.37189803685949 4.2561673160193 10.000000018687981 0 0 0\nNi 1.6381995391735602 1.4187224173922637 12.006376426293091 0 0 0\nNi 2.8668492304132203 3.5468061073231683 12.006376426293091 0 0 0\nNi 4.095498884793391 5.674889733411564 12.006376426293091 0 0 0\nNi 4.0954988479339 1.4187224173922637 12.006376426293091 0 0 0\nNi 5.32414853917356 3.5468061073231683 12.006376426293091 0 0 0\nNi 6.5527981935537305 5.674889733411564 12.006376426293091 0 0 0\nNi 6.55279823041322 1.4187224173922637 12.006376426293091 0 0 0\nNi 7.78144792165288 3.5468061073231683 12.006376426293091 0 0 0\nNi 9.01009757603305 5.674889733411564 12.006376426293091 0 0 0\nNi 2.04774942396695 0.7093612086961318 14.012752573706909\nNi 3.2763990783471204 2.8374448347845274 14.012752573706909\nNi 4.5050487695867805 4.965528524715432 14.012752573706909\nNi 4.505048806446269 0.7093612086961318 14.012752573706909\nNi 5.73369846082644 2.8374448347845274 14.012752573706909\nNi 6.9623481520661 4.965528524715432 14.012752573706909\nNi 6.96234811520661 0.7093612086961318 14.012752573706909\nNi 8.190997769586781 2.8374448347845274 14.012752573706909\nNi 9.419647460826441 4.965528524715432 14.012752573706909\nNi 0 0 16.01912898131202\nNi 1.2286496543801702 2.128083626088395 16.01912898131202\nNi 2.4572993456198304 4.2561673160193 16.01912898131202\nNi 2.45729930876034 0 16.01912898131202\nNi 3.6859489631405102 2.128083626088395 16.01912898131202\nNi 4.91459865438017 4.2561673160193 16.01912898131202\nNi 4.91459869123966 0 16.01912898131202\nNi 6.14324834561983 2.128083626088395 16.01912898131202\nNi 7.37189803685949 4.2561673160193 16.01912898131202\n"
+}
