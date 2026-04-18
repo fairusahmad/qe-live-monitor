@@ -120,6 +120,28 @@
       border-radius: 8px;
       background: white;
     }
+    .input-table-wrap {
+      margin-top: 12px;
+      overflow: auto;
+      border: 1px solid #d8deea;
+      border-radius: 8px;
+    }
+    .input-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    .input-table th,
+    .input-table td {
+      border-bottom: 1px solid #e6ebf3;
+      padding: 8px 10px;
+      text-align: left;
+      vertical-align: top;
+    }
+    .input-table th {
+      width: 220px;
+      background: #f8fafc;
+    }
     .stepbox {
       display: inline-block;
       min-width: 160px;
@@ -143,6 +165,11 @@
     <div class="card">
       <h2>Status</h2>
       <div id="status">Loading...</div>
+    </div>
+
+    <div class="card">
+      <h2>Input File</h2>
+      <div id="inputDetails">Loading...</div>
     </div>
 
     <div class="charts-row">
@@ -259,7 +286,7 @@
     </div>
   </div>
 
-  <script src="job.js?v=20260317-y-range-selector-1"></script>
+  <script src="job.js?v=20260418-input-file-1"></script>
 </body>
 </html>
 

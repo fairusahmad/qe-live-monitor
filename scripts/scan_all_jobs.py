@@ -1,7 +1,7 @@
 import os
 import json
 import re
-from parse_qe import export_qe_run
+from parse_qe import INPUT_COMPARE_KEYS, export_qe_run, parse_qe_input_details
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 REPO_DIR = os.path.dirname(SCRIPT_DIR)
@@ -47,6 +47,13 @@ JOB_MARKER_PREFIXES = (
     "bands_input.",
 )
 
+INPUT_PRIORITY = [
+    "input.pw_relax.x",
+    "input.pw.x",
+    "nscf_input.pw.x",
+    "bands_input.pw.x",
+]
+
 SKIP_DIR_NAMES = {
     ".git",
     "__pycache__",
@@ -85,6 +92,49 @@ def find_output_file(job_dir):
         return os.path.join(job_dir, out_files[0])
 
     return None
+
+def find_input_file(job_dir):
+    if not os.path.isdir(job_dir):
+        return None
+
+    for name in INPUT_PRIORITY:
+        candidate = os.path.join(job_dir, name)
+        if os.path.isfile(candidate):
+            return candidate
+
+    input_files = []
+    for f in os.listdir(job_dir):
+        full = os.path.join(job_dir, f)
+        lower_name = f.lower()
+        if os.path.isfile(full) and lower_name.startswith(JOB_MARKER_PREFIXES):
+            input_files.append(f)
+
+    if input_files:
+        input_files.sort()
+        return os.path.join(job_dir, input_files[0])
+
+    return None
+
+def attach_input_details(item, input_details, job_id):
+    if input_details:
+        item["input_file"] = input_details.get("input_file")
+        item["input_file_name"] = input_details.get("input_file_name")
+        item["input_parameters"] = input_details.get("parameters") or {
+            key: None for key in INPUT_COMPARE_KEYS
+        }
+        item["input_file_data"] = f"data/{job_id}/input.json"
+    else:
+        item["input_file"] = None
+        item["input_file_name"] = None
+        item["input_parameters"] = {key: None for key in INPUT_COMPARE_KEYS}
+
+def write_standalone_input_json(input_details, outdir):
+    if not input_details:
+        return
+
+    os.makedirs(outdir, exist_ok=True)
+    with open(os.path.join(outdir, "input.json"), "w", encoding="utf-8") as f:
+        json.dump(input_details, f, indent=2)
 
 def natural_sort_key(value):
     return [int(part) if part.isdigit() else part.lower() for part in re.split(r"(\d+)", value)]
@@ -170,6 +220,12 @@ def main():
             jobs_summary.append(item)
             continue
 
+        input_file = find_input_file(job_dir)
+        input_details = parse_qe_input_details(input_file) if input_file else None
+        attach_input_details(item, input_details, job_id)
+        if input_details:
+            write_standalone_input_json(input_details, os.path.join(DATA_DIR, job_id))
+
         output_file = find_output_file(job_dir)
         if output_file is None:
             item["status"] = "no_output_found"
@@ -196,6 +252,9 @@ def main():
             item["has_structure"] = len(result["latest_atoms_ang"]) > 0
             item["num_structure_steps"] = len(result["position_blocks"])
 
+            input_details = result.get("input_details") or input_details
+            attach_input_details(item, input_details, job_id)
+
             item["status_file"] = f"data/{job_id}/status.json"
             item["energy_file"] = f"data/{job_id}/energy.csv"
             item["total_force_file"] = f"data/{job_id}/total_force.csv"
@@ -205,6 +264,7 @@ def main():
             item["trajectory_file"] = f"data/{job_id}/trajectory.xyz"
             item["lattice_file"] = f"data/{job_id}/lattice.json"
             item["original_lattice_file"] = f"data/{job_id}/original_lattice.json"
+            item["input_file_data"] = f"data/{job_id}/input.json"
             item["output_tail_file"] = f"data/{job_id}/latest_output_tail.txt"
 
             if not item["has_structure"] and not item["structure_capable"]:

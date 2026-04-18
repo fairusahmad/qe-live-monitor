@@ -5,6 +5,23 @@ from datetime import datetime
 
 BOHR_TO_ANG = 0.529177210903
 
+INPUT_COMPARE_KEYS = [
+    "occupations",
+    "degauss",
+    "nspin",
+    "nosym",
+    "noinv",
+    "noncolin",
+    "vdw_corr",
+    "conv_thr",
+    "electron_maxstep",
+    "mixing_beta",
+    "mixing_mode",
+    "scf_must_converge",
+    "startingwfc",
+    "forc_conv_thr",
+]
+
 energy_pattern = re.compile(r'!\s+total energy\s+=\s+([-0-9.Ee+]+)\s+Ry')
 total_force_pattern = re.compile(r'[Tt]otal\s+force\s*=\s*([-0-9.Ee+]+)')
 gradient_error_pattern = re.compile(r'Gradient\s+error\s*=\s*([-0-9.Ee+]+)\s+Ry/Bohr', re.IGNORECASE)
@@ -157,6 +174,112 @@ def read_file_lines_if_exists(path):
             return f.readlines()
     return None
 
+def strip_qe_comment(line):
+    in_single = False
+    in_double = False
+    result = []
+
+    for char in line:
+        if char == "'" and not in_double:
+            in_single = not in_single
+        elif char == '"' and not in_single:
+            in_double = not in_double
+        elif char == "!" and not in_single and not in_double:
+            break
+        result.append(char)
+
+    return "".join(result)
+
+def split_qe_assignments(text):
+    assignments = []
+    current = []
+    in_single = False
+    in_double = False
+
+    for char in text:
+        if char == "'" and not in_double:
+            in_single = not in_single
+        elif char == '"' and not in_single:
+            in_double = not in_double
+
+        if char == "," and not in_single and not in_double:
+            item = "".join(current).strip()
+            if item:
+                assignments.append(item)
+            current = []
+        else:
+            current.append(char)
+
+    item = "".join(current).strip()
+    if item:
+        assignments.append(item)
+
+    return assignments
+
+def clean_qe_value(value):
+    cleaned = value.strip().rstrip(",")
+    if len(cleaned) >= 2 and cleaned[0] == cleaned[-1] and cleaned[0] in ("'", '"'):
+        return cleaned[1:-1]
+    return cleaned
+
+def parse_qe_input_parameters(lines):
+    if not lines:
+        return {}
+
+    parameters = {}
+    in_namelist = False
+    buffer = []
+
+    def flush_buffer():
+        nonlocal buffer
+        for assignment in split_qe_assignments(" ".join(buffer)):
+            if "=" not in assignment:
+                continue
+            key, value = assignment.split("=", 1)
+            key = key.strip().lower()
+            if key:
+                parameters[key] = clean_qe_value(value)
+        buffer = []
+
+    for line in lines:
+        stripped = strip_qe_comment(line).strip()
+        if not stripped:
+            continue
+
+        if stripped.startswith("&"):
+            in_namelist = True
+            remainder = stripped[1:]
+            parts = remainder.split(None, 1)
+            if len(parts) == 2:
+                buffer.append(parts[1])
+            continue
+
+        if in_namelist:
+            if stripped == "/" or stripped.startswith("/"):
+                flush_buffer()
+                in_namelist = False
+                continue
+            buffer.append(stripped)
+
+    if buffer:
+        flush_buffer()
+
+    return parameters
+
+def parse_qe_input_details(input_file):
+    lines = read_file_lines_if_exists(input_file)
+    if not lines:
+        return None
+
+    parameters = parse_qe_input_parameters(lines)
+    return {
+        "input_file": input_file,
+        "input_file_name": os.path.basename(input_file),
+        "parameters": {key: parameters.get(key) for key in INPUT_COMPARE_KEYS},
+        "all_parameters": parameters,
+        "text": "".join(lines),
+    }
+
 def find_position_blocks_in_lines(lines, cell_block):
     if not lines:
         return []
@@ -265,6 +388,14 @@ def parse_input_structure(qe_output):
 
     return None
 
+def parse_input_details_for_output(qe_output):
+    for inp in guess_input_files_from_output(qe_output):
+        parsed = parse_qe_input_details(inp)
+        if parsed is not None:
+            return parsed
+
+    return None
+
 def convert_atoms_to_angstrom(pos_block, cell_block):
     coord_type = pos_block["coord_type"]
     atoms_raw = pos_block["atoms_raw"]
@@ -351,6 +482,7 @@ def parse_qe_output(filename):
 
     latest_atoms_ang = position_blocks[-1]["atoms_ang"] if position_blocks else []
     input_structure = parse_input_structure(filename)
+    input_details = parse_input_details_for_output(filename)
 
     return {
         "energies": energies,
@@ -369,6 +501,7 @@ def parse_qe_output(filename):
         "position_blocks": position_blocks,
         "cell_source": cell_source,
         "input_structure": input_structure,
+        "input_details": input_details,
     }
 
 def write_xyz(atoms_ang, output_xyz, comment="Latest structure exported from QE output in Cartesian Angstrom"):
@@ -467,6 +600,18 @@ def write_original_lattice_json(result, output_json):
     with open(output_json, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=2)
 
+def write_input_json(result, output_json):
+    input_details = result.get("input_details")
+    data = input_details or {
+        "input_file": None,
+        "input_file_name": None,
+        "parameters": {key: None for key in INPUT_COMPARE_KEYS},
+        "all_parameters": {},
+        "text": "",
+    }
+    with open(output_json, "w", encoding="utf-8") as f:
+        json.dump(data, f, indent=2)
+
 def export_qe_run(qe_output, outdir, job_name="QE Job"):
     os.makedirs(outdir, exist_ok=True)
     result = parse_qe_output(qe_output)
@@ -484,6 +629,7 @@ def export_qe_run(qe_output, outdir, job_name="QE Job"):
         comment="Original structure exported from QE input in Cartesian Angstrom"
     )
     write_original_lattice_json(result, os.path.join(outdir, "original_lattice.json"))
+    write_input_json(result, os.path.join(outdir, "input.json"))
     write_output_tail(qe_output, os.path.join(outdir, "latest_output_tail.txt"))
 
     return result

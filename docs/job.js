@@ -44,6 +44,31 @@ const chartControlIds = {
     reset: "gradientAxisReset"
   }
 };
+const INPUT_COMPARE_KEYS = [
+  "occupations",
+  "degauss",
+  "nspin",
+  "nosym",
+  "noinv",
+  "noncolin",
+  "vdw_corr",
+  "conv_thr",
+  "electron_maxstep",
+  "mixing_beta",
+  "mixing_mode",
+  "scf_must_converge",
+  "startingwfc",
+  "forc_conv_thr"
+];
+
+function escapeHTML(value) {
+  return String(value ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
 
 function getJobId() {
   const params = new URLSearchParams(window.location.search);
@@ -843,18 +868,54 @@ function formatScientific(value, digits = 3) {
   return num.toExponential(digits);
 }
 
+function formatInputValue(value) {
+  if (value === null || value === undefined || value === "") return "-";
+  return escapeHTML(value);
+}
+
+function renderInputDetails(inputDetails, job) {
+  const el = document.getElementById("inputDetails");
+  if (!el) return;
+
+  if (!inputDetails || (!inputDetails.input_file && !inputDetails.text)) {
+    el.innerHTML = `
+      <div><b>Input file:</b> ${escapeHTML(job.input_file_name ?? "-")}</div>
+      <p>No input file was exported for this job yet. Run the scanner again to create input.json.</p>
+    `;
+    return;
+  }
+
+  const rows = INPUT_COMPARE_KEYS.map((key) => `
+    <tr>
+      <th>${escapeHTML(key)}</th>
+      <td>${formatInputValue(inputDetails.parameters?.[key])}</td>
+    </tr>
+  `).join("");
+
+  el.innerHTML = `
+    <div><b>Input file:</b> ${escapeHTML(inputDetails.input_file ?? job.input_file ?? "-")}</div>
+    <div class="input-table-wrap">
+      <table class="input-table">
+        <tbody>${rows}</tbody>
+      </table>
+    </div>
+    <h3>Full Input File</h3>
+    <pre>${escapeHTML(inputDetails.text || "")}</pre>
+  `;
+}
+
 function renderStatus(status, job) {
   document.getElementById("status").innerHTML = `
-    <div><b>Job:</b> ${status.job ?? job.label ?? "-"}</div>
-    <div><b>Converged:</b> ${status.converged ?? "-"}</div>
-    <div><b>Latest energy:</b> ${status.latest_energy_ry ?? "-"}</div>
-    <div><b>Latest gradient error:</b> ${formatScientific(status.latest_gradient_error_ry_bohr)}</div>
-    <div><b>BFGS steps:</b> ${status.bfgs_steps ?? "-"}</div>
-    <div><b>SCF cycles:</b> ${status.scf_cycles ?? "-"}</div>
-    <div><b>Atoms:</b> ${status.nat_latest ?? "-"}</div>
-    <div><b>Geometry steps:</b> ${status.num_structure_steps ?? "-"}</div>
-    <div><b>Last update:</b> ${status.last_update ?? "-"}</div>
-    ${job.note ? `<div><b>Note:</b> ${job.note}</div>` : ""}
+    <div><b>Job:</b> ${escapeHTML(status.job ?? job.label ?? "-")}</div>
+    <div><b>Converged:</b> ${escapeHTML(status.converged ?? "-")}</div>
+    <div><b>Latest energy:</b> ${escapeHTML(status.latest_energy_ry ?? "-")}</div>
+    <div><b>Latest gradient error:</b> ${escapeHTML(formatScientific(status.latest_gradient_error_ry_bohr))}</div>
+    <div><b>BFGS steps:</b> ${escapeHTML(status.bfgs_steps ?? "-")}</div>
+    <div><b>SCF cycles:</b> ${escapeHTML(status.scf_cycles ?? "-")}</div>
+    <div><b>Atoms:</b> ${escapeHTML(status.nat_latest ?? "-")}</div>
+    <div><b>Geometry steps:</b> ${escapeHTML(status.num_structure_steps ?? "-")}</div>
+    <div><b>Last update:</b> ${escapeHTML(status.last_update ?? "-")}</div>
+    ${job.note ? `<div><b>Note:</b> ${escapeHTML(job.note)}</div>` : ""}
   `;
 }
 
@@ -869,13 +930,22 @@ async function refreshJob() {
 
   document.getElementById("jobTitle").textContent = job.label;
 
+  try {
+    const inputPath = job.input_file_data ?? `data/${job.job_id}/input.json`;
+    const inputDetails = await loadJSON(inputPath);
+    renderInputDetails(inputDetails, job);
+  } catch (e) {
+    renderInputDetails(null, job);
+    console.error(e);
+  }
+
   if (job.status !== "ok") {
     document.getElementById("status").innerHTML = `
-      <div><b>Job:</b> ${job.label}</div>
-      <div><b>Status:</b> ${job.status}</div>
-      <div><b>Source dir:</b> ${job.source_dir ?? "-"}</div>
-      <div><b>Output file:</b> ${job.output_file ?? "-"}</div>
-      <div><b>Error:</b> ${job.error ?? "-"}</div>
+      <div><b>Job:</b> ${escapeHTML(job.label)}</div>
+      <div><b>Status:</b> ${escapeHTML(job.status)}</div>
+      <div><b>Source dir:</b> ${escapeHTML(job.source_dir ?? "-")}</div>
+      <div><b>Output file:</b> ${escapeHTML(job.output_file ?? "-")}</div>
+      <div><b>Error:</b> ${escapeHTML(job.error ?? "-")}</div>
     `;
     document.getElementById("outputTail").textContent = "No output data available.";
     return;

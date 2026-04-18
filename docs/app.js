@@ -4,6 +4,31 @@ async function loadJobs() {
 }
 
 const RY_TO_EV = 13.6057039763;
+const INPUT_COMPARE_KEYS = [
+  "occupations",
+  "degauss",
+  "nspin",
+  "nosym",
+  "noinv",
+  "noncolin",
+  "vdw_corr",
+  "conv_thr",
+  "electron_maxstep",
+  "mixing_beta",
+  "mixing_mode",
+  "scf_must_converge",
+  "startingwfc",
+  "forc_conv_thr"
+];
+
+function escapeHTML(value) {
+  return String(value ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
 
 function formatEnergy(value) {
   return Number.isFinite(value) ? value.toFixed(8) : "-";
@@ -97,6 +122,43 @@ function renderCalculator(jobs) {
   updateCalculator();
 }
 
+function formatInputValue(value) {
+  if (value === null || value === undefined || value === "") return "-";
+  return escapeHTML(value);
+}
+
+function renderInputComparison(jobs) {
+  const el = document.getElementById("inputComparison");
+  const okJobs = jobs.filter((job) => job.status === "ok");
+
+  if (!okJobs.length) {
+    el.innerHTML = "<p>No parsed jobs available for input comparison.</p>";
+    return;
+  }
+
+  const headerCells = okJobs
+    .map((job) => `<th><a href="job.html?job=${encodeURIComponent(job.job_id)}">${escapeHTML(job.label)}</a><div class="subtle">${escapeHTML(job.input_file_name ?? "no input file")}</div></th>`)
+    .join("");
+
+  const rows = INPUT_COMPARE_KEYS.map((key) => {
+    const valueCells = okJobs
+      .map((job) => `<td>${formatInputValue(job.input_parameters?.[key])}</td>`)
+      .join("");
+    return `<tr><th>${escapeHTML(key)}</th>${valueCells}</tr>`;
+  }).join("");
+
+  el.innerHTML = `
+    <div class="table-wrap">
+      <table class="compare-table">
+        <thead>
+          <tr><th>Input setting</th>${headerCells}</tr>
+        </thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>
+  `;
+}
+
 function renderJobs(jobs) {
   const el = document.getElementById("jobs");
   el.innerHTML = "";
@@ -108,14 +170,15 @@ function renderJobs(jobs) {
     let statusClass = job.status === "ok" ? "ok" : "bad";
 
     card.innerHTML = `
-      <div class="title">${job.label}</div>
-      <div class="meta"><b>Status:</b> <span class="${statusClass}">${job.status}</span></div>
-      <div class="meta"><b>Source dir:</b> ${job.source_dir}</div>
-      <div class="meta"><b>Picked output:</b> ${job.output_file ?? "-"}</div>
-      <div class="meta"><b>Latest energy:</b> ${job.latest_energy_ry ?? "-"}</div>
-      <div class="meta"><b>Converged:</b> ${job.converged ?? "-"}</div>
-      <div class="meta"><b>Atoms:</b> ${job.nat_latest ?? "-"}</div>
-      <div class="meta"><b>Has structure:</b> ${job.has_structure ?? "-"}</div>
+      <div class="title">${escapeHTML(job.label)}</div>
+      <div class="meta"><b>Status:</b> <span class="${statusClass}">${escapeHTML(job.status)}</span></div>
+      <div class="meta"><b>Source dir:</b> ${escapeHTML(job.source_dir)}</div>
+      <div class="meta"><b>Picked output:</b> ${escapeHTML(job.output_file ?? "-")}</div>
+      <div class="meta"><b>Input file:</b> ${escapeHTML(job.input_file_name ?? "-")}</div>
+      <div class="meta"><b>Latest energy:</b> ${escapeHTML(job.latest_energy_ry ?? "-")}</div>
+      <div class="meta"><b>Converged:</b> ${escapeHTML(job.converged ?? "-")}</div>
+      <div class="meta"><b>Atoms:</b> ${escapeHTML(job.nat_latest ?? "-")}</div>
+      <div class="meta"><b>Has structure:</b> ${escapeHTML(job.has_structure ?? "-")}</div>
       <a class="button" href="job.html?job=${encodeURIComponent(job.job_id)}">Open job</a>
     `;
 
@@ -127,10 +190,12 @@ async function main() {
   try {
     const jobs = await loadJobs();
     renderCalculator(jobs);
+    renderInputComparison(jobs);
     renderJobs(jobs);
   } catch (e) {
     document.getElementById("energyFormula").textContent = "Unable to load energy data";
     document.getElementById("energyResult").textContent = "-";
+    document.getElementById("inputComparison").innerHTML = "<p>Failed to load input comparison.</p>";
     document.getElementById("jobs").innerHTML = "<p>Failed to load jobs.json</p>";
     console.error(e);
   }
