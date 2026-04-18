@@ -21,7 +21,6 @@ let showAxes = true;
 let currentStyle = "ballstick";
 let cellRepeat = { x: 2, y: 2, z: 1 };
 const FIXED_GLOW_TRANSPARENCY = 42;
-let viewDirection = "b";
 let measureMode = false;
 let measurementState = {
   current: { atoms: [], labels: [], line: null },
@@ -415,34 +414,57 @@ function addFixedAtomGlow(targetViewer, xyzText, matrix, constraints) {
   }
 }
 
-function applyViewDirection(targetViewer) {
-  if (!targetViewer) return;
-  targetViewer.zoomTo();
+function savedViewStorageKey() {
+  return `qeJobViewer.savedView.${currentJob || "default"}`;
+}
 
-  const rotations = {
-    a: [[90, "y"]],
-    "-a": [[-90, "y"]],
-    b: [[-90, "x"]],
-    "-b": [[90, "x"]],
-    c: [],
-    "-c": [[180, "x"]],
-    x: [[90, "y"]],
-    "-x": [[-90, "y"]],
-    y: [[-90, "x"]],
-    "-y": [[90, "x"]],
-    z: [],
-    "-z": [[180, "x"]]
-  };
-
-  for (const [angle, axis] of rotations[viewDirection] || rotations.b) {
-    targetViewer.rotate(angle, axis);
+function getSavedView() {
+  try {
+    const raw = localStorage.getItem(savedViewStorageKey());
+    return raw ? JSON.parse(raw) : null;
+  } catch (e) {
+    return null;
   }
 }
 
-function changeViewDirection(value) {
-  viewDirection = value;
+function applySavedOrDefaultView(targetViewer) {
+  if (!targetViewer) return;
+
+  const savedView = getSavedView();
+  if (savedView) {
+    targetViewer.setView(savedView);
+  } else {
+    targetViewer.zoomTo();
+    targetViewer.rotate(-90, "x");
+  }
+}
+
+function saveCurrentView() {
+  const sourceViewer = viewer || originalViewer;
+  if (!sourceViewer) return;
+
+  try {
+    localStorage.setItem(savedViewStorageKey(), JSON.stringify(sourceViewer.getView()));
+    updateViewSaveStatus("Saved view");
+  } catch (e) {
+    updateViewSaveStatus("Could not save view");
+  }
+}
+
+function clearSavedView() {
+  try {
+    localStorage.removeItem(savedViewStorageKey());
+    updateViewSaveStatus("Saved view cleared");
+  } catch (e) {
+    updateViewSaveStatus("Could not clear view");
+  }
   renderFrame(currentStep, false);
   renderOriginalStructure(false);
+}
+
+function updateViewSaveStatus(message) {
+  const el = document.getElementById("viewSaveStatus");
+  if (el) el.textContent = message;
 }
 
 function buildXYZFromAtoms(atoms, comment = "Generated structure") {
@@ -633,7 +655,7 @@ function renderOriginalStructure(preserveView = false) {
   if (preserveView && savedView) {
     originalViewer.setView(savedView);
   } else {
-    applyViewDirection(originalViewer);
+    applySavedOrDefaultView(originalViewer);
   }
 
   originalViewer.resize();
@@ -668,7 +690,7 @@ function renderFrame(index, preserveView = false) {
   if (preserveView && savedView) {
     viewer.setView(savedView);
   } else {
-    applyViewDirection(viewer);
+    applySavedOrDefaultView(viewer);
   }
 
   viewer.resize();
