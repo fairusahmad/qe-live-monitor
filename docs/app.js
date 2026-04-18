@@ -26,6 +26,27 @@ const COMPARISON_SELECT_IDS = [
   "inputCompareC",
   "inputCompareD"
 ];
+const ENERGY_SELECT_IDS = ["energyA", "energyB", "energyC"];
+const ENERGY_SELECTION_STORAGE_KEY = "qeDashboard.energySelections";
+const INPUT_COMPARISON_STORAGE_KEY = "qeDashboard.inputComparisonSelections";
+
+function loadStoredSelections(key, expectedLength) {
+  try {
+    const parsed = JSON.parse(localStorage.getItem(key) || "[]");
+    if (!Array.isArray(parsed)) return Array(expectedLength).fill(undefined);
+    return Array.from({ length: expectedLength }, (_, index) => parsed[index]);
+  } catch (e) {
+    return Array(expectedLength).fill(undefined);
+  }
+}
+
+function saveStoredSelections(key, values) {
+  try {
+    localStorage.setItem(key, JSON.stringify(values));
+  } catch (e) {
+    console.warn("Could not save dashboard selections.", e);
+  }
+}
 
 function escapeHTML(value) {
   return String(value ?? "")
@@ -79,8 +100,7 @@ function populateSelect(select, options, preferredIndex) {
 }
 
 function updateCalculator() {
-  const selectIds = ["energyA", "energyB", "energyC"];
-  const chosen = selectIds.map((id) => {
+  const chosen = ENERGY_SELECT_IDS.map((id) => {
     const select = document.getElementById(id);
     const selectedOption = select.options[select.selectedIndex];
     if (!selectedOption) {
@@ -106,13 +126,20 @@ function updateCalculator() {
   }
 }
 
+function saveEnergySelections() {
+  saveStoredSelections(
+    ENERGY_SELECTION_STORAGE_KEY,
+    ENERGY_SELECT_IDS.map((id) => document.getElementById(id)?.value ?? "")
+  );
+}
+
 function renderCalculator(jobs) {
   const options = buildEnergyOptions(jobs);
-  const selectIds = ["energyA", "energyB", "energyC"];
+  const storedValues = loadStoredSelections(ENERGY_SELECTION_STORAGE_KEY, ENERGY_SELECT_IDS.length);
 
-  selectIds.forEach((id, index) => {
+  ENERGY_SELECT_IDS.forEach((id, index) => {
     const select = document.getElementById(id);
-    const previousValue = select.value;
+    const previousValue = select.value || storedValues[index];
     populateSelect(select, options, index);
 
     if (previousValue && options.some((option) => option.value === previousValue)) {
@@ -120,7 +147,10 @@ function renderCalculator(jobs) {
     }
 
     if (!select.dataset.bound) {
-      select.addEventListener("change", updateCalculator);
+      select.addEventListener("change", () => {
+        saveEnergySelections();
+        updateCalculator();
+      });
       select.dataset.bound = "true";
     }
   });
@@ -137,7 +167,7 @@ function buildInputComparisonOptions(jobs) {
   return jobs.filter((job) => job.input_parameters || job.input_file_name || job.status === "ok");
 }
 
-function populateComparisonSelect(select, jobs, preferredJobId, preferredIndex) {
+function populateComparisonSelect(select, jobs, preferredJobId, preferredIndex, hasStoredPreference) {
   select.innerHTML = "";
 
   const empty = document.createElement("option");
@@ -154,11 +184,20 @@ function populateComparisonSelect(select, jobs, preferredJobId, preferredIndex) 
 
   if (preferredJobId && jobs.some((job) => job.job_id === preferredJobId)) {
     select.value = preferredJobId;
+  } else if (hasStoredPreference) {
+    select.value = "";
   } else if (jobs[preferredIndex]) {
     select.value = jobs[preferredIndex].job_id;
   } else {
     select.value = "";
   }
+}
+
+function saveInputComparisonSelections() {
+  saveStoredSelections(
+    INPUT_COMPARISON_STORAGE_KEY,
+    COMPARISON_SELECT_IDS.map((id) => document.getElementById(id)?.value ?? "")
+  );
 }
 
 function selectedComparisonJobs(jobs) {
@@ -218,7 +257,11 @@ function renderInputComparison(jobs) {
     return;
   }
 
-  const previousValues = COMPARISON_SELECT_IDS.map((id) => document.getElementById(id)?.value);
+  const storedValues = loadStoredSelections(INPUT_COMPARISON_STORAGE_KEY, COMPARISON_SELECT_IDS.length);
+  const previousValues = COMPARISON_SELECT_IDS.map((id, index) => {
+    const existingSelect = document.getElementById(id);
+    return existingSelect ? existingSelect.value : storedValues[index];
+  });
 
   el.innerHTML = `
     <div class="comparison-controls">
@@ -234,8 +277,12 @@ function renderInputComparison(jobs) {
 
   COMPARISON_SELECT_IDS.forEach((id, index) => {
     const select = document.getElementById(id);
-    populateComparisonSelect(select, options, previousValues[index], index);
-    select.addEventListener("change", () => renderInputComparisonTable(jobs));
+    const hasStoredPreference = previousValues[index] !== undefined;
+    populateComparisonSelect(select, options, previousValues[index], index, hasStoredPreference);
+    select.addEventListener("change", () => {
+      saveInputComparisonSelections();
+      renderInputComparisonTable(jobs);
+    });
   });
 
   renderInputComparisonTable(jobs);
