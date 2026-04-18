@@ -264,6 +264,7 @@ def main():
             item["trajectory_file"] = f"data/{job_id}/trajectory.xyz"
             item["lattice_file"] = f"data/{job_id}/lattice.json"
             item["original_lattice_file"] = f"data/{job_id}/original_lattice.json"
+            item["original_constraints_file"] = f"data/{job_id}/original_constraints.json"
             item["input_file_data"] = f"data/{job_id}/input.json"
             item["output_tail_file"] = f"data/{job_id}/latest_output_tail.txt"
 

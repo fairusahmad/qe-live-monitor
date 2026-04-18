@@ -154,8 +154,19 @@ def parse_atomic_positions_block(lines, start_idx):
         if len(parts) < 4:
             break
 
+        flag_tokens = [token.strip("{}(),") for token in parts[4:]]
+        flags = []
+        for token in flag_tokens:
+            if token in ("0", "1"):
+                flags.append(int(token))
+            if len(flags) == 3:
+                break
+
+        if len(flags) != 3:
+            flags = [1, 1, 1]
+
         try:
-            atoms.append((parts[0], float(parts[1]), float(parts[2]), float(parts[3])))
+            atoms.append((parts[0], float(parts[1]), float(parts[2]), float(parts[3]), flags))
         except ValueError:
             break
 
@@ -313,6 +324,7 @@ def find_position_blocks_in_lines(lines, cell_block):
                     "coord_type": parsed_pos["coord_type"],
                     "nat": len(atoms_ang),
                     "atoms_ang": atoms_ang,
+                    "constraints": build_position_constraints(parsed_pos),
                 })
                 i = parsed_pos["next_idx"]
                 continue
@@ -391,6 +403,7 @@ def parse_qe_input_file(input_file):
         "cell_block": cell_block,
         "position_block": position_blocks[0],
         "atoms_ang": position_blocks[0]["atoms_ang"],
+        "constraints": position_blocks[0]["constraints"],
     }
 
 def parse_input_structure(qe_output):
@@ -422,18 +435,18 @@ def convert_atoms_to_angstrom(pos_block, cell_block):
     atoms_ang = []
 
     if "angstrom" in coord_type:
-        for sym, x, y, z in atoms_raw:
+        for sym, x, y, z, flags in atoms_raw:
             atoms_ang.append((sym, x, y, z))
 
     elif "bohr" in coord_type:
-        for sym, x, y, z in atoms_raw:
+        for sym, x, y, z, flags in atoms_raw:
             atoms_ang.append((sym, x * BOHR_TO_ANG, y * BOHR_TO_ANG, z * BOHR_TO_ANG))
 
     elif "crystal" in coord_type:
         if cell_block is None:
             raise ValueError("ATOMIC_POSITIONS (crystal) found, but no lattice information was available.")
         cell = cell_block["matrix_angstrom"]
-        for sym, x, y, z in atoms_raw:
+        for sym, x, y, z, flags in atoms_raw:
             cx, cy, cz = dot3([x, y, z], cell)
             atoms_ang.append((sym, cx, cy, cz))
 
@@ -441,6 +454,19 @@ def convert_atoms_to_angstrom(pos_block, cell_block):
         raise ValueError(f"Unsupported ATOMIC_POSITIONS unit/type: {pos_block['header']}")
 
     return atoms_ang
+
+def build_position_constraints(pos_block):
+    constraints = []
+    for index, atom in enumerate(pos_block.get("atoms_raw", []), start=1):
+        sym = atom[0]
+        flags = atom[4] if len(atom) > 4 else [1, 1, 1]
+        constraints.append({
+            "index": index,
+            "element": sym,
+            "if_pos": flags,
+            "fixed": any(flag == 0 for flag in flags),
+        })
+    return constraints
 
 def parse_qe_output(filename):
     with open(filename, "r", encoding="utf-8", errors="ignore") as f:
@@ -616,6 +642,15 @@ def write_original_lattice_json(result, output_json):
     with open(output_json, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=2)
 
+def write_original_constraints_json(result, output_json):
+    input_structure = result.get("input_structure")
+    data = {
+        "input_file": input_structure["input_file"] if input_structure else None,
+        "constraints": input_structure.get("constraints", []) if input_structure else [],
+    }
+    with open(output_json, "w", encoding="utf-8") as f:
+        json.dump(data, f, indent=2)
+
 def write_input_json(result, output_json):
     input_details = result.get("input_details")
     data = input_details or {
@@ -645,6 +680,7 @@ def export_qe_run(qe_output, outdir, job_name="QE Job"):
         comment="Original structure exported from QE input in Cartesian Angstrom"
     )
     write_original_lattice_json(result, os.path.join(outdir, "original_lattice.json"))
+    write_original_constraints_json(result, os.path.join(outdir, "original_constraints.json"))
     write_input_json(result, os.path.join(outdir, "input.json"))
     write_output_tail(qe_output, os.path.join(outdir, "latest_output_tail.txt"))
 

@@ -15,6 +15,7 @@ let currentStep = 0;
 let currentLattice = null;
 let originalLattice = null;
 let originalInputFile = null;
+let originalConstraints = [];
 let showCell = true;
 let showAxes = true;
 let currentStyle = "ballstick";
@@ -335,10 +336,78 @@ function parseXYZAtoms(xyzText) {
     const z = Number(parts[3]);
     if (!Number.isFinite(x) || !Number.isFinite(y) || !Number.isFinite(z)) continue;
 
-    atoms.push({ elem: parts[0], x, y, z });
+    atoms.push({ index: i + 1, elem: parts[0], x, y, z });
   }
 
   return atoms;
+}
+
+function buildFixedAtomMarkers(xyzText, matrix, constraints) {
+  if (!xyzText || !Array.isArray(constraints) || !constraints.length) return [];
+
+  const baseAtoms = parseXYZAtoms(xyzText);
+  if (!baseAtoms.length) return [];
+
+  const fixedByIndex = new Map(
+    constraints
+      .filter((item) => item.fixed || (item.if_pos || []).some((flag) => Number(flag) === 0))
+      .map((item) => [Number(item.index), item])
+  );
+  if (!fixedByIndex.size) return [];
+
+  const markers = [];
+  const a = matrix?.[0] || [0, 0, 0];
+  const b = matrix?.[1] || [0, 0, 0];
+  const c = matrix?.[2] || [0, 0, 0];
+  const repeatX = matrix ? cellRepeat.x : 1;
+  const repeatY = matrix ? cellRepeat.y : 1;
+  const repeatZ = matrix ? cellRepeat.z : 1;
+
+  for (let ix = 0; ix < repeatX; ix++) {
+    for (let iy = 0; iy < repeatY; iy++) {
+      for (let iz = 0; iz < repeatZ; iz++) {
+        const dx = ix * a[0] + iy * b[0] + iz * c[0];
+        const dy = ix * a[1] + iy * b[1] + iz * c[1];
+        const dz = ix * a[2] + iy * b[2] + iz * c[2];
+
+        for (const atom of baseAtoms) {
+          const constraint = fixedByIndex.get(atom.index);
+          if (!constraint) continue;
+          markers.push({
+            elem: atom.elem,
+            index: atom.index,
+            if_pos: constraint.if_pos || [1, 1, 1],
+            x: atom.x + dx,
+            y: atom.y + dy,
+            z: atom.z + dz
+          });
+        }
+      }
+    }
+  }
+
+  return markers;
+}
+
+function addFixedAtomGlow(targetViewer, xyzText, matrix, constraints) {
+  const markers = buildFixedAtomMarkers(xyzText, matrix, constraints);
+  if (!markers.length) return;
+
+  for (const marker of markers) {
+    const center = { x: marker.x, y: marker.y, z: marker.z };
+    targetViewer.addSphere({
+      center,
+      radius: 0.78,
+      color: "#00d4ff",
+      alpha: 0.34
+    });
+    targetViewer.addSphere({
+      center,
+      radius: 0.48,
+      color: "#fff176",
+      alpha: 0.28
+    });
+  }
 }
 
 function buildXYZFromAtoms(atoms, comment = "Generated structure") {
@@ -522,6 +591,7 @@ function renderOriginalStructure(preserveView = false) {
     handleMeasurementClick("original", atom);
   });
   applyStyleToViewer(originalViewer);
+  addFixedAtomGlow(originalViewer, originalStructure, originalLattice, originalConstraints);
   addLatticeBox(originalViewer, getDisplayLattice(originalLattice));
   addAxes(originalViewer, getDisplayLattice(originalLattice));
 
@@ -1017,6 +1087,13 @@ async function refreshJob() {
       } catch (e) {
         originalLattice = null;
         originalInputFile = null;
+      }
+
+      try {
+        const constraints = await loadJSON(`data/${job.job_id}/original_constraints.json`);
+        originalConstraints = constraints.constraints || [];
+      } catch (e) {
+        originalConstraints = [];
       }
 
       if (!originalStructure) {

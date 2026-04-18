@@ -39,7 +39,7 @@ git pull --rebase --autostash origin main
 log "Scanning QE jobs..."
 python3 scripts/scan_all_jobs.py
 
-git add docs/data/jobs.json docs/data/*/status.json docs/data/*/energy.csv docs/data/*/gradient_error.csv docs/data/*/total_force.csv docs/data/*/structure.xyz docs/data/*/trajectory.xyz docs/data/*/original_structure.xyz docs/data/*/lattice.json docs/data/*/original_lattice.json docs/data/*/input.json docs/data/*/latest_output_tail.txt
+git add docs/data/jobs.json docs/data/*/status.json docs/data/*/energy.csv docs/data/*/gradient_error.csv docs/data/*/total_force.csv docs/data/*/structure.xyz docs/data/*/trajectory.xyz docs/data/*/original_structure.xyz docs/data/*/lattice.json docs/data/*/original_lattice.json docs/data/*/original_constraints.json docs/data/*/input.json docs/data/*/latest_output_tail.txt
 
 if git diff --cached --quiet; then
   log "No changes to commit."
