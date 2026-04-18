@@ -20,6 +20,12 @@ const INPUT_COMPARE_KEYS = [
   "startingwfc",
   "forc_conv_thr"
 ];
+const COMPARISON_SELECT_IDS = [
+  "inputCompareA",
+  "inputCompareB",
+  "inputCompareC",
+  "inputCompareD"
+];
 
 function escapeHTML(value) {
   return String(value ?? "")
@@ -127,27 +133,71 @@ function formatInputValue(value) {
   return escapeHTML(value);
 }
 
-function renderInputComparison(jobs) {
-  const el = document.getElementById("inputComparison");
-  const okJobs = jobs.filter((job) => job.status === "ok");
+function buildInputComparisonOptions(jobs) {
+  return jobs.filter((job) => job.input_parameters || job.input_file_name || job.status === "ok");
+}
 
-  if (!okJobs.length) {
-    el.innerHTML = "<p>No parsed jobs available for input comparison.</p>";
+function populateComparisonSelect(select, jobs, preferredJobId, preferredIndex) {
+  select.innerHTML = "";
+
+  const empty = document.createElement("option");
+  empty.value = "";
+  empty.textContent = "None";
+  select.appendChild(empty);
+
+  for (const job of jobs) {
+    const option = document.createElement("option");
+    option.value = job.job_id;
+    option.textContent = `${job.label} (${job.input_file_name ?? "no input file"})`;
+    select.appendChild(option);
+  }
+
+  if (preferredJobId && jobs.some((job) => job.job_id === preferredJobId)) {
+    select.value = preferredJobId;
+  } else if (jobs[preferredIndex]) {
+    select.value = jobs[preferredIndex].job_id;
+  } else {
+    select.value = "";
+  }
+}
+
+function selectedComparisonJobs(jobs) {
+  const selectedIds = COMPARISON_SELECT_IDS
+    .map((id) => document.getElementById(id)?.value)
+    .filter(Boolean);
+  const seen = new Set();
+
+  return selectedIds
+    .filter((jobId) => {
+      if (seen.has(jobId)) return false;
+      seen.add(jobId);
+      return true;
+    })
+    .map((jobId) => jobs.find((job) => job.job_id === jobId))
+    .filter(Boolean);
+}
+
+function renderInputComparisonTable(jobs) {
+  const tableEl = document.getElementById("inputComparisonTable");
+  const selectedJobs = selectedComparisonJobs(jobs);
+
+  if (!selectedJobs.length) {
+    tableEl.innerHTML = "<p>Choose up to 4 input files to compare.</p>";
     return;
   }
 
-  const headerCells = okJobs
+  const headerCells = selectedJobs
     .map((job) => `<th><a href="job.html?job=${encodeURIComponent(job.job_id)}">${escapeHTML(job.label)}</a><div class="subtle">${escapeHTML(job.input_file_name ?? "no input file")}</div></th>`)
     .join("");
 
   const rows = INPUT_COMPARE_KEYS.map((key) => {
-    const valueCells = okJobs
+    const valueCells = selectedJobs
       .map((job) => `<td>${formatInputValue(job.input_parameters?.[key])}</td>`)
       .join("");
     return `<tr><th>${escapeHTML(key)}</th>${valueCells}</tr>`;
   }).join("");
 
-  el.innerHTML = `
+  tableEl.innerHTML = `
     <div class="table-wrap">
       <table class="compare-table">
         <thead>
@@ -157,6 +207,38 @@ function renderInputComparison(jobs) {
       </table>
     </div>
   `;
+}
+
+function renderInputComparison(jobs) {
+  const el = document.getElementById("inputComparison");
+  const options = buildInputComparisonOptions(jobs);
+
+  if (!options.length) {
+    el.innerHTML = "<p>No parsed jobs available for input comparison.</p>";
+    return;
+  }
+
+  const previousValues = COMPARISON_SELECT_IDS.map((id) => document.getElementById(id)?.value);
+
+  el.innerHTML = `
+    <div class="comparison-controls">
+      ${COMPARISON_SELECT_IDS.map((id, index) => `
+        <div class="field">
+          <label for="${id}">Input file ${index + 1}</label>
+          <select id="${id}"></select>
+        </div>
+      `).join("")}
+    </div>
+    <div id="inputComparisonTable"></div>
+  `;
+
+  COMPARISON_SELECT_IDS.forEach((id, index) => {
+    const select = document.getElementById(id);
+    populateComparisonSelect(select, options, previousValues[index], index);
+    select.addEventListener("change", () => renderInputComparisonTable(jobs));
+  });
+
+  renderInputComparisonTable(jobs);
 }
 
 function renderJobs(jobs) {

@@ -5,7 +5,7 @@
   <title>QE Dashboard</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
-    body { font-family: Arial, sans-serif; margin: 24px; background: #f6f7fb; color: #222; }
+    body { font-family: Arial, sans-serif; margin: clamp(12px, 3vw, 24px); background: #f6f7fb; color: #222; }
     h1 { margin-bottom: 6px; }
     .page { display: grid; gap: 18px; }
     .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
@@ -20,17 +20,34 @@
       background: #1f6feb; color: white; text-decoration: none; border-radius: 8px;
     }
     .calculator-form { display: grid; gap: 12px; }
-    .calculator-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+    .calculator-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+      gap: 12px;
+    }
     .field label {
       display: block; font-size: 13px; font-weight: bold; margin-bottom: 6px;
     }
     .field select {
-      width: 100%; padding: 10px 12px; border: 1px solid #c8d0de; border-radius: 8px;
-      background: #fff; font: inherit;
+      width: 100%;
+      min-width: 0;
+      padding: 10px 12px;
+      border: 1px solid #c8d0de;
+      border-radius: 8px;
+      background: #fff;
+      font: inherit;
+      text-overflow: ellipsis;
     }
-    .formula { font-size: 14px; color: #4f5b70; }
+    .formula { font-size: 14px; color: #4f5b70; overflow-wrap: anywhere; }
     .result {
       font-size: 24px; font-weight: bold; color: #103c8a;
+      overflow-wrap: anywhere;
+    }
+    .comparison-controls {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+      gap: 12px;
+      margin-bottom: 12px;
     }
     .table-wrap {
       overflow: auto;
@@ -113,6 +130,6 @@
 
     <div id="jobs" class="grid"></div>
   </div>
-  <script src="app.js?v=20260418-input-compare-1"></script>
+  <script src="app.js?v=20260418-select-compare-1"></script>
 </body>
 </html>
