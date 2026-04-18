@@ -191,33 +191,49 @@ def strip_qe_comment(line):
     return "".join(result)
 
 def split_qe_assignments(text):
-    assignments = []
-    current = []
+    starts = []
     in_single = False
     in_double = False
+    i = 0
 
-    for char in text:
+    while i < len(text):
+        char = text[i]
         if char == "'" and not in_double:
             in_single = not in_single
+            i += 1
+            continue
         elif char == '"' and not in_single:
             in_double = not in_double
+            i += 1
+            continue
 
-        if char == "," and not in_single and not in_double:
-            item = "".join(current).strip()
-            if item:
-                assignments.append(item)
-            current = []
-        else:
-            current.append(char)
+        if not in_single and not in_double and (char.isalpha() or char == "_"):
+            key_start = i
+            i += 1
+            while i < len(text) and (text[i].isalnum() or text[i] == "_"):
+                i += 1
 
-    item = "".join(current).strip()
-    if item:
-        assignments.append(item)
+            j = i
+            while j < len(text) and text[j].isspace():
+                j += 1
+
+            if j < len(text) and text[j] == "=":
+                starts.append(key_start)
+            continue
+
+        i += 1
+
+    assignments = []
+    for index, start in enumerate(starts):
+        end = starts[index + 1] if index + 1 < len(starts) else len(text)
+        item = text[start:end].strip().strip(",").strip()
+        if item:
+            assignments.append(item)
 
     return assignments
 
 def clean_qe_value(value):
-    cleaned = value.strip().rstrip(",")
+    cleaned = value.strip().rstrip(",").strip()
     if len(cleaned) >= 2 and cleaned[0] == cleaned[-1] and cleaned[0] in ("'", '"'):
         return cleaned[1:-1]
     return cleaned
