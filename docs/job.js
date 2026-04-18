@@ -425,7 +425,13 @@ function applyViewDirection(targetViewer) {
     b: [[-90, "x"]],
     "-b": [[90, "x"]],
     c: [],
-    "-c": [[180, "x"]]
+    "-c": [[180, "x"]],
+    x: [[90, "y"]],
+    "-x": [[-90, "y"]],
+    y: [[-90, "x"]],
+    "-y": [[90, "x"]],
+    z: [],
+    "-z": [[180, "x"]]
   };
 
   for (const [angle, axis] of rotations[viewDirection] || rotations.b) {

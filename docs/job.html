@@ -270,7 +270,7 @@
           <option value="2x2x1" selected>2 x 2 x 1</option>
         </select>
         <button onclick="toggleAxes()">Toggle Axes</button>
-        <span>View</span>
+        <span>Lattice view</span>
         <span class="radio-group">
           <label><input type="radio" name="viewDirection" value="-a" onchange="changeViewDirection(this.value)"> -a</label>
           <label><input type="radio" name="viewDirection" value="-b" onchange="changeViewDirection(this.value)"> -b</label>
@@ -278,6 +278,15 @@
           <label><input type="radio" name="viewDirection" value="a" onchange="changeViewDirection(this.value)"> a</label>
           <label><input type="radio" name="viewDirection" value="b" onchange="changeViewDirection(this.value)" checked> b</label>
           <label><input type="radio" name="viewDirection" value="c" onchange="changeViewDirection(this.value)"> c</label>
+        </span>
+        <span>XYZ view</span>
+        <span class="radio-group">
+          <label><input type="radio" name="viewDirection" value="-x" onchange="changeViewDirection(this.value)"> -x</label>
+          <label><input type="radio" name="viewDirection" value="-y" onchange="changeViewDirection(this.value)"> -y</label>
+          <label><input type="radio" name="viewDirection" value="-z" onchange="changeViewDirection(this.value)"> -z</label>
+          <label><input type="radio" name="viewDirection" value="x" onchange="changeViewDirection(this.value)"> x</label>
+          <label><input type="radio" name="viewDirection" value="y" onchange="changeViewDirection(this.value)"> y</label>
+          <label><input type="radio" name="viewDirection" value="z" onchange="changeViewDirection(this.value)"> z</label>
         </span>
         <button id="measureToggle" onclick="toggleMeasureMode()">Measure Distance</button>
         <button onclick="clearMeasurement()">Clear Measure</button>
@@ -315,7 +324,7 @@
     </div>
   </div>
 
-  <script src="job.js?v=20260418-view-direction-1"></script>
+  <script src="job.js?v=20260418-view-direction-xyz-1"></script>
 </body>
 </html>
 
