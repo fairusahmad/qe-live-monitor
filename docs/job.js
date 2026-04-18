@@ -20,7 +20,8 @@ let showCell = true;
 let showAxes = true;
 let currentStyle = "ballstick";
 let cellRepeat = { x: 2, y: 2, z: 1 };
-let fixedGlowTransparency = 66;
+const FIXED_GLOW_TRANSPARENCY = 42;
+let viewDirection = "b";
 let measureMode = false;
 let measurementState = {
   current: { atoms: [], labels: [], line: null },
@@ -394,7 +395,7 @@ function addFixedAtomGlow(targetViewer, xyzText, matrix, constraints) {
   const markers = buildFixedAtomMarkers(xyzText, matrix, constraints);
   if (!markers.length) return;
 
-  const alpha = Math.max(0, Math.min(1, 1 - fixedGlowTransparency / 100));
+  const alpha = Math.max(0, Math.min(1, 1 - FIXED_GLOW_TRANSPARENCY / 100));
   if (alpha <= 0) return;
 
   for (const marker of markers) {
@@ -414,24 +415,28 @@ function addFixedAtomGlow(targetViewer, xyzText, matrix, constraints) {
   }
 }
 
-function updateFixedGlowTransparency(value) {
-  const parsed = Number(value);
-  fixedGlowTransparency = Number.isFinite(parsed)
-    ? Math.max(0, Math.min(100, parsed))
-    : 66;
+function applyViewDirection(targetViewer) {
+  if (!targetViewer) return;
+  targetViewer.zoomTo();
 
-  const label = document.getElementById("fixedGlowTransparencyValue");
-  if (label) label.textContent = `${fixedGlowTransparency}%`;
+  const rotations = {
+    a: [[90, "y"]],
+    "-a": [[-90, "y"]],
+    b: [[-90, "x"]],
+    "-b": [[90, "x"]],
+    c: [],
+    "-c": [[180, "x"]]
+  };
 
-  if (originalViewer && originalStructure) {
-    renderOriginalStructure(true);
+  for (const [angle, axis] of rotations[viewDirection] || rotations.b) {
+    targetViewer.rotate(angle, axis);
   }
 }
 
-function applyDefaultSideView(targetViewer) {
-  if (!targetViewer) return;
-  targetViewer.zoomTo();
-  targetViewer.rotate(90, "x");
+function changeViewDirection(value) {
+  viewDirection = value;
+  renderFrame(currentStep, false);
+  renderOriginalStructure(false);
 }
 
 function buildXYZFromAtoms(atoms, comment = "Generated structure") {
@@ -622,7 +627,7 @@ function renderOriginalStructure(preserveView = false) {
   if (preserveView && savedView) {
     originalViewer.setView(savedView);
   } else {
-    applyDefaultSideView(originalViewer);
+    applyViewDirection(originalViewer);
   }
 
   originalViewer.resize();
@@ -657,7 +662,7 @@ function renderFrame(index, preserveView = false) {
   if (preserveView && savedView) {
     viewer.setView(savedView);
   } else {
-    applyDefaultSideView(viewer);
+    applyViewDirection(viewer);
   }
 
   viewer.resize();

@@ -99,6 +99,23 @@
       align-items: center;
       margin-top: 12px;
     }
+    .radio-group {
+      display: inline-flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      align-items: center;
+    }
+    .radio-group label {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 5px 7px;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      background: white;
+      font-size: 13px;
+      cursor: pointer;
+    }
     .chart-controls {
       display: flex;
       flex-wrap: wrap;
@@ -252,10 +269,16 @@
           <option value="1x1x1">1 x 1 x 1</option>
           <option value="2x2x1" selected>2 x 2 x 1</option>
         </select>
-        <label for="fixedGlowTransparency">Fixed glow transparency</label>
-        <input id="fixedGlowTransparency" type="range" min="0" max="100" value="66" oninput="updateFixedGlowTransparency(this.value)">
-        <span id="fixedGlowTransparencyValue">66%</span>
         <button onclick="toggleAxes()">Toggle Axes</button>
+        <span>View</span>
+        <span class="radio-group">
+          <label><input type="radio" name="viewDirection" value="-a" onchange="changeViewDirection(this.value)"> -a</label>
+          <label><input type="radio" name="viewDirection" value="-b" onchange="changeViewDirection(this.value)"> -b</label>
+          <label><input type="radio" name="viewDirection" value="-c" onchange="changeViewDirection(this.value)"> -c</label>
+          <label><input type="radio" name="viewDirection" value="a" onchange="changeViewDirection(this.value)"> a</label>
+          <label><input type="radio" name="viewDirection" value="b" onchange="changeViewDirection(this.value)" checked> b</label>
+          <label><input type="radio" name="viewDirection" value="c" onchange="changeViewDirection(this.value)"> c</label>
+        </span>
         <button id="measureToggle" onclick="toggleMeasureMode()">Measure Distance</button>
         <button onclick="clearMeasurement()">Clear Measure</button>
         <button onclick="resetView()">Reset View</button>
@@ -292,7 +315,7 @@
     </div>
   </div>
 
-  <script src="job.js?v=20260418-fixed-glow-side-view-1"></script>
+  <script src="job.js?v=20260418-view-direction-1"></script>
 </body>
 </html>
 
