@@ -28,6 +28,7 @@ const COMPARISON_SELECT_IDS = [
 ];
 const ENERGY_SELECT_IDS = ["energyA", "energyB", "energyC"];
 const ENERGY_SELECTION_STORAGE_KEY = "qeDashboard.energySelections";
+const ENERGY_UNIT_STORAGE_KEY = "qeDashboard.energyUnit";
 const INPUT_COMPARISON_STORAGE_KEY = "qeDashboard.inputComparisonSelections";
 
 function loadStoredSelections(key, expectedLength) {
@@ -65,24 +66,58 @@ function ryToEv(value) {
   return Number.isFinite(value) ? value * RY_TO_EV : NaN;
 }
 
+function energyUnitLabel(unit) {
+  return unit === "ry" ? "Ry" : "eV";
+}
+
+function convertEnergyFromRy(value, unit) {
+  if (!Number.isFinite(value)) return NaN;
+  return unit === "ry" ? value : ryToEv(value);
+}
+
+function selectedEnergyUnit() {
+  const select = document.getElementById("energyUnit");
+  return select?.value === "ry" ? "ry" : "ev";
+}
+
+function loadStoredEnergyUnit() {
+  try {
+    const stored = localStorage.getItem(ENERGY_UNIT_STORAGE_KEY);
+    return stored === "ry" ? "ry" : "ev";
+  } catch (e) {
+    return "ev";
+  }
+}
+
+function saveEnergyUnit() {
+  try {
+    localStorage.setItem(ENERGY_UNIT_STORAGE_KEY, selectedEnergyUnit());
+  } catch (e) {
+    console.warn("Could not save dashboard energy unit.", e);
+  }
+}
+
 function buildEnergyOptions(jobs) {
   return jobs
     .filter((job) => Number.isFinite(job.latest_energy_ry))
     .map((job) => ({
       value: job.job_id,
-      label: `${job.label} (${formatEnergy(ryToEv(job.latest_energy_ry))} eV)`,
-      energy: ryToEv(job.latest_energy_ry)
+      label: job.label,
+      energyRy: job.latest_energy_ry
     }));
 }
 
 function populateSelect(select, options, preferredIndex) {
   select.innerHTML = "";
+  const unit = selectedEnergyUnit();
+  const unitLabel = energyUnitLabel(unit);
 
   for (const option of options) {
     const el = document.createElement("option");
     el.value = option.value;
-    el.textContent = option.label;
-    el.dataset.energy = String(option.energy);
+    el.textContent = `${option.label} (${formatEnergy(convertEnergyFromRy(option.energyRy, unit))} ${unitLabel})`;
+    el.dataset.label = option.label;
+    el.dataset.energyRy = String(option.energyRy);
     select.appendChild(el);
   }
 
@@ -99,17 +134,37 @@ function populateSelect(select, options, preferredIndex) {
   select.selectedIndex = Math.min(preferredIndex, options.length - 1);
 }
 
+function updateEnergyOptionLabels() {
+  const unit = selectedEnergyUnit();
+  const unitLabel = energyUnitLabel(unit);
+
+  ENERGY_SELECT_IDS.forEach((id) => {
+    const select = document.getElementById(id);
+    if (!select) return;
+
+    Array.from(select.options).forEach((option) => {
+      const energyRy = Number(option.dataset.energyRy);
+      const label = option.dataset.label;
+      if (label && Number.isFinite(energyRy)) {
+        option.textContent = `${label} (${formatEnergy(convertEnergyFromRy(energyRy, unit))} ${unitLabel})`;
+      }
+    });
+  });
+}
+
 function updateCalculator() {
+  const unit = selectedEnergyUnit();
+  const unitLabel = energyUnitLabel(unit);
   const chosen = ENERGY_SELECT_IDS.map((id) => {
     const select = document.getElementById(id);
     const selectedOption = select.options[select.selectedIndex];
     if (!selectedOption) {
-      return { label: "-", energy: NaN };
+      return { label: "-", energyRy: NaN };
     }
 
     return {
       label: selectedOption.textContent,
-      energy: Number(selectedOption.dataset.energy)
+      energyRy: Number(selectedOption.dataset.energyRy)
     };
   });
 
@@ -119,8 +174,9 @@ function updateCalculator() {
 
   formulaEl.textContent = `${energyA.label} - ${energyB.label} - ${energyC.label}`;
 
-  if (chosen.every((item) => Number.isFinite(item.energy))) {
-    resultEl.textContent = `${formatEnergy(energyA.energy - energyB.energy - energyC.energy)} eV`;
+  if (chosen.every((item) => Number.isFinite(item.energyRy))) {
+    const resultRy = energyA.energyRy - energyB.energyRy - energyC.energyRy;
+    resultEl.textContent = `${formatEnergy(convertEnergyFromRy(resultRy, unit))} ${unitLabel}`;
   } else {
     resultEl.textContent = "-";
   }
@@ -136,6 +192,19 @@ function saveEnergySelections() {
 function renderCalculator(jobs) {
   const options = buildEnergyOptions(jobs);
   const storedValues = loadStoredSelections(ENERGY_SELECTION_STORAGE_KEY, ENERGY_SELECT_IDS.length);
+  const unitSelect = document.getElementById("energyUnit");
+
+  if (unitSelect) {
+    if (!unitSelect.dataset.bound) {
+      unitSelect.value = loadStoredEnergyUnit();
+      unitSelect.addEventListener("change", () => {
+        saveEnergyUnit();
+        updateEnergyOptionLabels();
+        updateCalculator();
+      });
+      unitSelect.dataset.bound = "true";
+    }
+  }
 
   ENERGY_SELECT_IDS.forEach((id, index) => {
     const select = document.getElementById(id);
