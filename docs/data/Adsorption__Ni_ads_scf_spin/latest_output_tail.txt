@@ -1,98 +1,3 @@
-        66    1   1   1
-        67    1   1   1
-        68    1   1   1
-        69    1   1   1
-        70    1   1   1
-        71    1   1   1
-        72    1   1   1
-        73    1   1   1
-        74    1   1   1
-        75    1   1   1
-        76    1   1   1
-        77    1   1   1
-        78    1   1   1
-        79    1   1   1
-        80    1   1   1
-        81    1   1   1
-        82    1   1   1
-        83    1   1   1
-        84    1   1   1
-        85    1   1   1
-        86    1   1   1
-
-     --------------------------------------------
-     DFT-D3 Dispersion Correction (3-body terms):
-     --------------------------------------------
-       Reference C6 values for interpolation: 
-
-         atom   Coordination number   C6
-         H          0.912             6.05
-         H          0.000            15.18
-         C          0.000            98.23
-         C          0.987            86.49
-         C          1.998            58.72
-         C          2.999            51.56
-         C          3.984            36.41
-         O          0.000            31.01
-         O          0.993            25.63
-         O          1.989            20.74
-         Ni         0.000          1149.49
-         Ni         1.794           356.66
-         Ni         6.546           257.56
-         Ni         6.292           283.75
-
-       Values used:
-
-         atom   Coordination number  R0_AB[au]  C6      C8
-         Ni         7.013            3.162    263.28  22060.86
-         Ni         7.013            3.162    263.28  22060.96
-         Ni         7.013            3.162    263.28  22060.96
-         Ni         7.013            3.162    263.28  22060.96
-         Ni         7.013            3.162    263.28  22061.07
-         Ni         7.013            3.162    263.28  22061.07
-         Ni         7.013            3.162    263.28  22060.96
-         Ni         7.013            3.162    263.28  22061.07
-         Ni         7.013            3.162    263.28  22061.07
-         Ni         9.371            3.162    257.62  21587.08
-         Ni         9.371            3.162    257.62  21587.08
-         Ni         9.371            3.162    257.62  21587.08
-         Ni         9.371            3.162    257.62  21587.08
-         Ni         9.371            3.162    257.62  21587.08
-         Ni         9.371            3.162    257.62  21587.08
-         Ni         9.371            3.162    257.62  21587.08
-         Ni         9.371            3.162    257.62  21587.08
-         Ni         9.371            3.162    257.62  21587.08
-         Ni         9.400            3.162    257.62  21586.79
-         Ni         9.400            3.162    257.62  21586.79
-         Ni         9.400            3.162    257.62  21586.79
-         Ni         9.400            3.162    257.62  21586.79
-         Ni         9.400            3.162    257.62  21586.79
-         Ni         9.400            3.162    257.62  21586.79
-         Ni         9.400            3.162    257.62  21586.79
-         Ni         9.400            3.162    257.62  21586.79
-         Ni         9.400            3.162    257.62  21586.79
-         Ni         9.412            3.162    257.62  21586.68
-         Ni         9.412            3.162    257.62  21586.68
-         Ni         9.412            3.162    257.62  21586.68
-         Ni         9.412            3.162    257.62  21586.68
-         Ni         9.412            3.162    257.62  21586.68
-         Ni         9.412            3.162    257.62  21586.68
-         Ni         9.412            3.162    257.62  21586.68
-         Ni         9.412            3.162    257.62  21586.68
-         Ni         9.412            3.162    257.62  21586.68
-         Ni         9.387            3.162    257.62  21586.92
-         Ni         9.423            3.162    257.62  21586.57
-         Ni         9.423            3.162    257.62  21586.57
-         Ni         9.428            3.162    257.62  21586.53
-         Ni         9.414            3.162    257.62  21586.66
-         Ni         9.432            3.162    257.62  21586.49
-         Ni         9.431            3.162    257.62  21586.50
-         Ni         9.429            3.162    257.62  21586.52
-         Ni         9.430            3.162    257.62  21586.51
-         Ni         9.441            3.162    257.62  21586.41
-         Ni         9.422            3.162    257.62  21586.58
-         Ni         9.434            3.162    257.62  21586.47
-         Ni         9.437            3.162    257.62  21586.44
          Ni         9.429            3.162    257.62  21586.51
          Ni         9.417            3.162    257.62  21586.63
          Ni         9.382            3.162    257.62  21586.96
@@ -298,3 +203,98 @@
 
      negative rho (up, down):  1.693E-03 5.900E-04
      Starting wfcs are  680 randomized atomic wfcs
+
+     total cpu time spent up to now is       40.7 secs
+
+     per-process dynamical memory:   327.8 Mb
+
+     Self-consistent Calculation
+
+     iteration #  1     ecut=    50.00 Ry     beta= 0.04
+     Davidson diagonalization with overlap
+
+---- Real-time Memory Report at c_bands before calling an iterative solver
+           560 MiB given to the printing process from OS
+           320 MiB allocation reported by mallinfo(arena+hblkhd)
+        131633 MiB available memory on the node where the printing process lives
+------------------
+     ethr =  1.00E-02,  avg # of iterations =  2.3
+
+     negative rho (up, down):  1.569E-03 5.317E-04
+
+     total cpu time spent up to now is      126.8 secs
+
+     total energy              =   -7370.44829512 Ry
+     estimated scf accuracy    <      49.09966899 Ry
+
+     total magnetization       =    98.25 Bohr mag/cell
+     absolute magnetization    =    98.33 Bohr mag/cell
+
+     iteration #  2     ecut=    50.00 Ry     beta= 0.04
+     Davidson diagonalization with overlap
+
+---- Real-time Memory Report at c_bands before calling an iterative solver
+           811 MiB given to the printing process from OS
+           348 MiB allocation reported by mallinfo(arena+hblkhd)
+        130184 MiB available memory on the node where the printing process lives
+------------------
+     ethr =  6.48E-03,  avg # of iterations =  1.1
+
+     negative rho (up, down):  1.552E-03 5.461E-04
+
+     total cpu time spent up to now is      194.0 secs
+
+     total energy              =   -7370.54919791 Ry
+     estimated scf accuracy    <     447.17278382 Ry
+
+     total magnetization       =   101.02 Bohr mag/cell
+     absolute magnetization    =   101.10 Bohr mag/cell
+
+     iteration #  3     ecut=    50.00 Ry     beta= 0.04
+     Davidson diagonalization with overlap
+
+---- Real-time Memory Report at c_bands before calling an iterative solver
+           846 MiB given to the printing process from OS
+           348 MiB allocation reported by mallinfo(arena+hblkhd)
+        130036 MiB available memory on the node where the printing process lives
+------------------
+     ethr =  6.48E-03,  avg # of iterations =  1.0
+
+     negative rho (up, down):  1.542E-03 5.643E-04
+
+     total cpu time spent up to now is      260.6 secs
+
+     total energy              =   -7373.29392822 Ry
+     estimated scf accuracy    <      31.12381526 Ry
+
+     total magnetization       =    97.27 Bohr mag/cell
+     absolute magnetization    =    97.34 Bohr mag/cell
+
+     iteration #  4     ecut=    50.00 Ry     beta= 0.04
+     Davidson diagonalization with overlap
+
+---- Real-time Memory Report at c_bands before calling an iterative solver
+           865 MiB given to the printing process from OS
+           348 MiB allocation reported by mallinfo(arena+hblkhd)
+        129954 MiB available memory on the node where the printing process lives
+------------------
+     ethr =  4.11E-03,  avg # of iterations =  1.0
+
+     negative rho (up, down):  1.534E-03 5.857E-04
+
+     total cpu time spent up to now is      325.2 secs
+
+     total energy              =   -7373.25516562 Ry
+     estimated scf accuracy    <     180.45224699 Ry
+
+     total magnetization       =    96.23 Bohr mag/cell
+     absolute magnetization    =    96.29 Bohr mag/cell
+
+     iteration #  5     ecut=    50.00 Ry     beta= 0.04
+     Davidson diagonalization with overlap
+
+---- Real-time Memory Report at c_bands before calling an iterative solver
+           874 MiB given to the printing process from OS
+           354 MiB allocation reported by mallinfo(arena+hblkhd)
+        129930 MiB available memory on the node where the printing process lives
+------------------
