@@ -233,7 +233,7 @@ function formatInputValue(value) {
 }
 
 function buildInputComparisonOptions(jobs) {
-  return jobs.filter((job) => job.input_parameters || job.input_file_name || job.status === "ok");
+  return jobs.filter((job) => job.input_parameters || job.input_file_name || job.status === "OK");
 }
 
 function populateComparisonSelect(select, jobs, preferredJobId, preferredIndex, hasStoredPreference) {
@@ -365,7 +365,7 @@ function renderJobs(jobs) {
     const card = document.createElement("div");
     card.className = "card";
 
-    let statusClass = job.status === "ok" ? "ok" : "bad";
+    let statusClass = job.status === "OK" ? "ok" : (job.status === "calculating..." ? "calculating" : "bad");
 
     card.innerHTML = `
       <div class="title">${escapeHTML(job.label)}</div>

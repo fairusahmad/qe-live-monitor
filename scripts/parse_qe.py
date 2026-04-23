@@ -511,8 +511,10 @@ def parse_qe_output(filename):
             break
 
     text = "".join(lines)
+    job_done = has_job_done_marker(lines)
     converged = (
-        "End of BFGS Geometry Optimization" in text
+        job_done
+        or "End of BFGS Geometry Optimization" in text
         or "convergence has been achieved" in text.lower()
     )
 
@@ -543,6 +545,7 @@ def parse_qe_output(filename):
         "bfgs_steps": bfgs_steps,
         "scf_cycles": scf_cycles,
         "converged": converged,
+        "job_done": job_done,
         "latest_cell_block": latest_cell_block,
         "latest_pos_block": latest_pos_block,
         "latest_atoms_ang": latest_atoms_ang,
@@ -596,6 +599,10 @@ def write_output_tail(filename, output_tail, nlines=300):
     with open(output_tail, "w", encoding="utf-8") as f:
         f.writelines(tail)
 
+def has_job_done_marker(lines):
+    tail = [line.strip() for line in lines[-20:] if line.strip()]
+    return any(line == "JOB DONE." for line in tail)
+
 def write_status_json(result, output_json, job_name="QE Job"):
     cell_header = result["latest_cell_block"]["header"] if result["latest_cell_block"] else None
     pos_header = result["latest_pos_block"]["header"] if result["latest_pos_block"] else None
@@ -603,7 +610,7 @@ def write_status_json(result, output_json, job_name="QE Job"):
     status = {
         "job": job_name,
         "last_update": datetime.now().isoformat(),
-        "status": "finished" if result["converged"] else "running",
+        "status": "finished" if result["job_done"] else "running",
         "latest_energy_ry": result["latest_energy"],
         "num_energy_points": len(result["energies"]),
         "latest_total_force_ry_bohr": result["latest_total_force"],
@@ -615,6 +622,7 @@ def write_status_json(result, output_json, job_name="QE Job"):
         "bfgs_steps": result["bfgs_steps"],
         "scf_cycles": result["scf_cycles"],
         "converged": result["converged"],
+        "job_done": result["job_done"],
         "positions_format": pos_header,
         "cell_format": cell_header,
         "cell_source": result.get("cell_source"),

@@ -8,6 +8,9 @@ REPO_DIR = os.path.dirname(SCRIPT_DIR)
 BASE_DIR = os.environ.get("QE_BASE_DIR", "/media/node1/Fairus2TB/fairus/Nguyen")
 DASHBOARD_DIR = os.environ.get("QE_DASHBOARD_DIR", REPO_DIR)
 DATA_DIR = os.path.join(DASHBOARD_DIR, "docs", "data")
+STATUS_NOT_FOUND = "not found"
+STATUS_OK = "OK"
+STATUS_CALCULATING = "calculating..."
 
 # Ordered to match your notebook workflow
 OUTPUT_PRIORITY = [
@@ -212,7 +215,7 @@ def main():
             "source_dir": job_dir,
             "found": False,
             "output_file": None,
-            "status": "missing",
+            "status": STATUS_NOT_FOUND,
             "structure_capable": False,
         }
 
@@ -228,7 +231,7 @@ def main():
 
         output_file = find_output_file(job_dir)
         if output_file is None:
-            item["status"] = "no_output_found"
+            item["status"] = STATUS_NOT_FOUND
             jobs_summary.append(item)
             continue
 
@@ -243,7 +246,7 @@ def main():
         try:
             result = export_qe_run(output_file, outdir, job_name=label)
 
-            item["status"] = "ok"
+            item["status"] = STATUS_OK if result.get("job_done") else STATUS_CALCULATING
             item["latest_energy_ry"] = result["latest_energy"]
             item["latest_total_force_ry_bohr"] = result["latest_total_force"]
             item["latest_gradient_error_ry_bohr"] = result["latest_gradient_error"]
@@ -273,7 +276,7 @@ def main():
             elif not item["has_structure"]:
                 item["note"] = "Output parsed, but no final structure block was found."
         except Exception as e:
-            item["status"] = "error"
+            item["status"] = STATUS_CALCULATING
             item["error"] = str(e)
 
         jobs_summary.append(item)

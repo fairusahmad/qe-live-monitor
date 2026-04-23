@@ -1052,6 +1052,7 @@ function renderInputDetails(inputDetails, job) {
 function renderStatus(status, job) {
   document.getElementById("status").innerHTML = `
     <div><b>Job:</b> ${escapeHTML(status.job ?? job.label ?? "-")}</div>
+    <div><b>Status:</b> ${escapeHTML(job.status ?? "-")}</div>
     <div><b>Converged:</b> ${escapeHTML(status.converged ?? "-")}</div>
     <div><b>Latest energy:</b> ${escapeHTML(status.latest_energy_ry ?? "-")}</div>
     <div><b>Latest gradient error:</b> ${escapeHTML(formatScientific(status.latest_gradient_error_ry_bohr))}</div>
@@ -1084,7 +1085,7 @@ async function refreshJob() {
     console.error(e);
   }
 
-  if (job.status !== "ok") {
+  if (!job.status_file) {
     document.getElementById("status").innerHTML = `
       <div><b>Job:</b> ${escapeHTML(job.label)}</div>
       <div><b>Status:</b> ${escapeHTML(job.status)}</div>
