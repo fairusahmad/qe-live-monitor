@@ -593,6 +593,39 @@ def write_gradient_error_csv(gradient_errors, output_csv):
         for i, gradient_error in enumerate(gradient_errors, start=1):
             f.write(f"{i},{gradient_error}\n")
 
+def find_latest_raw_atomic_positions(lines):
+    if not lines:
+        return None
+
+    last_raw = None
+    i = 0
+    while i < len(lines):
+        if lines[i].strip().startswith("ATOMIC_POSITIONS"):
+            parsed = parse_atomic_positions_block(lines, i)
+            if parsed is not None:
+                last_raw = "".join(lines[i:parsed["next_idx"]])
+                i = parsed["next_idx"]
+                continue
+        i += 1
+
+    return last_raw
+
+def write_latest_atomic_positions(filename, output_path, fallback_files=None):
+    with open(filename, "r", encoding="utf-8", errors="ignore") as f:
+        lines = f.readlines()
+    raw = find_latest_raw_atomic_positions(lines)
+
+    if not raw and fallback_files:
+        for fallback in fallback_files:
+            fallback_lines = read_file_lines_if_exists(fallback)
+            if fallback_lines:
+                raw = find_latest_raw_atomic_positions(fallback_lines)
+                if raw:
+                    break
+
+    with open(output_path, "w", encoding="utf-8") as f:
+        f.write(raw if raw else "")
+
 def write_output_tail(filename, output_tail, nlines=300):
     with open(filename, "r", encoding="utf-8", errors="ignore") as f:
         tail = f.readlines()[-nlines:]
@@ -697,6 +730,8 @@ def export_qe_run(qe_output, outdir, job_name="QE Job"):
     write_original_constraints_json(result, os.path.join(outdir, "original_constraints.json"))
     write_input_json(result, os.path.join(outdir, "input.json"))
     write_output_tail(qe_output, os.path.join(outdir, "latest_output_tail.txt"))
+    fallback_input_files = [f for f in guess_input_files_from_output(qe_output) if os.path.isfile(f)]
+    write_latest_atomic_positions(qe_output, os.path.join(outdir, "latest_atomic_positions.txt"), fallback_files=fallback_input_files)
 
     return result
 

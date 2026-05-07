@@ -270,6 +270,7 @@ def main():
             item["original_constraints_file"] = f"data/{job_id}/original_constraints.json"
             item["input_file_data"] = f"data/{job_id}/input.json"
             item["output_tail_file"] = f"data/{job_id}/latest_output_tail.txt"
+            item["atomic_positions_file"] = f"data/{job_id}/latest_atomic_positions.txt"
 
             if not item["has_structure"] and not item["structure_capable"]:
                 item["note"] = "Output parsed, but this calculation type usually does not contain a final structure block."
