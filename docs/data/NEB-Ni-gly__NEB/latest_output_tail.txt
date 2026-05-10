@@ -5,7 +5,7 @@ BEGIN_PATH_INPUT
   string_method  = 'neb',
   restart_mode   = 'from_scratch',
   nstep_path     = 200,
-  num_of_images  = 5,
+  num_of_images  = 3,
   opt_scheme     = 'broyden',
   CI_scheme      = 'no-CI',
   path_thr       = 0.05,
@@ -42,13 +42,25 @@ BEGIN_ENGINE_INPUT
 /
 
 &ELECTRONS
-  mixing_ndim      = 24,
   conv_thr         = 1d-8,
   mixing_beta      = 0.3,
   mixing_mode      = 'local-TF',
   electron_maxstep = 200,
   diagonalization  = 'david',
 /
+
+ATOMIC_SPECIES
+NI 58.7    Ni.pbe-n-rrkjus_psl.1.0.0.UPF
+O  15.9994 O.pbe-n-rrkjus_psl.1.0.0.UPF
+C  12.011  C.pbe-n-rrkjus_psl.1.0.0.UPF
+H  1.00797 H.pbe-rrkjus_psl.1.0.0.UPF
+
+K_POINTS gamma
+
+CELL_PARAMETERS angstrom
+ 14.743800000   0.000000000   0.000000000
+  3.685950000   6.384252674   0.000000000
+  0.000000000   0.000000000  36.700000000
 
 BEGIN_POSITIONS
 
@@ -240,18 +252,7 @@ H  12.121096720   1.841251811  10.432150305 1 1 1
 
 END_POSITIONS
 
-ATOMIC_SPECIES
-NI 58.7    Ni.pbe-n-rrkjus_psl.1.0.0.UPF
-O  15.9994 O.pbe-n-rrkjus_psl.1.0.0.UPF
-C  12.011  C.pbe-n-rrkjus_psl.1.0.0.UPF
-H  1.00797 H.pbe-rrkjus_psl.1.0.0.UPF
 
-K_POINTS gamma
-
-CELL_PARAMETERS angstrom
- 14.743800000   0.000000000   0.000000000
-  3.685950000   6.384252674   0.000000000
-  0.000000000   0.000000000  36.700000000
 
 END_ENGINE_INPUT
 
