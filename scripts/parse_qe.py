@@ -368,9 +368,11 @@ def guess_input_files_from_output(qe_output):
         "output_scf.pw.x": ["input.pw.x"],
         "nscf_output.pw.x": ["nscf_input.pw.x"],
         "bands_output.pw.x": ["bands_input.pw.x"],
+        "output.neb.x": ["input.neb.x"],
     }
 
     candidates = preferred_map.get(output_name, []) + [
+        "input.neb.x",
         "input.pw_relax.x",
         "input.pw.x",
         "nscf_input.pw.x",

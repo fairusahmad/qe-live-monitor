@@ -56,6 +56,7 @@ INPUT_PRIORITY = [
     "input.pw.x",
     "nscf_input.pw.x",
     "bands_input.pw.x",
+    "input.neb.x",
 ]
 
 SKIP_DIR_NAMES = {
