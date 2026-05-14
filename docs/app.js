@@ -317,6 +317,296 @@ function renderInputComparisonTable(jobs) {
   `;
 }
 
+// ========== Simple Difference Calculator ==========
+const DIFF_SELECT_IDS = ["diffA", "diffB"];
+const DIFF_SELECTION_STORAGE_KEY = "qeDashboard.diffSelections";
+
+function updateDiffCalculator() {
+  const unit = selectedEnergyUnit();
+  const unitLabel = energyUnitLabel(unit);
+
+  DIFF_SELECT_IDS.forEach((id) => {
+    const select = document.getElementById(id);
+    if (!select) return;
+    Array.from(select.options).forEach((opt) => {
+      const ry = Number(opt.dataset.energyRy);
+      if (opt.dataset.label && Number.isFinite(ry)) {
+        opt.textContent = `${opt.dataset.label} (${formatEnergy(convertEnergyFromRy(ry, unit))} ${unitLabel})`;
+      }
+    });
+  });
+
+  const values = DIFF_SELECT_IDS.map((id) => {
+    const select = document.getElementById(id);
+    const opt = select?.options[select.selectedIndex];
+    return { label: opt?.dataset.label ?? opt?.textContent ?? "-", energyRy: Number(opt?.dataset.energyRy) };
+  });
+  const [a, b] = values;
+
+  document.getElementById("diffFormula").textContent = `${a.label} − ${b.label}`;
+  if (values.every((v) => Number.isFinite(v.energyRy))) {
+    const resultRy = a.energyRy - b.energyRy;
+    document.getElementById("diffResult").textContent = `${formatEnergy(convertEnergyFromRy(resultRy, unit))} ${unitLabel}`;
+  } else {
+    document.getElementById("diffResult").textContent = "-";
+  }
+}
+
+function saveDiffSelections() {
+  saveStoredSelections(DIFF_SELECTION_STORAGE_KEY, DIFF_SELECT_IDS.map((id) => document.getElementById(id)?.value ?? ""));
+}
+
+function renderDiffCalculator(jobs) {
+  const options = buildEnergyOptions(jobs);
+  const storedValues = loadStoredSelections(DIFF_SELECTION_STORAGE_KEY, DIFF_SELECT_IDS.length);
+  const unitSelect = document.getElementById("energyUnit");
+
+  if (unitSelect && !unitSelect.dataset.boundDiff) {
+    unitSelect.addEventListener("change", () => updateDiffCalculator());
+    unitSelect.dataset.boundDiff = "true";
+  }
+
+  DIFF_SELECT_IDS.forEach((id, index) => {
+    const select = document.getElementById(id);
+    if (!select) return;
+    const previousValue = select.value || storedValues[index];
+    populateSelect(select, options, index);
+    if (previousValue && options.some((o) => o.value === previousValue)) select.value = previousValue;
+    if (!select.dataset.bound) {
+      select.addEventListener("change", () => { saveDiffSelections(); updateDiffCalculator(); });
+      select.dataset.bound = "true";
+    }
+  });
+
+  updateDiffCalculator();
+}
+
+// ========== Reaction Energy Calculator ==========
+const RXN_SELECT_IDS = ["rxnA", "rxnB", "rxnC", "rxnD"];
+const RXN_OPTIONAL_FLAGS = [false, true, false, true];
+const RXN_DEFAULT_OPTION_INDICES = [0, 0, 1, 0];
+const RXN_SELECTION_STORAGE_KEY = "qeDashboard.rxnSelections";
+
+function populateSelectNullable(select, options, includeNone) {
+  select.innerHTML = "";
+  const unit = selectedEnergyUnit();
+  const unitLabel = energyUnitLabel(unit);
+
+  if (includeNone) {
+    const none = document.createElement("option");
+    none.value = "";
+    none.textContent = "None";
+    select.appendChild(none);
+  }
+
+  for (const option of options) {
+    const el = document.createElement("option");
+    el.value = option.value;
+    el.textContent = `${option.label} (${formatEnergy(convertEnergyFromRy(option.energyRy, unit))} ${unitLabel})`;
+    el.dataset.label = option.label;
+    el.dataset.energyRy = String(option.energyRy);
+    select.appendChild(el);
+  }
+
+  if (!options.length && !includeNone) {
+    const empty = document.createElement("option");
+    empty.textContent = "No converged energies available";
+    empty.value = "";
+    select.appendChild(empty);
+    select.disabled = true;
+    return;
+  }
+  select.disabled = false;
+}
+
+function updateRxnCalculator() {
+  const unit = selectedEnergyUnit();
+  const unitLabel = energyUnitLabel(unit);
+
+  RXN_SELECT_IDS.forEach((id) => {
+    const select = document.getElementById(id);
+    if (!select) return;
+    Array.from(select.options).forEach((opt) => {
+      const ry = Number(opt.dataset.energyRy);
+      if (opt.dataset.label && Number.isFinite(ry)) {
+        opt.textContent = `${opt.dataset.label} (${formatEnergy(convertEnergyFromRy(ry, unit))} ${unitLabel})`;
+      }
+    });
+  });
+
+  const values = RXN_SELECT_IDS.map((id) => {
+    const select = document.getElementById(id);
+    const opt = select?.options[select.selectedIndex];
+    if (!opt || !opt.value) return null;
+    return { label: opt.dataset.label || opt.textContent, energyRy: Number(opt.dataset.energyRy) };
+  });
+  const [a, b, c, d] = values;
+
+  let formula = a?.label ?? "-";
+  if (b) formula += ` + ${b.label}`;
+  formula += ` − ${c?.label ?? "-"}`;
+  if (d) formula += ` − ${d.label}`;
+  document.getElementById("rxnFormula").textContent = formula;
+
+  if (a && Number.isFinite(a.energyRy) && c && Number.isFinite(c.energyRy)) {
+    let resultRy = a.energyRy - c.energyRy;
+    if (b && Number.isFinite(b.energyRy)) resultRy += b.energyRy;
+    if (d && Number.isFinite(d.energyRy)) resultRy -= d.energyRy;
+    document.getElementById("rxnResult").textContent = `${formatEnergy(convertEnergyFromRy(resultRy, unit))} ${unitLabel}`;
+  } else {
+    document.getElementById("rxnResult").textContent = "-";
+  }
+}
+
+function saveRxnSelections() {
+  saveStoredSelections(RXN_SELECTION_STORAGE_KEY, RXN_SELECT_IDS.map((id) => document.getElementById(id)?.value ?? ""));
+}
+
+function renderRxnCalculator(jobs) {
+  const options = buildEnergyOptions(jobs);
+  const storedValues = loadStoredSelections(RXN_SELECTION_STORAGE_KEY, RXN_SELECT_IDS.length);
+  const unitSelect = document.getElementById("energyUnit");
+
+  if (unitSelect && !unitSelect.dataset.boundRxn) {
+    unitSelect.addEventListener("change", () => updateRxnCalculator());
+    unitSelect.dataset.boundRxn = "true";
+  }
+
+  RXN_SELECT_IDS.forEach((id, index) => {
+    const select = document.getElementById(id);
+    if (!select) return;
+    const isOptional = RXN_OPTIONAL_FLAGS[index];
+    const previousValue = select.value || storedValues[index];
+
+    populateSelectNullable(select, options, isOptional);
+
+    if (previousValue && options.some((o) => o.value === previousValue)) {
+      select.value = previousValue;
+    } else if (isOptional) {
+      select.value = "";
+    } else {
+      select.selectedIndex = Math.min(RXN_DEFAULT_OPTION_INDICES[index], options.length - 1);
+    }
+
+    if (!select.dataset.bound) {
+      select.addEventListener("change", () => { saveRxnSelections(); updateRxnCalculator(); });
+      select.dataset.bound = "true";
+    }
+  });
+
+  updateRxnCalculator();
+}
+
+// ========== Energy per Atom Calculator ==========
+const PER_ATOM_STORAGE_KEY = "qeDashboard.perAtomSelections";
+
+function buildPerAtomOptions(jobs) {
+  return jobs
+    .filter((job) => Number.isFinite(job.latest_energy_ry))
+    .map((job) => ({
+      value: job.job_id,
+      label: job.label,
+      energyRy: job.latest_energy_ry,
+      natLatest: job.nat_latest ?? 0
+    }));
+}
+
+function updatePerAtomCalculator() {
+  const unit = selectedEnergyUnit();
+  const unitLabel = energyUnitLabel(unit);
+  const select = document.getElementById("perAtomJob");
+  const nInput = document.getElementById("perAtomN");
+  if (!select || !nInput) return;
+
+  Array.from(select.options).forEach((opt) => {
+    const ry = Number(opt.dataset.energyRy);
+    if (opt.dataset.label && Number.isFinite(ry)) {
+      opt.textContent = `${opt.dataset.label} (${formatEnergy(convertEnergyFromRy(ry, unit))} ${unitLabel})`;
+    }
+  });
+
+  const opt = select.options[select.selectedIndex];
+  const energyRy = Number(opt?.dataset.energyRy);
+  const label = opt?.dataset.label ?? "-";
+  const n = Number(nInput.value);
+
+  document.getElementById("perAtomFormula").textContent = `${label} / ${n > 0 ? n : "N"}`;
+
+  if (Number.isFinite(energyRy) && n > 0) {
+    const resultRy = energyRy / n;
+    document.getElementById("perAtomResult").textContent = `${formatEnergy(convertEnergyFromRy(resultRy, unit))} ${unitLabel}/atom`;
+  } else {
+    document.getElementById("perAtomResult").textContent = "-";
+  }
+}
+
+function renderPerAtomCalculator(jobs) {
+  const options = buildPerAtomOptions(jobs);
+  const select = document.getElementById("perAtomJob");
+  const nInput = document.getElementById("perAtomN");
+  if (!select || !nInput) return;
+
+  const unitSelect = document.getElementById("energyUnit");
+  if (unitSelect && !unitSelect.dataset.boundPerAtom) {
+    unitSelect.addEventListener("change", () => updatePerAtomCalculator());
+    unitSelect.dataset.boundPerAtom = "true";
+  }
+
+  const storedValues = loadStoredSelections(PER_ATOM_STORAGE_KEY, 1);
+  const previousJobId = select.value || storedValues[0];
+  const unit = selectedEnergyUnit();
+  const unitLabel = energyUnitLabel(unit);
+
+  select.innerHTML = "";
+  if (!options.length) {
+    const empty = document.createElement("option");
+    empty.textContent = "No converged energies available";
+    empty.value = "";
+    select.appendChild(empty);
+    select.disabled = true;
+  } else {
+    select.disabled = false;
+    for (const opt of options) {
+      const el = document.createElement("option");
+      el.value = opt.value;
+      el.textContent = `${opt.label} (${formatEnergy(convertEnergyFromRy(opt.energyRy, unit))} ${unitLabel})`;
+      el.dataset.label = opt.label;
+      el.dataset.energyRy = String(opt.energyRy);
+      el.dataset.natLatest = String(opt.natLatest);
+      select.appendChild(el);
+    }
+    if (previousJobId && options.some((o) => o.value === previousJobId)) {
+      select.value = previousJobId;
+    }
+  }
+
+  function autoFillN() {
+    const selectedOpt = select.options[select.selectedIndex];
+    if (selectedOpt) {
+      const nat = Number(selectedOpt.dataset.natLatest);
+      if (nat > 0) nInput.value = nat;
+    }
+  }
+
+  if (!nInput.value) autoFillN();
+
+  if (!select.dataset.bound) {
+    select.addEventListener("change", () => {
+      saveStoredSelections(PER_ATOM_STORAGE_KEY, [select.value]);
+      autoFillN();
+      updatePerAtomCalculator();
+    });
+    select.dataset.bound = "true";
+  }
+
+  if (!nInput.dataset.bound) {
+    nInput.addEventListener("input", () => updatePerAtomCalculator());
+    nInput.dataset.bound = "true";
+  }
+
+  updatePerAtomCalculator();
+}
+
 function renderInputComparison(jobs) {
   const el = document.getElementById("inputComparison");
   const options = buildInputComparisonOptions(jobs);
@@ -388,11 +678,20 @@ async function main() {
   try {
     const jobs = await loadJobs();
     renderCalculator(jobs);
+    renderDiffCalculator(jobs);
+    renderRxnCalculator(jobs);
+    renderPerAtomCalculator(jobs);
     renderInputComparison(jobs);
     renderJobs(jobs);
   } catch (e) {
     document.getElementById("energyFormula").textContent = "Unable to load energy data";
     document.getElementById("energyResult").textContent = "-";
+    document.getElementById("diffFormula").textContent = "Unable to load energy data";
+    document.getElementById("diffResult").textContent = "-";
+    document.getElementById("rxnFormula").textContent = "Unable to load energy data";
+    document.getElementById("rxnResult").textContent = "-";
+    document.getElementById("perAtomFormula").textContent = "Unable to load energy data";
+    document.getElementById("perAtomResult").textContent = "-";
     document.getElementById("inputComparison").innerHTML = "<p>Failed to load input comparison.</p>";
     document.getElementById("jobs").innerHTML = "<p>Failed to load jobs.json</p>";
     console.error(e);

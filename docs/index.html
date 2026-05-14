@@ -93,6 +93,14 @@
       font-weight: normal;
       margin-top: 4px;
     }
+    .number-input {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid #c8d0de;
+      border-radius: 8px;
+      font: inherit;
+      background: #fff;
+    }
     .bad { color: #b00020; }
     .calculating { color: #8a5a00; }
     .ok { color: #0a7a2f; }
@@ -145,12 +153,74 @@
     </section>
 
     <section class="card">
+      <div class="title">Simple Difference (A − B)</div>
+      <div class="calculator-form">
+        <div class="calculator-grid">
+          <div class="field">
+            <label for="diffA">Energy A</label>
+            <select id="diffA"></select>
+          </div>
+          <div class="field">
+            <label for="diffB">Energy B</label>
+            <select id="diffB"></select>
+          </div>
+        </div>
+        <div class="formula" id="diffFormula">A − B</div>
+        <div class="result" id="diffResult">-</div>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="title">Reaction Energy (A + B − C − D)</div>
+      <div class="calculator-form">
+        <div class="calculator-grid">
+          <div class="field">
+            <label for="rxnA">Reactant A</label>
+            <select id="rxnA"></select>
+          </div>
+          <div class="field">
+            <label for="rxnB">Reactant B (optional)</label>
+            <select id="rxnB"></select>
+          </div>
+          <div class="field">
+            <label for="rxnC">Product C</label>
+            <select id="rxnC"></select>
+          </div>
+          <div class="field">
+            <label for="rxnD">Product D (optional)</label>
+            <select id="rxnD"></select>
+          </div>
+        </div>
+        <div class="formula" id="rxnFormula">A − C</div>
+        <div class="result" id="rxnResult">-</div>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="title">Energy per Atom (E / N)</div>
+      <div class="calculator-form">
+        <div class="calculator-grid">
+          <div class="field">
+            <label for="perAtomJob">Job</label>
+            <select id="perAtomJob"></select>
+          </div>
+          <div class="field">
+            <label for="perAtomN">N atoms (auto from job)</label>
+            <input id="perAtomN" type="number" min="1" step="1" class="number-input" placeholder="auto">
+          </div>
+        </div>
+        <div class="formula" id="perAtomFormula">E / N</div>
+        <div class="result" id="perAtomResult">-</div>
+      </div>
+    </section>
+
+    <section class="card">
       <div class="title">Input File Comparison</div>
       <div id="inputComparison">Loading...</div>
     </section>
 
     <div id="jobs" class="grid"></div>
   </div>
-  <script src="app.js?v=20260423-job-status-1"></script>
+  <script src="app.js?v=20260514-calculators-1"></script>
 </body>
 </html>
