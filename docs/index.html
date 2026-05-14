@@ -93,14 +93,6 @@
       font-weight: normal;
       margin-top: 4px;
     }
-    .number-input {
-      width: 100%;
-      padding: 10px 12px;
-      border: 1px solid #c8d0de;
-      border-radius: 8px;
-      font: inherit;
-      background: #fff;
-    }
     .bad { color: #b00020; }
     .calculating { color: #8a5a00; }
     .ok { color: #0a7a2f; }
@@ -153,64 +145,68 @@
     </section>
 
     <section class="card">
-      <div class="title">Simple Difference (A − B)</div>
+      <div class="title">Energy Calculator 2</div>
       <div class="calculator-form">
         <div class="calculator-grid">
           <div class="field">
-            <label for="diffA">Energy A</label>
-            <select id="diffA"></select>
+            <label for="energy2A">Energy A</label>
+            <select id="energy2A"></select>
           </div>
           <div class="field">
-            <label for="diffB">Energy B</label>
-            <select id="diffB"></select>
+            <label for="energy2B">Energy B</label>
+            <select id="energy2B"></select>
+          </div>
+          <div class="field">
+            <label for="energy2C">Energy C</label>
+            <select id="energy2C"></select>
           </div>
         </div>
-        <div class="formula" id="diffFormula">A − B</div>
-        <div class="result" id="diffResult">-</div>
+        <div class="formula" id="energy2Formula">A - B - C</div>
+        <div class="result" id="energy2Result">-</div>
       </div>
     </section>
 
     <section class="card">
-      <div class="title">Reaction Energy (A + B − C − D)</div>
+      <div class="title">Energy Calculator 3</div>
       <div class="calculator-form">
         <div class="calculator-grid">
           <div class="field">
-            <label for="rxnA">Reactant A</label>
-            <select id="rxnA"></select>
+            <label for="energy3A">Energy A</label>
+            <select id="energy3A"></select>
           </div>
           <div class="field">
-            <label for="rxnB">Reactant B (optional)</label>
-            <select id="rxnB"></select>
+            <label for="energy3B">Energy B</label>
+            <select id="energy3B"></select>
           </div>
           <div class="field">
-            <label for="rxnC">Product C</label>
-            <select id="rxnC"></select>
-          </div>
-          <div class="field">
-            <label for="rxnD">Product D (optional)</label>
-            <select id="rxnD"></select>
+            <label for="energy3C">Energy C</label>
+            <select id="energy3C"></select>
           </div>
         </div>
-        <div class="formula" id="rxnFormula">A − C</div>
-        <div class="result" id="rxnResult">-</div>
+        <div class="formula" id="energy3Formula">A - B - C</div>
+        <div class="result" id="energy3Result">-</div>
       </div>
     </section>
 
     <section class="card">
-      <div class="title">Energy per Atom (E / N)</div>
+      <div class="title">Energy Calculator 4</div>
       <div class="calculator-form">
         <div class="calculator-grid">
           <div class="field">
-            <label for="perAtomJob">Job</label>
-            <select id="perAtomJob"></select>
+            <label for="energy4A">Energy A</label>
+            <select id="energy4A"></select>
           </div>
           <div class="field">
-            <label for="perAtomN">N atoms (auto from job)</label>
-            <input id="perAtomN" type="number" min="1" step="1" class="number-input" placeholder="auto">
+            <label for="energy4B">Energy B</label>
+            <select id="energy4B"></select>
+          </div>
+          <div class="field">
+            <label for="energy4C">Energy C</label>
+            <select id="energy4C"></select>
           </div>
         </div>
-        <div class="formula" id="perAtomFormula">E / N</div>
-        <div class="result" id="perAtomResult">-</div>
+        <div class="formula" id="energy4Formula">A - B - C</div>
+        <div class="result" id="energy4Result">-</div>
       </div>
     </section>
 
