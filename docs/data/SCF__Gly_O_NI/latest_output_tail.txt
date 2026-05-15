@@ -1,0 +1,69 @@
+&CONTROL
+calculation = 'scf'
+forc_conv_thr = 1d-3
+nstep = 200
+outdir = './output/'
+prefix = 'VLAB'
+pseudo_dir = '/home/node1/PSP/PseudosP/pslibrary-master/pbe/PSEUDOPOTENTIALS/'
+restart_mode = 'from_scratch'
+tprnfor = .TRUE.
+verbosity = 'high'
+wf_collect = .TRUE.
+/
+&SYSTEM
+ ibrav = 0
+ nat = 13
+ ntyp = 4
+
+ ecutwfc = 50
+ ecutrho = 400
+
+ occupations = 'fixed'
+ degauss = 0.02
+
+ nspin = 1
+
+
+ nosym = .false.
+ noinv = .false.
+ noncolin = .false.
+
+ vdw_corr = 'grimme-d3'
+/
+&ELECTRONS
+conv_thr = 1e-07
+electron_maxstep = 200
+mixing_beta = 0.04
+mixing_mode = 'plain'
+scf_must_converge = .TRUE.
+!startingwfc = 'random'
+/
+
+ATOMIC_SPECIES
+O  15.9994 O.pbe-n-rrkjus_psl.1.0.0.UPF
+C  12.011  C.pbe-n-rrkjus_psl.1.0.0.UPF
+H  1.00797 H.pbe-rrkjus_psl.1.0.0.UPF
+
+K_POINTS {automatic}
+3 3 1 0 0 0
+
+
+CELL_PARAMETERS angstrom
+  7.371900000   0.000000000   0.000000000
+  3.685947771   6.384253961   0.000000000
+  0.000007169  -0.000004139  41.076510000
+
+ATOMIC_POSITIONS (angstrom)
+O                3.2889969833        2.1163359692       25.1181921523
+H                5.1089014976        2.7326689925       25.9398052774
+H                3.7125326505        3.7974268839       26.2333625782
+C                4.0236414467        2.7384385466       26.1565325346
+O                4.2422085760        0.6733457780       27.4654734986
+H                5.2115910200        0.7105276830       27.3722209745
+C                3.7418463705        2.0134991455       27.4758103645
+H                2.6500474602        1.9005258826       27.5796100195
+C                4.2572612264        2.8331373859       28.6550469874
+H                3.9201719680        3.8795914486       28.5378206061
+H                5.3662061040        2.8307788582       28.6470925663
+O                3.7487579046        2.2648566352       29.8636568251
+H                4.0886744650        2.7867232058       30.6082377796
