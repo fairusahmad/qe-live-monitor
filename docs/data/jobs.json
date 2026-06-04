@@ -26,13 +26,13 @@
       "forc_conv_thr": "1.1d-3"
     },
     "input_file_data": "data/Ni-Ag/input.json",
-    "latest_energy_ry": -5913.22841129,
-    "latest_total_force_ry_bohr": 0.169722,
-    "latest_gradient_error_ry_bohr": 0.031,
-    "converged": true,
-    "nat_latest": 64,
-    "has_structure": true,
-    "num_structure_steps": 11,
+    "latest_energy_ry": null,
+    "latest_total_force_ry_bohr": null,
+    "latest_gradient_error_ry_bohr": null,
+    "converged": false,
+    "nat_latest": 0,
+    "has_structure": false,
+    "num_structure_steps": 0,
     "status_file": "data/Ni-Ag/status.json",
     "energy_file": "data/Ni-Ag/energy.csv",
     "total_force_file": "data/Ni-Ag/total_force.csv",
@@ -44,7 +44,8 @@
     "original_lattice_file": "data/Ni-Ag/original_lattice.json",
     "original_constraints_file": "data/Ni-Ag/original_constraints.json",
     "output_tail_file": "data/Ni-Ag/latest_output_tail.txt",
-    "atomic_positions_file": "data/Ni-Ag/latest_atomic_positions.txt"
+    "atomic_positions_file": "data/Ni-Ag/latest_atomic_positions.txt",
+    "note": "Output parsed, but no final structure block was found."
   },
   {
     "job_id": "Ni-Ag-Glu",
