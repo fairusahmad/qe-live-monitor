@@ -52,7 +52,7 @@
     "source_dir": "/media/node1/Fairus2TB/fairus/Nguyen/Ni-Ag_(DONE)",
     "found": true,
     "output_file": "/media/node1/Fairus2TB/fairus/Nguyen/Ni-Ag_(DONE)/output_relax.pw.x",
-    "status": "OK",
+    "status": "calculating...",
     "structure_capable": true,
     "input_file": "/media/node1/Fairus2TB/fairus/Nguyen/Ni-Ag_(DONE)/input.pw_relax.x",
     "input_file_name": "input.pw_relax.x",
@@ -73,13 +73,13 @@
       "forc_conv_thr": "1.1d-3"
     },
     "input_file_data": "data/Ni-Ag__DONE_/input.json",
-    "latest_energy_ry": -5914.40759,
-    "latest_total_force_ry_bohr": 0.004401,
-    "latest_gradient_error_ry_bohr": 0.0011,
-    "converged": true,
-    "nat_latest": 64,
-    "has_structure": true,
-    "num_structure_steps": 129,
+    "latest_energy_ry": null,
+    "latest_total_force_ry_bohr": null,
+    "latest_gradient_error_ry_bohr": null,
+    "converged": false,
+    "nat_latest": 0,
+    "has_structure": false,
+    "num_structure_steps": 0,
     "status_file": "data/Ni-Ag__DONE_/status.json",
     "energy_file": "data/Ni-Ag__DONE_/energy.csv",
     "total_force_file": "data/Ni-Ag__DONE_/total_force.csv",
@@ -91,6 +91,7 @@
     "original_lattice_file": "data/Ni-Ag__DONE_/original_lattice.json",
     "original_constraints_file": "data/Ni-Ag__DONE_/original_constraints.json",
     "output_tail_file": "data/Ni-Ag__DONE_/latest_output_tail.txt",
-    "atomic_positions_file": "data/Ni-Ag__DONE_/latest_atomic_positions.txt"
+    "atomic_positions_file": "data/Ni-Ag__DONE_/latest_atomic_positions.txt",
+    "note": "Output parsed, but no final structure block was found."
   }
 ]
