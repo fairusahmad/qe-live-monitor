@@ -1,7 +1,7 @@
 import os
 import json
 import re
-from parse_qe import INPUT_COMPARE_KEYS, export_qe_run, parse_qe_input_details
+from parse_qe import INPUT_COMPARE_KEYS, export_qe_run, export_neb_structure, parse_qe_input_details
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 REPO_DIR = os.path.dirname(SCRIPT_DIR)
@@ -18,6 +18,7 @@ OUTPUT_PRIORITY = [
     "output_scf.pw.x",
     "nscf_output.pw.x",
     "bands_output.pw.x",
+    "output.neb.x",
     "bands_post_output.x",
     "projwfc.out",
     "potential_pp.out",
@@ -55,6 +56,7 @@ INPUT_PRIORITY = [
     "input.pw.x",
     "nscf_input.pw.x",
     "bands_input.pw.x",
+    "input.neb.x",
 ]
 
 SKIP_DIR_NAMES = {
@@ -116,6 +118,12 @@ def find_input_file(job_dir):
         input_files.sort()
         return os.path.join(job_dir, input_files[0])
 
+    return None
+
+def find_axsf_file(job_dir):
+    for f in sorted(os.listdir(job_dir)):
+        if f.endswith(".axsf") and os.path.isfile(os.path.join(job_dir, f)):
+            return os.path.join(job_dir, f)
     return None
 
 def attach_input_details(item, input_details, job_id):
@@ -270,6 +278,7 @@ def main():
             item["original_constraints_file"] = f"data/{job_id}/original_constraints.json"
             item["input_file_data"] = f"data/{job_id}/input.json"
             item["output_tail_file"] = f"data/{job_id}/latest_output_tail.txt"
+            item["atomic_positions_file"] = f"data/{job_id}/latest_atomic_positions.txt"
 
             if not item["has_structure"] and not item["structure_capable"]:
                 item["note"] = "Output parsed, but this calculation type usually does not contain a final structure block."
@@ -278,6 +287,20 @@ def main():
         except Exception as e:
             item["status"] = STATUS_CALCULATING
             item["error"] = str(e)
+
+        if basename == "output.neb.x":
+            axsf_file = find_axsf_file(job_dir)
+            if axsf_file:
+                try:
+                    neb = export_neb_structure(axsf_file, outdir)
+                    if neb["nat"] > 0:
+                        item["structure_capable"] = True
+                        item["has_structure"] = True
+                        item["nat_latest"] = neb["nat"]
+                        item["num_structure_steps"] = neb["num_images"]
+                        item.pop("note", None)
+                except Exception as e:
+                    item["neb_structure_error"] = str(e)
 
         jobs_summary.append(item)
 
@@ -288,4 +311,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

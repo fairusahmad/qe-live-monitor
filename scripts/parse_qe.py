@@ -368,9 +368,11 @@ def guess_input_files_from_output(qe_output):
         "output_scf.pw.x": ["input.pw.x"],
         "nscf_output.pw.x": ["nscf_input.pw.x"],
         "bands_output.pw.x": ["bands_input.pw.x"],
+        "output.neb.x": ["input.neb.x"],
     }
 
     candidates = preferred_map.get(output_name, []) + [
+        "input.neb.x",
         "input.pw_relax.x",
         "input.pw.x",
         "nscf_input.pw.x",
@@ -593,6 +595,39 @@ def write_gradient_error_csv(gradient_errors, output_csv):
         for i, gradient_error in enumerate(gradient_errors, start=1):
             f.write(f"{i},{gradient_error}\n")
 
+def find_latest_raw_atomic_positions(lines):
+    if not lines:
+        return None
+
+    last_raw = None
+    i = 0
+    while i < len(lines):
+        if lines[i].strip().startswith("ATOMIC_POSITIONS"):
+            parsed = parse_atomic_positions_block(lines, i)
+            if parsed is not None:
+                last_raw = "".join(lines[i:parsed["next_idx"]])
+                i = parsed["next_idx"]
+                continue
+        i += 1
+
+    return last_raw
+
+def write_latest_atomic_positions(filename, output_path, fallback_files=None):
+    with open(filename, "r", encoding="utf-8", errors="ignore") as f:
+        lines = f.readlines()
+    raw = find_latest_raw_atomic_positions(lines)
+
+    if not raw and fallback_files:
+        for fallback in fallback_files:
+            fallback_lines = read_file_lines_if_exists(fallback)
+            if fallback_lines:
+                raw = find_latest_raw_atomic_positions(fallback_lines)
+                if raw:
+                    break
+
+    with open(output_path, "w", encoding="utf-8") as f:
+        f.write(raw if raw else "")
+
 def write_output_tail(filename, output_tail, nlines=300):
     with open(filename, "r", encoding="utf-8", errors="ignore") as f:
         tail = f.readlines()[-nlines:]
@@ -697,7 +732,119 @@ def export_qe_run(qe_output, outdir, job_name="QE Job"):
     write_original_constraints_json(result, os.path.join(outdir, "original_constraints.json"))
     write_input_json(result, os.path.join(outdir, "input.json"))
     write_output_tail(qe_output, os.path.join(outdir, "latest_output_tail.txt"))
+    fallback_input_files = [f for f in guess_input_files_from_output(qe_output) if os.path.isfile(f)]
+    write_latest_atomic_positions(qe_output, os.path.join(outdir, "latest_atomic_positions.txt"), fallback_files=fallback_input_files)
 
     return result
+
+
+def parse_axsf(filename):
+    with open(filename, "r", encoding="utf-8", errors="ignore") as f:
+        lines = f.readlines()
+
+    lattice = None
+    frames = []
+    i = 0
+    while i < len(lines):
+        tag = lines[i].strip().upper()
+
+        if tag.startswith("PRIMVEC"):
+            matrix = []
+            for j in range(i + 1, min(i + 4, len(lines))):
+                parts = lines[j].split()
+                if len(parts) >= 3:
+                    try:
+                        matrix.append([float(parts[0]), float(parts[1]), float(parts[2])])
+                    except ValueError:
+                        break
+            if len(matrix) == 3:
+                lattice = matrix
+            i += 4
+            continue
+
+        if tag.startswith("PRIMCOORD"):
+            if i + 1 >= len(lines):
+                i += 1
+                continue
+            nat_parts = lines[i + 1].split()
+            if not nat_parts:
+                i += 1
+                continue
+            try:
+                nat = int(nat_parts[0])
+            except ValueError:
+                i += 1
+                continue
+            atoms = []
+            for j in range(i + 2, min(i + 2 + nat, len(lines))):
+                parts = lines[j].split()
+                if len(parts) >= 4:
+                    try:
+                        sym = parts[0].capitalize()
+                        x, y, z = float(parts[1]), float(parts[2]), float(parts[3])
+                        atoms.append((sym, x, y, z))
+                    except ValueError:
+                        pass
+            if atoms:
+                frames.append(atoms)
+            i += 2 + nat
+            continue
+
+        i += 1
+
+    return {"lattice": lattice, "frames": frames}
+
+
+def export_neb_structure(axsf_file, outdir):
+    os.makedirs(outdir, exist_ok=True)
+    axsf = parse_axsf(axsf_file)
+
+    lattice = axsf["lattice"]
+    frames = axsf["frames"]
+
+    position_blocks = [
+        {"header": f"NEB Image {i}", "atoms_ang": atoms}
+        for i, atoms in enumerate(frames, start=1)
+    ]
+
+    write_trajectory_xyz(position_blocks, os.path.join(outdir, "trajectory.xyz"))
+
+    if frames:
+        write_xyz(
+            frames[-1],
+            os.path.join(outdir, "structure.xyz"),
+            comment="Last NEB image (Cartesian Angstrom)"
+        )
+        write_xyz(
+            frames[0],
+            os.path.join(outdir, "original_structure.xyz"),
+            comment="First NEB image (Cartesian Angstrom)"
+        )
+
+    lattice_data = {
+        "cell_format": "PRIMVEC (Angstrom)",
+        "cell_source": "axsf",
+        "matrix_angstrom": lattice,
+    }
+    with open(os.path.join(outdir, "lattice.json"), "w", encoding="utf-8") as f:
+        json.dump(lattice_data, f, indent=2)
+
+    with open(os.path.join(outdir, "original_lattice.json"), "w", encoding="utf-8") as f:
+        json.dump({
+            "input_file": axsf_file,
+            "cell_format": "PRIMVEC (Angstrom)",
+            "cell_source": "axsf",
+            "matrix_angstrom": lattice,
+        }, f, indent=2)
+
+    with open(os.path.join(outdir, "original_constraints.json"), "w", encoding="utf-8") as f:
+        json.dump({"input_file": axsf_file, "constraints": []}, f, indent=2)
+
+    return {
+        "frames": frames,
+        "lattice": lattice,
+        "nat": len(frames[0]) if frames else 0,
+        "num_images": len(frames),
+    }
 
 

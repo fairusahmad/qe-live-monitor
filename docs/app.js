@@ -107,9 +107,9 @@ function buildEnergyOptions(jobs) {
     }));
 }
 
-function populateSelect(select, options, preferredIndex) {
+function populateSelect(select, options, preferredIndex, unitOverride) {
   select.innerHTML = "";
-  const unit = selectedEnergyUnit();
+  const unit = unitOverride !== undefined ? unitOverride : selectedEnergyUnit();
   const unitLabel = energyUnitLabel(unit);
 
   for (const option of options) {
@@ -317,6 +317,269 @@ function renderInputComparisonTable(jobs) {
   `;
 }
 
+const ENERGY_SELECT_IDS_2 = ["energy2A", "energy2B", "energy2C"];
+const ENERGY_SELECTION_STORAGE_KEY_2 = "qeDashboard.energySelections2";
+const ENERGY_UNIT_STORAGE_KEY_2 = "qeDashboard.energyUnit2";
+const ENERGY_SELECT_IDS_3 = ["energy3A", "energy3B", "energy3C"];
+const ENERGY_SELECTION_STORAGE_KEY_3 = "qeDashboard.energySelections3";
+const ENERGY_UNIT_STORAGE_KEY_3 = "qeDashboard.energyUnit3";
+const ENERGY_SELECT_IDS_4 = ["energy4A", "energy4B", "energy4C"];
+const ENERGY_SELECTION_STORAGE_KEY_4 = "qeDashboard.energySelections4";
+const ENERGY_UNIT_STORAGE_KEY_4 = "qeDashboard.energyUnit4";
+
+function selectedEnergyUnit2() {
+  return document.getElementById("energyUnit2")?.value === "ry" ? "ry" : "ev";
+}
+function selectedEnergyUnit3() {
+  return document.getElementById("energyUnit3")?.value === "ry" ? "ry" : "ev";
+}
+function selectedEnergyUnit4() {
+  return document.getElementById("energyUnit4")?.value === "ry" ? "ry" : "ev";
+}
+
+function loadStoredEnergyUnit2() {
+  try { return localStorage.getItem(ENERGY_UNIT_STORAGE_KEY_2) === "ry" ? "ry" : "ev"; } catch(e) { return "ev"; }
+}
+function loadStoredEnergyUnit3() {
+  try { return localStorage.getItem(ENERGY_UNIT_STORAGE_KEY_3) === "ry" ? "ry" : "ev"; } catch(e) { return "ev"; }
+}
+function loadStoredEnergyUnit4() {
+  try { return localStorage.getItem(ENERGY_UNIT_STORAGE_KEY_4) === "ry" ? "ry" : "ev"; } catch(e) { return "ev"; }
+}
+
+function saveEnergyUnit2() {
+  try { localStorage.setItem(ENERGY_UNIT_STORAGE_KEY_2, selectedEnergyUnit2()); } catch(e) {}
+}
+function saveEnergyUnit3() {
+  try { localStorage.setItem(ENERGY_UNIT_STORAGE_KEY_3, selectedEnergyUnit3()); } catch(e) {}
+}
+function saveEnergyUnit4() {
+  try { localStorage.setItem(ENERGY_UNIT_STORAGE_KEY_4, selectedEnergyUnit4()); } catch(e) {}
+}
+
+function updateEnergyOptionLabels2() {
+  const unit = selectedEnergyUnit2();
+  const unitLabel = energyUnitLabel(unit);
+  ENERGY_SELECT_IDS_2.forEach((id) => {
+    const select = document.getElementById(id);
+    if (!select) return;
+    Array.from(select.options).forEach((option) => {
+      const energyRy = Number(option.dataset.energyRy);
+      const label = option.dataset.label;
+      if (label && Number.isFinite(energyRy)) {
+        option.textContent = `${label} (${formatEnergy(convertEnergyFromRy(energyRy, unit))} ${unitLabel})`;
+      }
+    });
+  });
+}
+
+function updateEnergyOptionLabels3() {
+  const unit = selectedEnergyUnit3();
+  const unitLabel = energyUnitLabel(unit);
+  ENERGY_SELECT_IDS_3.forEach((id) => {
+    const select = document.getElementById(id);
+    if (!select) return;
+    Array.from(select.options).forEach((option) => {
+      const energyRy = Number(option.dataset.energyRy);
+      const label = option.dataset.label;
+      if (label && Number.isFinite(energyRy)) {
+        option.textContent = `${label} (${formatEnergy(convertEnergyFromRy(energyRy, unit))} ${unitLabel})`;
+      }
+    });
+  });
+}
+
+function updateEnergyOptionLabels4() {
+  const unit = selectedEnergyUnit4();
+  const unitLabel = energyUnitLabel(unit);
+  ENERGY_SELECT_IDS_4.forEach((id) => {
+    const select = document.getElementById(id);
+    if (!select) return;
+    Array.from(select.options).forEach((option) => {
+      const energyRy = Number(option.dataset.energyRy);
+      const label = option.dataset.label;
+      if (label && Number.isFinite(energyRy)) {
+        option.textContent = `${label} (${formatEnergy(convertEnergyFromRy(energyRy, unit))} ${unitLabel})`;
+      }
+    });
+  });
+}
+
+function updateCalculator2() {
+  const unit = selectedEnergyUnit2();
+  const unitLabel = energyUnitLabel(unit);
+  const chosen = ENERGY_SELECT_IDS_2.map((id) => {
+    const select = document.getElementById(id);
+    const selectedOption = select.options[select.selectedIndex];
+    if (!selectedOption) return { label: "-", energyRy: NaN };
+    return { label: selectedOption.textContent, energyRy: Number(selectedOption.dataset.energyRy) };
+  });
+  const [energyA, energyB, energyC] = chosen;
+  document.getElementById("energy2Formula").textContent = `${energyA.label} - ${energyB.label} - ${energyC.label}`;
+  if (chosen.every((item) => Number.isFinite(item.energyRy))) {
+    const resultRy = energyA.energyRy - energyB.energyRy - energyC.energyRy;
+    document.getElementById("energy2Result").textContent = `${formatEnergy(convertEnergyFromRy(resultRy, unit))} ${unitLabel}`;
+  } else {
+    document.getElementById("energy2Result").textContent = "-";
+  }
+}
+
+function updateCalculator3() {
+  const unit = selectedEnergyUnit3();
+  const unitLabel = energyUnitLabel(unit);
+  const chosen = ENERGY_SELECT_IDS_3.map((id) => {
+    const select = document.getElementById(id);
+    const selectedOption = select.options[select.selectedIndex];
+    if (!selectedOption) return { label: "-", energyRy: NaN };
+    return { label: selectedOption.textContent, energyRy: Number(selectedOption.dataset.energyRy) };
+  });
+  const [energyA, energyB, energyC] = chosen;
+  document.getElementById("energy3Formula").textContent = `${energyA.label} - ${energyB.label} - ${energyC.label}`;
+  if (chosen.every((item) => Number.isFinite(item.energyRy))) {
+    const resultRy = energyA.energyRy - energyB.energyRy - energyC.energyRy;
+    document.getElementById("energy3Result").textContent = `${formatEnergy(convertEnergyFromRy(resultRy, unit))} ${unitLabel}`;
+  } else {
+    document.getElementById("energy3Result").textContent = "-";
+  }
+}
+
+function updateCalculator4() {
+  const unit = selectedEnergyUnit4();
+  const unitLabel = energyUnitLabel(unit);
+  const chosen = ENERGY_SELECT_IDS_4.map((id) => {
+    const select = document.getElementById(id);
+    const selectedOption = select.options[select.selectedIndex];
+    if (!selectedOption) return { label: "-", energyRy: NaN };
+    return { label: selectedOption.textContent, energyRy: Number(selectedOption.dataset.energyRy) };
+  });
+  const [energyA, energyB, energyC] = chosen;
+  document.getElementById("energy4Formula").textContent = `${energyA.label} - ${energyB.label} - ${energyC.label}`;
+  if (chosen.every((item) => Number.isFinite(item.energyRy))) {
+    const resultRy = energyA.energyRy - energyB.energyRy - energyC.energyRy;
+    document.getElementById("energy4Result").textContent = `${formatEnergy(convertEnergyFromRy(resultRy, unit))} ${unitLabel}`;
+  } else {
+    document.getElementById("energy4Result").textContent = "-";
+  }
+}
+
+function saveEnergySelections2() {
+  saveStoredSelections(ENERGY_SELECTION_STORAGE_KEY_2, ENERGY_SELECT_IDS_2.map((id) => document.getElementById(id)?.value ?? ""));
+}
+function saveEnergySelections3() {
+  saveStoredSelections(ENERGY_SELECTION_STORAGE_KEY_3, ENERGY_SELECT_IDS_3.map((id) => document.getElementById(id)?.value ?? ""));
+}
+function saveEnergySelections4() {
+  saveStoredSelections(ENERGY_SELECTION_STORAGE_KEY_4, ENERGY_SELECT_IDS_4.map((id) => document.getElementById(id)?.value ?? ""));
+}
+
+function renderCalculator2(jobs) {
+  const options = buildEnergyOptions(jobs);
+  const storedValues = loadStoredSelections(ENERGY_SELECTION_STORAGE_KEY_2, ENERGY_SELECT_IDS_2.length);
+  const unitSelect = document.getElementById("energyUnit2");
+
+  if (unitSelect) {
+    if (!unitSelect.dataset.bound) {
+      unitSelect.value = loadStoredEnergyUnit2();
+      unitSelect.addEventListener("change", () => {
+        saveEnergyUnit2();
+        updateEnergyOptionLabels2();
+        updateCalculator2();
+      });
+      unitSelect.dataset.bound = "true";
+    }
+  }
+
+  ENERGY_SELECT_IDS_2.forEach((id, index) => {
+    const select = document.getElementById(id);
+    const previousValue = select.value || storedValues[index];
+    populateSelect(select, options, index, selectedEnergyUnit2());
+    if (previousValue && options.some((option) => option.value === previousValue)) {
+      select.value = previousValue;
+    }
+    if (!select.dataset.bound) {
+      select.addEventListener("change", () => {
+        saveEnergySelections2();
+        updateCalculator2();
+      });
+      select.dataset.bound = "true";
+    }
+  });
+
+  updateCalculator2();
+}
+
+function renderCalculator3(jobs) {
+  const options = buildEnergyOptions(jobs);
+  const storedValues = loadStoredSelections(ENERGY_SELECTION_STORAGE_KEY_3, ENERGY_SELECT_IDS_3.length);
+  const unitSelect = document.getElementById("energyUnit3");
+
+  if (unitSelect) {
+    if (!unitSelect.dataset.bound) {
+      unitSelect.value = loadStoredEnergyUnit3();
+      unitSelect.addEventListener("change", () => {
+        saveEnergyUnit3();
+        updateEnergyOptionLabels3();
+        updateCalculator3();
+      });
+      unitSelect.dataset.bound = "true";
+    }
+  }
+
+  ENERGY_SELECT_IDS_3.forEach((id, index) => {
+    const select = document.getElementById(id);
+    const previousValue = select.value || storedValues[index];
+    populateSelect(select, options, index, selectedEnergyUnit3());
+    if (previousValue && options.some((option) => option.value === previousValue)) {
+      select.value = previousValue;
+    }
+    if (!select.dataset.bound) {
+      select.addEventListener("change", () => {
+        saveEnergySelections3();
+        updateCalculator3();
+      });
+      select.dataset.bound = "true";
+    }
+  });
+
+  updateCalculator3();
+}
+
+function renderCalculator4(jobs) {
+  const options = buildEnergyOptions(jobs);
+  const storedValues = loadStoredSelections(ENERGY_SELECTION_STORAGE_KEY_4, ENERGY_SELECT_IDS_4.length);
+  const unitSelect = document.getElementById("energyUnit4");
+
+  if (unitSelect) {
+    if (!unitSelect.dataset.bound) {
+      unitSelect.value = loadStoredEnergyUnit4();
+      unitSelect.addEventListener("change", () => {
+        saveEnergyUnit4();
+        updateEnergyOptionLabels4();
+        updateCalculator4();
+      });
+      unitSelect.dataset.bound = "true";
+    }
+  }
+
+  ENERGY_SELECT_IDS_4.forEach((id, index) => {
+    const select = document.getElementById(id);
+    const previousValue = select.value || storedValues[index];
+    populateSelect(select, options, index, selectedEnergyUnit4());
+    if (previousValue && options.some((option) => option.value === previousValue)) {
+      select.value = previousValue;
+    }
+    if (!select.dataset.bound) {
+      select.addEventListener("change", () => {
+        saveEnergySelections4();
+        updateCalculator4();
+      });
+      select.dataset.bound = "true";
+    }
+  });
+
+  updateCalculator4();
+}
+
 function renderInputComparison(jobs) {
   const el = document.getElementById("inputComparison");
   const options = buildInputComparisonOptions(jobs);
@@ -388,11 +651,20 @@ async function main() {
   try {
     const jobs = await loadJobs();
     renderCalculator(jobs);
+    renderCalculator2(jobs);
+    renderCalculator3(jobs);
+    renderCalculator4(jobs);
     renderInputComparison(jobs);
     renderJobs(jobs);
   } catch (e) {
     document.getElementById("energyFormula").textContent = "Unable to load energy data";
     document.getElementById("energyResult").textContent = "-";
+    document.getElementById("energy2Formula").textContent = "Unable to load energy data";
+    document.getElementById("energy2Result").textContent = "-";
+    document.getElementById("energy3Formula").textContent = "Unable to load energy data";
+    document.getElementById("energy3Result").textContent = "-";
+    document.getElementById("energy4Formula").textContent = "Unable to load energy data";
+    document.getElementById("energy4Result").textContent = "-";
     document.getElementById("inputComparison").innerHTML = "<p>Failed to load input comparison.</p>";
     document.getElementById("jobs").innerHTML = "<p>Failed to load jobs.json</p>";
     console.error(e);

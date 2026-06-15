@@ -1239,6 +1239,14 @@ async function refreshJob() {
   }
 
   try {
+    const atomicPositions = await loadText(`data/${job.job_id}/latest_atomic_positions.txt`);
+    document.getElementById("atomicPositions").textContent = atomicPositions || "No ATOMIC_POSITIONS block found.";
+  } catch (e) {
+    document.getElementById("atomicPositions").textContent = "Could not load atomic positions.";
+    console.error(e);
+  }
+
+  try {
     const outputTail = await loadText(`data/${job.job_id}/latest_output_tail.txt`);
     document.getElementById("outputTail").textContent = outputTail;
   } catch (e) {
