@@ -28,6 +28,42 @@ let measurementState = {
 };
 let syncViewsEnabled = true;
 let isApplyingSyncedView = false;
+const FIXED_ATOM_COLOR = "#00d4ff";
+const KNOWN_ELEMENT_COLORS = {
+  H: "#ffffff",
+  C: "#808080",
+  N: "#3b82f6",
+  O: "#ef4444",
+  S: "#facc15",
+  P: "#f97316",
+  F: "#22c55e",
+  Cl: "#10b981",
+  Br: "#92400e",
+  I: "#7c3aed",
+  Si: "#a3a3a3",
+  Al: "#94a3b8",
+  Fe: "#b91c1c",
+  Co: "#1d4ed8",
+  Ni: "#16a34a",
+  Cu: "#f59e0b",
+  Zn: "#64748b",
+  Ag: "#cbd5e1",
+  Au: "#eab308",
+  Pt: "#475569",
+  Pd: "#6b7280"
+};
+const EXTRA_ELEMENT_PALETTE = [
+  "#ec4899",
+  "#06b6d4",
+  "#84cc16",
+  "#f97316",
+  "#8b5cf6",
+  "#14b8a6",
+  "#e11d48",
+  "#0ea5e9",
+  "#a855f7",
+  "#22c55e"
+];
 const chartControlIds = {
   energy: {
     xMin: "energyXMin",
@@ -361,6 +397,68 @@ function parseXYZAtoms(xyzText) {
   return atoms;
 }
 
+function normalizeElementSymbol(elem) {
+  const clean = String(elem ?? "").trim();
+  if (!clean) return "";
+  return clean.charAt(0).toUpperCase() + clean.slice(1).toLowerCase();
+}
+
+function getDisplayedElementTypes() {
+  const seen = new Set();
+  const ordered = [];
+
+  const addAtomList = (atoms) => {
+    for (const atom of atoms) {
+      const elem = normalizeElementSymbol(atom.elem);
+      if (!elem || seen.has(elem)) continue;
+      seen.add(elem);
+      ordered.push(elem);
+    }
+  };
+
+  if (originalStructure) addAtomList(parseXYZAtoms(originalStructure));
+  if (trajectoryFrames.length) addAtomList(parseXYZAtoms(trajectoryFrames[trajectoryFrames.length - 1].xyz));
+
+  return ordered;
+}
+
+function createFallbackElementColor(index, total) {
+  if (index < EXTRA_ELEMENT_PALETTE.length) return EXTRA_ELEMENT_PALETTE[index];
+  const hue = Math.round((360 / Math.max(total, 1)) * index) % 360;
+  return `hsl(${hue}, 68%, 52%)`;
+}
+
+function renderAtomLegend() {
+  const legendBox = document.getElementById("legendBox");
+  if (!legendBox) return;
+
+  const colorScheme = getColorScheme();
+  const atomTypes = getDisplayedElementTypes();
+  const legendItems = atomTypes.map((elem) => {
+    const color = colorScheme[elem];
+    const swatchStyle = [
+      "width:14px",
+      "height:14px",
+      `background:${color}`,
+      "border:1px solid #444",
+      "display:inline-block"
+    ].join(";");
+    return `
+      <span style="display:inline-flex;align-items:center;gap:6px;margin-left:10px;">
+        <span style="${swatchStyle}"></span> ${escapeHTML(elem)}
+      </span>
+    `;
+  }).join("");
+
+  legendBox.innerHTML = `
+    <b>Atom colors:</b>
+    ${legendItems}
+    <span style="display:inline-flex;align-items:center;gap:6px;margin-left:10px;">
+      <span style="width:14px;height:14px;background:${FIXED_ATOM_COLOR};border:1px solid #444;display:inline-block;"></span> Fixed atom
+    </span>
+  `;
+}
+
 function buildFixedAtomMarkers(xyzText, matrix, constraints) {
   if (!xyzText || !Array.isArray(constraints) || !constraints.length) return [];
 
@@ -420,7 +518,7 @@ function addFixedAtomGlow(targetViewer, xyzText, matrix, constraints) {
     targetViewer.addSphere({
       center,
       radius: 0.78,
-      color: "#00d4ff",
+      color: FIXED_ATOM_COLOR,
       alpha
     });
     targetViewer.addSphere({
@@ -539,13 +637,22 @@ function buildDisplayXYZ(xyzText, matrix, comment) {
 }
 
 function getColorScheme() {
-  return {
-    H: "white",
-    C: "gray",
-    O: "red",
-    Ni: "green",
-    Cu: "orange"
-  };
+  const atomTypes = getDisplayedElementTypes();
+  const colorScheme = {};
+  let fallbackIndex = 0;
+  const unknownCount = atomTypes.filter((elem) => !KNOWN_ELEMENT_COLORS[elem]).length;
+
+  for (const elem of atomTypes) {
+    if (KNOWN_ELEMENT_COLORS[elem]) {
+      colorScheme[elem] = KNOWN_ELEMENT_COLORS[elem];
+      continue;
+    }
+
+    colorScheme[elem] = createFallbackElementColor(fallbackIndex, unknownCount);
+    fallbackIndex += 1;
+  }
+
+  return colorScheme;
 }
 
 function applyStyleToViewer(targetViewer) {
@@ -1074,6 +1181,13 @@ async function refreshJob() {
     return;
   }
 
+  trajectoryFrames = [];
+  originalStructure = null;
+  currentLattice = null;
+  originalLattice = null;
+  originalInputFile = null;
+  originalConstraints = [];
+
   document.getElementById("jobTitle").textContent = job.label;
 
   try {
@@ -1178,6 +1292,7 @@ async function refreshJob() {
 
       updateOriginalStructureSource();
       updateFixedAtomStatus();
+      renderAtomLegend();
 
       if (trajectoryFrames.length > 0) {
         renderOriginalStructure(false);
@@ -1186,10 +1301,12 @@ async function refreshJob() {
         viewerDiv.innerHTML = "<p>No structure frames available.</p>";
       }
     } catch (e) {
+      renderAtomLegend();
       viewerDiv.innerHTML = "<p>Structure file could not be loaded.</p>";
       console.error(e);
     }
   } else {
+    renderAtomLegend();
     viewerDiv.innerHTML = "<p>No structure available for this calculation output.</p>";
   }
 }
