@@ -2,11 +2,19 @@ let viewer = null;
 let originalViewer = null;
 let energyChart = null;
 let gradientChart = null;
+let forceChart = null;
+let scfAccuracyChart = null;
+let convThrChart = null;
+let magnetizationChart = null;
 let currentJob = null;
 const HISTORY_POINT_LIMIT = 100;
 let energySeriesData = [];
 let gradientSeriesData = [];
 let gradientTargetValue = null;
+let forceSeriesData = [];
+let scfAccuracySeriesData = [];
+let convThrSeriesData = [];
+let magnetizationSeriesData = [];
 let chartControlsBound = false;
 
 let trajectoryFrames = [];
@@ -80,6 +88,80 @@ const chartControlIds = {
     yMax: "gradientYMax",
     yRangePercent: "gradientYRangePercent",
     reset: "gradientAxisReset"
+  },
+  force: {
+    xMin: "forceXMin",
+    xMax: "forceXMax",
+    yMin: "forceYMin",
+    yMax: "forceYMax",
+    yRangePercent: "forceYRangePercent",
+    reset: "forceAxisReset"
+  },
+  scfAccuracy: {
+    xMin: "scfAccuracyXMin",
+    xMax: "scfAccuracyXMax",
+    yMin: "scfAccuracyYMin",
+    yMax: "scfAccuracyYMax",
+    yRangePercent: "scfAccuracyYRangePercent",
+    reset: "scfAccuracyAxisReset"
+  },
+  convThr: {
+    xMin: "convThrXMin",
+    xMax: "convThrXMax",
+    yMin: "convThrYMin",
+    yMax: "convThrYMax",
+    yRangePercent: "convThrYRangePercent",
+    reset: "convThrAxisReset"
+  },
+  magnetization: {
+    xMin: "magnetizationXMin",
+    xMax: "magnetizationXMax",
+    yMin: "magnetizationYMin",
+    yMax: "magnetizationYMax",
+    yRangePercent: "magnetizationYRangePercent",
+    reset: "magnetizationAxisReset"
+  }
+};
+const CHART_DEFINITIONS = {
+  energy: {
+    canvasId: "energyChart",
+    label: "Total Energy (Ry)",
+    color: "#2563eb",
+    yTitle: "Energy (Ry)"
+  },
+  gradient: {
+    canvasId: "gradientChart",
+    label: "Gradient Error (Ry/Bohr)",
+    color: "#16a34a",
+    yTitle: "Gradient Error (Ry/Bohr)",
+    targetValueKey: "gradientTargetValue",
+    targetLabel: "Target Gradient Error (Ry/Bohr)"
+  },
+  force: {
+    canvasId: "forceChart",
+    label: "Total Force (Ry/Bohr)",
+    color: "#f59e0b",
+    yTitle: "Force (Ry/Bohr)"
+  },
+  scfAccuracy: {
+    canvasId: "scfAccuracyChart",
+    label: "SCF Accuracy (Ry)",
+    color: "#dc2626",
+    yTitle: "Accuracy (Ry)",
+    scientificTicks: true
+  },
+  convThr: {
+    canvasId: "convThrChart",
+    label: "New conv_thr (Ry)",
+    color: "#a855f7",
+    yTitle: "conv_thr (Ry)",
+    scientificTicks: true
+  },
+  magnetization: {
+    canvasId: "magnetizationChart",
+    label: "Total Magnetization (Bohr mag/cell)",
+    color: "#0891b2",
+    yTitle: "Bohr mag/cell"
   }
 };
 const INPUT_COMPARE_KEYS = [
@@ -993,45 +1075,46 @@ function resetAxisInputs(chartKey) {
 }
 
 function redrawCharts() {
-  if (energySeriesData.length > 0) {
-    energyChart = drawSeriesChart(
-      "energyChart",
-      energyChart,
-      energySeriesData,
-      "Total Energy (Ry)",
-      "#2563eb",
-      "Energy (Ry)",
-      null,
-      null,
-      getAxisBounds("energy")
-    );
-  } else if (energyChart) {
-    energyChart.destroy();
-    energyChart = null;
-  }
+  const chartStates = {
+    energy: { data: energySeriesData, chart: energyChart },
+    gradient: { data: gradientSeriesData, chart: gradientChart, targetValue: gradientTargetValue },
+    force: { data: forceSeriesData, chart: forceChart },
+    scfAccuracy: { data: scfAccuracySeriesData, chart: scfAccuracyChart },
+    convThr: { data: convThrSeriesData, chart: convThrChart },
+    magnetization: { data: magnetizationSeriesData, chart: magnetizationChart }
+  };
 
-  if (gradientSeriesData.length > 0) {
-    gradientChart = drawSeriesChart(
-      "gradientChart",
-      gradientChart,
-      gradientSeriesData,
-      "Gradient Error (Ry/Bohr)",
-      "#16a34a",
-      "Gradient Error (Ry/Bohr)",
-      gradientTargetValue,
-      "Target Gradient Error (Ry/Bohr)",
-      getAxisBounds("gradient")
-    );
-  } else if (gradientChart) {
-    gradientChart.destroy();
-    gradientChart = null;
+  for (const [chartKey, state] of Object.entries(chartStates)) {
+    const definition = CHART_DEFINITIONS[chartKey];
+    const nextChart = state.data.length > 0
+      ? drawSeriesChart(
+          chartKey,
+          definition.canvasId,
+          state.chart,
+          state.data,
+          definition.label,
+          definition.color,
+          definition.yTitle,
+          state.targetValue ?? null,
+          definition.targetLabel ?? null,
+          getAxisBounds(chartKey),
+          definition.scientificTicks === true
+        )
+      : destroyChart(state.chart);
+
+    if (chartKey === "energy") energyChart = nextChart;
+    if (chartKey === "gradient") gradientChart = nextChart;
+    if (chartKey === "force") forceChart = nextChart;
+    if (chartKey === "scfAccuracy") scfAccuracyChart = nextChart;
+    if (chartKey === "convThr") convThrChart = nextChart;
+    if (chartKey === "magnetization") magnetizationChart = nextChart;
   }
 }
 
 function bindChartControls() {
   if (chartControlsBound) return;
 
-  ["energy", "gradient"].forEach((chartKey) => {
+  Object.keys(chartControlIds).forEach((chartKey) => {
     const ids = chartControlIds[chartKey];
 
     [ids.xMin, ids.xMax, ids.yMin, ids.yMax].forEach((inputId) => {
@@ -1057,11 +1140,16 @@ function bindChartControls() {
   chartControlsBound = true;
 }
 
-function drawSeriesChart(canvasId, existingChart, data, label, color, yTitle, targetValue = null, targetLabel = null, axisBounds = null) {
+function destroyChart(existingChart) {
+  if (existingChart) existingChart.destroy();
+  return null;
+}
+
+function drawSeriesChart(chartKey, canvasId, existingChart, data, label, color, yTitle, targetValue = null, targetLabel = null, axisBounds = null, scientificTicks = false) {
   const visibleData = data.slice(-HISTORY_POINT_LIMIT);
   const ctx = document.getElementById(canvasId).getContext("2d");
   if (existingChart) existingChart.destroy();
-  const ids = chartControlIds[canvasId === "energyChart" ? "energy" : "gradient"];
+  const ids = chartControlIds[chartKey];
   const autoYBounds = ids
     ? getAutoYBounds(visibleData, parseRangePercent(ids.yRangePercent), targetValue)
     : {};
@@ -1107,7 +1195,12 @@ function drawSeriesChart(canvasId, existingChart, data, label, color, yTitle, ta
         y: {
           title: { display: true, text: yTitle },
           min: resolvedYMin,
-          max: resolvedYMax
+          max: resolvedYMax,
+          ticks: scientificTicks ? {
+            callback(value) {
+              return Number(value).toExponential(2);
+            }
+          } : undefined
         }
       }
     }
@@ -1163,6 +1256,10 @@ function renderStatus(status, job) {
     <div><b>Converged:</b> ${escapeHTML(status.converged ?? "-")}</div>
     <div><b>Latest energy:</b> ${escapeHTML(status.latest_energy_ry ?? "-")}</div>
     <div><b>Latest gradient error:</b> ${escapeHTML(formatScientific(status.latest_gradient_error_ry_bohr))}</div>
+    <div><b>Latest total force:</b> ${escapeHTML(formatScientific(status.latest_total_force_ry_bohr))}</div>
+    <div><b>Latest SCF accuracy:</b> ${escapeHTML(formatScientific(status.latest_scf_accuracy_ry))}</div>
+    <div><b>Latest conv_thr:</b> ${escapeHTML(formatScientific(status.latest_conv_thr_ry))}</div>
+    <div><b>Latest total magnetization:</b> ${escapeHTML(status.latest_total_magnetization_bohr_cell ?? "-")}</div>
     <div><b>BFGS steps:</b> ${escapeHTML(status.bfgs_steps ?? "-")}</div>
     <div><b>SCF cycles:</b> ${escapeHTML(status.scf_cycles ?? "-")}</div>
     <div><b>Atoms:</b> ${escapeHTML(status.nat_latest ?? "-")}</div>
@@ -1187,6 +1284,14 @@ async function refreshJob() {
   originalLattice = null;
   originalInputFile = null;
   originalConstraints = [];
+  energySeriesData = [];
+  gradientSeriesData = [];
+  gradientTargetValue = null;
+  forceSeriesData = [];
+  scfAccuracySeriesData = [];
+  convThrSeriesData = [];
+  magnetizationSeriesData = [];
+  redrawCharts();
 
   document.getElementById("jobTitle").textContent = job.label;
 
@@ -1208,6 +1313,7 @@ async function refreshJob() {
       <div><b>Error:</b> ${escapeHTML(job.error ?? "-")}</div>
     `;
     document.getElementById("outputTail").textContent = "No output data available.";
+    redrawCharts();
     return;
   }
 
@@ -1234,6 +1340,46 @@ async function refreshJob() {
   } catch (e) {
     gradientSeriesData = [];
     gradientTargetValue = null;
+    redrawCharts();
+    console.error(e);
+  }
+
+  try {
+    const csv = await loadText(`data/${job.job_id}/total_force.csv`);
+    forceSeriesData = parseSeriesCSV(csv);
+    redrawCharts();
+  } catch (e) {
+    forceSeriesData = [];
+    redrawCharts();
+    console.error(e);
+  }
+
+  try {
+    const csv = await loadText(`data/${job.job_id}/scf_accuracy.csv`);
+    scfAccuracySeriesData = parseSeriesCSV(csv);
+    redrawCharts();
+  } catch (e) {
+    scfAccuracySeriesData = [];
+    redrawCharts();
+    console.error(e);
+  }
+
+  try {
+    const csv = await loadText(`data/${job.job_id}/conv_thr.csv`);
+    convThrSeriesData = parseSeriesCSV(csv);
+    redrawCharts();
+  } catch (e) {
+    convThrSeriesData = [];
+    redrawCharts();
+    console.error(e);
+  }
+
+  try {
+    const csv = await loadText(`data/${job.job_id}/total_magnetization.csv`);
+    magnetizationSeriesData = parseSeriesCSV(csv);
+    redrawCharts();
+  } catch (e) {
+    magnetizationSeriesData = [];
     redrawCharts();
     console.error(e);
   }

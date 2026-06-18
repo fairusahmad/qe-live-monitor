@@ -28,6 +28,10 @@ gradient_error_pattern = re.compile(r'Gradient\s+error\s*=\s*([-0-9.Ee+]+)\s+Ry/
 force_target_pattern = re.compile(r'criteria:\s*energy\s*<\s*[-0-9.Ee+]+\s+Ry,\s*force\s*<\s*([-0-9.Ee+]+)\s+Ry/Bohr', re.IGNORECASE)
 bfgs_pattern = re.compile(r'number of bfgs steps\s+=\s+(\d+)', re.IGNORECASE)
 scf_pattern = re.compile(r'number of scf cycles\s+=\s+(\d+)', re.IGNORECASE)
+iteration_pattern = re.compile(r'iteration\s*#\s*(\d+)', re.IGNORECASE)
+scf_accuracy_pattern = re.compile(r'estimated scf accuracy\s*<\s*([-0-9.Ee+]+)\s+Ry', re.IGNORECASE)
+conv_thr_pattern = re.compile(r'new conv_thr\s*=\s*([-0-9.Ee+]+)', re.IGNORECASE)
+total_magnetization_pattern = re.compile(r'total magnetization\s*=\s*([-0-9.Ee+]+)', re.IGNORECASE)
 
 cell_header_pattern = re.compile(
     r'^CELL_PARAMETERS(?:\s*[\(\{](.*?)[\)\}]|\s+(\S+))?',
@@ -483,17 +487,46 @@ def parse_qe_output(filename):
     energies = []
     total_forces = []
     gradient_errors = []
+    scf_accuracies = []
+    conv_thrs = []
+    total_magnetizations = []
+    energy_steps = []
+    total_force_steps = []
+    gradient_error_steps = []
+    scf_accuracy_steps = []
+    conv_thr_steps = []
+    total_magnetization_steps = []
     target_total_force = None
+    current_iteration = 0
     for line in lines:
+        mi = iteration_pattern.search(line)
+        if mi:
+            current_iteration = int(mi.group(1))
+
         m = energy_pattern.search(line)
         if m:
             energies.append(float(m.group(1)))
+            energy_steps.append(current_iteration if current_iteration > 0 else len(energies))
         mf = total_force_pattern.search(line)
         if mf:
             total_forces.append(float(mf.group(1)))
+            total_force_steps.append(current_iteration if current_iteration > 0 else len(total_forces))
         mg = gradient_error_pattern.search(line)
         if mg:
             gradient_errors.append(float(mg.group(1)))
+            gradient_error_steps.append(current_iteration if current_iteration > 0 else len(gradient_errors))
+        mscf = scf_accuracy_pattern.search(line)
+        if mscf:
+            scf_accuracies.append(float(mscf.group(1)))
+            scf_accuracy_steps.append(current_iteration if current_iteration > 0 else len(scf_accuracies))
+        mconv = conv_thr_pattern.search(line)
+        if mconv:
+            conv_thrs.append(float(mconv.group(1)))
+            conv_thr_steps.append(current_iteration if current_iteration > 0 else len(conv_thrs))
+        mmag = total_magnetization_pattern.search(line)
+        if mmag:
+            total_magnetizations.append(float(mmag.group(1)))
+            total_magnetization_steps.append(current_iteration if current_iteration > 0 else len(total_magnetizations))
         mt = force_target_pattern.search(line)
         if mt:
             target_total_force = float(mt.group(1))
@@ -538,11 +571,23 @@ def parse_qe_output(filename):
 
     return {
         "energies": energies,
+        "energy_steps": energy_steps,
         "latest_energy": energies[-1] if energies else None,
         "total_forces": total_forces,
+        "total_force_steps": total_force_steps,
         "latest_total_force": total_forces[-1] if total_forces else None,
         "gradient_errors": gradient_errors,
+        "gradient_error_steps": gradient_error_steps,
         "latest_gradient_error": gradient_errors[-1] if gradient_errors else None,
+        "scf_accuracies": scf_accuracies,
+        "scf_accuracy_steps": scf_accuracy_steps,
+        "latest_scf_accuracy": scf_accuracies[-1] if scf_accuracies else None,
+        "conv_thrs": conv_thrs,
+        "conv_thr_steps": conv_thr_steps,
+        "latest_conv_thr": conv_thrs[-1] if conv_thrs else None,
+        "total_magnetizations": total_magnetizations,
+        "total_magnetization_steps": total_magnetization_steps,
+        "latest_total_magnetization": total_magnetizations[-1] if total_magnetizations else None,
         "target_total_force": target_total_force,
         "bfgs_steps": bfgs_steps,
         "scf_cycles": scf_cycles,
@@ -577,23 +622,11 @@ def write_trajectory_xyz(position_blocks, output_xyz):
             for sym, x, y, z in atoms:
                 f.write(f"{sym:<3s} {x:16.10f} {y:16.10f} {z:16.10f}\n")
 
-def write_energy_csv(energies, output_csv):
+def write_series_csv(steps, values, header, output_csv):
     with open(output_csv, "w", encoding="utf-8") as f:
-        f.write("step,energy_ry\n")
-        for i, e in enumerate(energies, start=1):
-            f.write(f"{i},{e}\n")
-
-def write_total_force_csv(total_forces, output_csv):
-    with open(output_csv, "w", encoding="utf-8") as f:
-        f.write("step,total_force_ry_bohr\n")
-        for i, force in enumerate(total_forces, start=1):
-            f.write(f"{i},{force}\n")
-
-def write_gradient_error_csv(gradient_errors, output_csv):
-    with open(output_csv, "w", encoding="utf-8") as f:
-        f.write("step,gradient_error_ry_bohr\n")
-        for i, gradient_error in enumerate(gradient_errors, start=1):
-            f.write(f"{i},{gradient_error}\n")
+        f.write(f"step,{header}\n")
+        for step, value in zip(steps, values):
+            f.write(f"{step},{value}\n")
 
 def find_latest_raw_atomic_positions(lines):
     if not lines:
@@ -654,6 +687,12 @@ def write_status_json(result, output_json, job_name="QE Job"):
         "latest_gradient_error_ry_bohr": result["latest_gradient_error"],
         "target_gradient_error_ry_bohr": result["target_total_force"],
         "num_gradient_error_points": len(result["gradient_errors"]),
+        "latest_scf_accuracy_ry": result["latest_scf_accuracy"],
+        "num_scf_accuracy_points": len(result["scf_accuracies"]),
+        "latest_conv_thr_ry": result["latest_conv_thr"],
+        "num_conv_thr_points": len(result["conv_thrs"]),
+        "latest_total_magnetization_bohr_cell": result["latest_total_magnetization"],
+        "num_total_magnetization_points": len(result["total_magnetizations"]),
         "bfgs_steps": result["bfgs_steps"],
         "scf_cycles": result["scf_cycles"],
         "converged": result["converged"],
@@ -717,9 +756,12 @@ def export_qe_run(qe_output, outdir, job_name="QE Job"):
     result = parse_qe_output(qe_output)
 
     write_status_json(result, os.path.join(outdir, "status.json"), job_name=job_name)
-    write_energy_csv(result["energies"], os.path.join(outdir, "energy.csv"))
-    write_total_force_csv(result["total_forces"], os.path.join(outdir, "total_force.csv"))
-    write_gradient_error_csv(result["gradient_errors"], os.path.join(outdir, "gradient_error.csv"))
+    write_series_csv(result["energy_steps"], result["energies"], "energy_ry", os.path.join(outdir, "energy.csv"))
+    write_series_csv(result["total_force_steps"], result["total_forces"], "total_force_ry_bohr", os.path.join(outdir, "total_force.csv"))
+    write_series_csv(result["gradient_error_steps"], result["gradient_errors"], "gradient_error_ry_bohr", os.path.join(outdir, "gradient_error.csv"))
+    write_series_csv(result["scf_accuracy_steps"], result["scf_accuracies"], "scf_accuracy_ry", os.path.join(outdir, "scf_accuracy.csv"))
+    write_series_csv(result["conv_thr_steps"], result["conv_thrs"], "conv_thr_ry", os.path.join(outdir, "conv_thr.csv"))
+    write_series_csv(result["total_magnetization_steps"], result["total_magnetizations"], "total_magnetization_bohr_cell", os.path.join(outdir, "total_magnetization.csv"))
     write_xyz(result["latest_atoms_ang"], os.path.join(outdir, "structure.xyz"))
     write_trajectory_xyz(result["position_blocks"], os.path.join(outdir, "trajectory.xyz"))
     write_lattice_json(result, os.path.join(outdir, "lattice.json"))

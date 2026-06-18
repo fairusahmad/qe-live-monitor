@@ -212,6 +212,86 @@
       </div>
     </div>
 
+    <div class="charts-row">
+      <div class="card">
+        <h2>Total Force</h2>
+        <div class="chart-controls">
+          <label>X min <input id="forceXMin" type="number" step="any" placeholder="auto"></label>
+          <label>X max <input id="forceXMax" type="number" step="any" placeholder="auto"></label>
+          <label>Y min <input id="forceYMin" type="number" step="any" placeholder="auto"></label>
+          <label>Y max <input id="forceYMax" type="number" step="any" placeholder="auto"></label>
+          <label>Y range
+            <select id="forceYRangePercent">
+              <option value="10" selected>10%</option>
+              <option value="20">20%</option>
+              <option value="100">100%</option>
+            </select>
+          </label>
+          <button id="forceAxisReset" type="button">Reset Axes</button>
+        </div>
+        <canvas id="forceChart"></canvas>
+      </div>
+
+      <div class="card">
+        <h2>SCF Accuracy</h2>
+        <div class="chart-controls">
+          <label>X min <input id="scfAccuracyXMin" type="number" step="any" placeholder="auto"></label>
+          <label>X max <input id="scfAccuracyXMax" type="number" step="any" placeholder="auto"></label>
+          <label>Y min <input id="scfAccuracyYMin" type="number" step="any" placeholder="auto"></label>
+          <label>Y max <input id="scfAccuracyYMax" type="number" step="any" placeholder="auto"></label>
+          <label>Y range
+            <select id="scfAccuracyYRangePercent">
+              <option value="10" selected>10%</option>
+              <option value="20">20%</option>
+              <option value="100">100%</option>
+            </select>
+          </label>
+          <button id="scfAccuracyAxisReset" type="button">Reset Axes</button>
+        </div>
+        <canvas id="scfAccuracyChart"></canvas>
+      </div>
+    </div>
+
+    <div class="charts-row">
+      <div class="card">
+        <h2>New conv_thr</h2>
+        <div class="chart-controls">
+          <label>X min <input id="convThrXMin" type="number" step="any" placeholder="auto"></label>
+          <label>X max <input id="convThrXMax" type="number" step="any" placeholder="auto"></label>
+          <label>Y min <input id="convThrYMin" type="number" step="any" placeholder="auto"></label>
+          <label>Y max <input id="convThrYMax" type="number" step="any" placeholder="auto"></label>
+          <label>Y range
+            <select id="convThrYRangePercent">
+              <option value="10" selected>10%</option>
+              <option value="20">20%</option>
+              <option value="100">100%</option>
+            </select>
+          </label>
+          <button id="convThrAxisReset" type="button">Reset Axes</button>
+        </div>
+        <canvas id="convThrChart"></canvas>
+      </div>
+
+      <div class="card">
+        <h2>Total Magnetization</h2>
+        <div class="chart-controls">
+          <label>X min <input id="magnetizationXMin" type="number" step="any" placeholder="auto"></label>
+          <label>X max <input id="magnetizationXMax" type="number" step="any" placeholder="auto"></label>
+          <label>Y min <input id="magnetizationYMin" type="number" step="any" placeholder="auto"></label>
+          <label>Y max <input id="magnetizationYMax" type="number" step="any" placeholder="auto"></label>
+          <label>Y range
+            <select id="magnetizationYRangePercent">
+              <option value="10" selected>10%</option>
+              <option value="20">20%</option>
+              <option value="100">100%</option>
+            </select>
+          </label>
+          <button id="magnetizationAxisReset" type="button">Reset Axes</button>
+        </div>
+        <canvas id="magnetizationChart"></canvas>
+      </div>
+    </div>
+
     <div class="card full">
       <h2>3D Structure</h2>
 
@@ -278,7 +358,7 @@
     </div>
   </div>
 
-  <script src="job.js?v=20260418-save-view-1"></script>
+  <script src="job.js?v=20260618-live-monitor-1"></script>
 </body>
 </html>
 
