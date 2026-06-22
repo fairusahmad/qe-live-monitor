@@ -1010,9 +1010,20 @@ function getAutoYBounds(data, rangePercent, targetValue = null) {
   }
 
   const clampedPercent = Math.max(0, Math.min(rangePercent, 100));
+  if (clampedPercent === 100) {
+    return {
+      min: minValue,
+      max: maxValue
+    };
+  }
+
+  const rangeFromMin = Math.abs(minValue) > 0
+    ? Math.abs(minValue) * (clampedPercent / 100)
+    : span * (clampedPercent / 100);
+
   return {
     min: minValue,
-    max: minValue + (span * clampedPercent / 100)
+    max: minValue + rangeFromMin
   };
 }
 
