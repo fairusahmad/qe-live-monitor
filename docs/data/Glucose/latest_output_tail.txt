@@ -1,0 +1,82 @@
+&control
+  prefix        = 'wm',
+  outdir = './output/'
+  verbosity     = 'high',
+  calculation   = 'relax',
+  pseudo_dir = '/home/node1/PSP/PseudosP/pslibrary-master/pbe/PSEUDOPOTENTIALS/'
+  restart_mode  = 'restart',
+  wf_collect    = .True.,
+  forc_conv_thr = 1d-4
+  nstep         = 200,
+  tprnfor       = .True.,
+/
+&system
+  ibrav         = 0,
+  nat           = 24,
+  nspin         = 1,
+  !starting_magnetization(1) = 0.5,
+  ntyp          = 3,
+  ecutwfc       = 47,
+  ecutrho       = 350,
+  occupations   = 'fixed',
+  !smearing      = 'gaussian',
+  !degauss       = 0.01,
+  nosym         = .False.,
+  noinv         = .False.,
+  tot_charge    = 0.,
+  vdw_corr      = 'grimme-d3',
+/
+&electrons
+  conv_thr            = 2d-7,
+  mixing_beta         = 0.1,
+  mixing_mode         = 'plain',
+  electron_maxstep    = 200,
+  diagonalization     = 'david',
+/
+&ions
+  ion_dynamics      = 'bfgs',
+  upscale       = 100.,
+/
+
+ATOMIC_SPECIES
+  O  15.9994 O.pbe-n-rrkjus_psl.1.0.0.UPF
+  C  12.011  C.pbe-n-rrkjus_psl.1.0.0.UPF
+  H  1.00797 H.pbe-rrkjus_psl.1.0.0.UPF
+  
+
+ATOMIC_POSITIONS angstrom
+O  10.164789480   7.112147324   5.354154697
+H  12.114292438   6.737142967   5.831476121
+C  11.044915382   6.698531428   6.109393331
+H   8.918383633   6.429461729   6.726297213
+O   9.260975649   6.031416685   7.557522197
+C  10.662174355   6.070457377   7.426767045
+H  11.088405231   5.044009435   7.400987813
+O  12.612524647   7.275816993   8.169440075
+C  11.327475774   6.826558391   8.608913845
+H  10.656180303   7.678256176   8.826776334
+H  13.086434414   7.564461923   8.977188239
+H  12.391175724   5.344086268   9.721809119
+C  11.475255657   5.955008523   9.874843155
+O  10.328487871   5.132482760  10.017703890
+O  12.829985410   7.694978483  10.895457028
+C  11.685476454   6.832805014  11.124223953
+H  10.282837919   4.855579990  10.956899088
+H  10.773404048   7.435948354  11.272077438
+H  12.603333827   8.597882604  11.168964444
+H  12.892910642   5.427678804  12.224680113
+C  11.986991756   6.032982209  12.394724043
+O  10.851448556   5.201258744  12.711261194
+H  12.195695501   6.736519166  13.218527805
+H  11.141611827   4.478551252  13.292675731
+
+
+
+K_POINTS {gamma}
+
+
+CELL_PARAMETERS angstrom
+ 14.627443167   0.000000000   0.000000000
+  7.313721584  12.667737375   0.000000000
+  0.000000000   0.000000000  20.000000000
+
