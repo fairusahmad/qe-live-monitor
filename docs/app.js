@@ -26,10 +26,15 @@ const COMPARISON_SELECT_IDS = [
   "inputCompareC",
   "inputCompareD"
 ];
-const ENERGY_SELECT_IDS = ["energyA", "energyB", "energyC"];
+const ENERGY_SELECT_IDS = ["energyA", "energyB", "energyC", "energyD"];
 const ENERGY_SELECTION_STORAGE_KEY = "qeDashboard.energySelections";
 const ENERGY_UNIT_STORAGE_KEY = "qeDashboard.energyUnit";
 const INPUT_COMPARISON_STORAGE_KEY = "qeDashboard.inputComparisonSelections";
+const ZERO_ENERGY_OPTION = {
+  value: "__zero__",
+  label: "0",
+  energyRy: 0
+};
 
 function loadStoredSelections(key, expectedLength) {
   try {
@@ -98,13 +103,18 @@ function saveEnergyUnit() {
 }
 
 function buildEnergyOptions(jobs) {
-  return jobs
+  return [ZERO_ENERGY_OPTION, ...jobs
     .filter((job) => Number.isFinite(job.latest_energy_ry))
     .map((job) => ({
       value: job.job_id,
       label: job.label,
       energyRy: job.latest_energy_ry
-    }));
+    }))];
+}
+
+function defaultEnergySelectionIndex(index) {
+  if (index < 2) return index + 1;
+  return 0;
 }
 
 function populateSelect(select, options, preferredIndex, unitOverride) {
@@ -168,14 +178,14 @@ function updateCalculator() {
     };
   });
 
-  const [energyA, energyB, energyC] = chosen;
+  const [energyA, energyB, energyC, energyD] = chosen;
   const formulaEl = document.getElementById("energyFormula");
   const resultEl = document.getElementById("energyResult");
 
-  formulaEl.textContent = `${energyA.label} - ${energyB.label} - ${energyC.label}`;
+  formulaEl.textContent = `${energyA.label} - ${energyB.label} - ${energyC.label} - ${energyD.label}`;
 
   if (chosen.every((item) => Number.isFinite(item.energyRy))) {
-    const resultRy = energyA.energyRy - energyB.energyRy - energyC.energyRy;
+    const resultRy = energyA.energyRy - energyB.energyRy - energyC.energyRy - energyD.energyRy;
     resultEl.textContent = `${formatEnergy(convertEnergyFromRy(resultRy, unit))} ${unitLabel}`;
   } else {
     resultEl.textContent = "-";
@@ -209,7 +219,7 @@ function renderCalculator(jobs) {
   ENERGY_SELECT_IDS.forEach((id, index) => {
     const select = document.getElementById(id);
     const previousValue = select.value || storedValues[index];
-    populateSelect(select, options, index);
+    populateSelect(select, options, defaultEnergySelectionIndex(index));
 
     if (previousValue && options.some((option) => option.value === previousValue)) {
       select.value = previousValue;
@@ -317,13 +327,13 @@ function renderInputComparisonTable(jobs) {
   `;
 }
 
-const ENERGY_SELECT_IDS_2 = ["energy2A", "energy2B", "energy2C"];
+const ENERGY_SELECT_IDS_2 = ["energy2A", "energy2B", "energy2C", "energy2D"];
 const ENERGY_SELECTION_STORAGE_KEY_2 = "qeDashboard.energySelections2";
 const ENERGY_UNIT_STORAGE_KEY_2 = "qeDashboard.energyUnit2";
-const ENERGY_SELECT_IDS_3 = ["energy3A", "energy3B", "energy3C"];
+const ENERGY_SELECT_IDS_3 = ["energy3A", "energy3B", "energy3C", "energy3D"];
 const ENERGY_SELECTION_STORAGE_KEY_3 = "qeDashboard.energySelections3";
 const ENERGY_UNIT_STORAGE_KEY_3 = "qeDashboard.energyUnit3";
-const ENERGY_SELECT_IDS_4 = ["energy4A", "energy4B", "energy4C"];
+const ENERGY_SELECT_IDS_4 = ["energy4A", "energy4B", "energy4C", "energy4D"];
 const ENERGY_SELECTION_STORAGE_KEY_4 = "qeDashboard.energySelections4";
 const ENERGY_UNIT_STORAGE_KEY_4 = "qeDashboard.energyUnit4";
 
@@ -414,10 +424,10 @@ function updateCalculator2() {
     if (!selectedOption) return { label: "-", energyRy: NaN };
     return { label: selectedOption.textContent, energyRy: Number(selectedOption.dataset.energyRy) };
   });
-  const [energyA, energyB, energyC] = chosen;
-  document.getElementById("energy2Formula").textContent = `${energyA.label} - ${energyB.label} - ${energyC.label}`;
+  const [energyA, energyB, energyC, energyD] = chosen;
+  document.getElementById("energy2Formula").textContent = `${energyA.label} - ${energyB.label} - ${energyC.label} - ${energyD.label}`;
   if (chosen.every((item) => Number.isFinite(item.energyRy))) {
-    const resultRy = energyA.energyRy - energyB.energyRy - energyC.energyRy;
+    const resultRy = energyA.energyRy - energyB.energyRy - energyC.energyRy - energyD.energyRy;
     document.getElementById("energy2Result").textContent = `${formatEnergy(convertEnergyFromRy(resultRy, unit))} ${unitLabel}`;
   } else {
     document.getElementById("energy2Result").textContent = "-";
@@ -433,10 +443,10 @@ function updateCalculator3() {
     if (!selectedOption) return { label: "-", energyRy: NaN };
     return { label: selectedOption.textContent, energyRy: Number(selectedOption.dataset.energyRy) };
   });
-  const [energyA, energyB, energyC] = chosen;
-  document.getElementById("energy3Formula").textContent = `${energyA.label} - ${energyB.label} - ${energyC.label}`;
+  const [energyA, energyB, energyC, energyD] = chosen;
+  document.getElementById("energy3Formula").textContent = `${energyA.label} - ${energyB.label} - ${energyC.label} - ${energyD.label}`;
   if (chosen.every((item) => Number.isFinite(item.energyRy))) {
-    const resultRy = energyA.energyRy - energyB.energyRy - energyC.energyRy;
+    const resultRy = energyA.energyRy - energyB.energyRy - energyC.energyRy - energyD.energyRy;
     document.getElementById("energy3Result").textContent = `${formatEnergy(convertEnergyFromRy(resultRy, unit))} ${unitLabel}`;
   } else {
     document.getElementById("energy3Result").textContent = "-";
@@ -452,10 +462,10 @@ function updateCalculator4() {
     if (!selectedOption) return { label: "-", energyRy: NaN };
     return { label: selectedOption.textContent, energyRy: Number(selectedOption.dataset.energyRy) };
   });
-  const [energyA, energyB, energyC] = chosen;
-  document.getElementById("energy4Formula").textContent = `${energyA.label} - ${energyB.label} - ${energyC.label}`;
+  const [energyA, energyB, energyC, energyD] = chosen;
+  document.getElementById("energy4Formula").textContent = `${energyA.label} - ${energyB.label} - ${energyC.label} - ${energyD.label}`;
   if (chosen.every((item) => Number.isFinite(item.energyRy))) {
-    const resultRy = energyA.energyRy - energyB.energyRy - energyC.energyRy;
+    const resultRy = energyA.energyRy - energyB.energyRy - energyC.energyRy - energyD.energyRy;
     document.getElementById("energy4Result").textContent = `${formatEnergy(convertEnergyFromRy(resultRy, unit))} ${unitLabel}`;
   } else {
     document.getElementById("energy4Result").textContent = "-";
@@ -492,7 +502,7 @@ function renderCalculator2(jobs) {
   ENERGY_SELECT_IDS_2.forEach((id, index) => {
     const select = document.getElementById(id);
     const previousValue = select.value || storedValues[index];
-    populateSelect(select, options, index, selectedEnergyUnit2());
+    populateSelect(select, options, defaultEnergySelectionIndex(index), selectedEnergyUnit2());
     if (previousValue && options.some((option) => option.value === previousValue)) {
       select.value = previousValue;
     }
@@ -528,7 +538,7 @@ function renderCalculator3(jobs) {
   ENERGY_SELECT_IDS_3.forEach((id, index) => {
     const select = document.getElementById(id);
     const previousValue = select.value || storedValues[index];
-    populateSelect(select, options, index, selectedEnergyUnit3());
+    populateSelect(select, options, defaultEnergySelectionIndex(index), selectedEnergyUnit3());
     if (previousValue && options.some((option) => option.value === previousValue)) {
       select.value = previousValue;
     }
@@ -564,7 +574,7 @@ function renderCalculator4(jobs) {
   ENERGY_SELECT_IDS_4.forEach((id, index) => {
     const select = document.getElementById(id);
     const previousValue = select.value || storedValues[index];
-    populateSelect(select, options, index, selectedEnergyUnit4());
+    populateSelect(select, options, defaultEnergySelectionIndex(index), selectedEnergyUnit4());
     if (previousValue && options.some((option) => option.value === previousValue)) {
       select.value = previousValue;
     }
