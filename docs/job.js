@@ -525,7 +525,7 @@ function addAdsorptionMetalContacts(targetViewer, atoms, maxDistance) {
       if (distanceSq > maxDistanceSq) continue;
 
       const strongCutoff = getAdsorptionPairCutoff(atomA, atomB, cutoff);
-      if (bestDistanceSq <= strongCutoff * strongCutoff) {
+      if (distanceSq <= strongCutoff * strongCutoff) {
         addBondBetweenAtoms(atomA, i, atomB, j, 1);
       } else {
         const pairKey = i < j ? `${i}:${j}` : `${j}:${i}`;
