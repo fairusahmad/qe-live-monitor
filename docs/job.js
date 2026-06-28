@@ -80,6 +80,9 @@ const COVALENT_RADII = {
 };
 const DEFAULT_COVALENT_RADIUS = 1.2;
 const BOND_TOLERANCE = 0.45;
+const METAL_ELEMENTS = new Set(["Ni", "Cu", "Fe", "Co", "Pt", "Pd", "Ag", "Au", "Zn", "Al"]);
+const ADSORBATE_BOND_ELEMENTS = new Set(["O", "N", "S", "C", "P", "F", "Cl", "Br", "I"]);
+const WEAK_ADSORPTION_LINE_COLOR = "#111827";
 const EXTRA_ELEMENT_PALETTE = [
   "#ec4899",
   "#06b6d4",
@@ -468,50 +471,79 @@ function updateBondDistanceLabel() {
   if (el) el.textContent = formatBondDistance(maxBondDistance);
 }
 
-function assignBondsByDistance(atoms, maxDistance) {
+function addBondBetweenAtoms(atomA, atomAIndex, atomB, atomBIndex, bondOrder = 1) {
+  if (!atomA || !atomB || atomAIndex === atomBIndex) return;
+
+  atomA.bonds = Array.isArray(atomA.bonds) ? atomA.bonds : [];
+  atomA.bondOrder = Array.isArray(atomA.bondOrder) ? atomA.bondOrder : [];
+  atomB.bonds = Array.isArray(atomB.bonds) ? atomB.bonds : [];
+  atomB.bondOrder = Array.isArray(atomB.bondOrder) ? atomB.bondOrder : [];
+
+  if (!atomA.bonds.includes(atomBIndex)) {
+    atomA.bonds.push(atomBIndex);
+    atomA.bondOrder.push(bondOrder);
+  }
+
+  if (!atomB.bonds.includes(atomAIndex)) {
+    atomB.bonds.push(atomAIndex);
+    atomB.bondOrder.push(bondOrder);
+  }
+}
+
+function getAdsorptionPairCutoff(atomA, atomB, maxDistance) {
   const cutoff = Number(maxDistance);
-  if (!Array.isArray(atoms) || !atoms.length || !Number.isFinite(cutoff) || cutoff <= 0) {
+  const elemA = normalizeElementSymbol(atomA.elem);
+  const elemB = normalizeElementSymbol(atomB.elem);
+  const radiusA = COVALENT_RADII[elemA] || DEFAULT_COVALENT_RADIUS;
+  const radiusB = COVALENT_RADII[elemB] || DEFAULT_COVALENT_RADIUS;
+  return Math.min(cutoff, radiusA + radiusB + BOND_TOLERANCE);
+}
+
+function addNearestMetalAdsorptionBonds(targetViewer, atoms, maxDistance) {
+  const cutoff = Number(maxDistance);
+  if (!targetViewer || !Array.isArray(atoms) || !atoms.length || !Number.isFinite(cutoff) || cutoff <= 0) {
     return;
   }
 
   const maxDistanceSq = cutoff * cutoff;
-  const bondSets = atoms.map(() => new Set());
-  const bondOrders = atoms.map(() => new Map());
-
   for (let i = 0; i < atoms.length; i++) {
     const atomA = atoms[i];
-    const existingBonds = Array.isArray(atomA.bonds) ? atomA.bonds : [];
-    const existingBondOrders = Array.isArray(atomA.bondOrder) ? atomA.bondOrder : [];
+    const elemA = normalizeElementSymbol(atomA.elem);
+    if (!ADSORBATE_BOND_ELEMENTS.has(elemA)) continue;
 
-    for (let k = 0; k < existingBonds.length; k++) {
-      const j = existingBonds[k];
+    let bestIndex = -1;
+    let bestDistanceSq = Infinity;
+    for (let j = 0; j < atoms.length; j++) {
+      if (i === j) continue;
       const atomB = atoms[j];
-      if (!atomB || j === i) continue;
+      const elemB = normalizeElementSymbol(atomB.elem);
+      if (!METAL_ELEMENTS.has(elemB)) continue;
 
       const dx = atomA.x - atomB.x;
       const dy = atomA.y - atomB.y;
       const dz = atomA.z - atomB.z;
       const distanceSq = dx * dx + dy * dy + dz * dz;
-      const elemA = normalizeElementSymbol(atomA.elem);
-      const elemB = normalizeElementSymbol(atomB.elem);
-      const radiusA = COVALENT_RADII[elemA] || DEFAULT_COVALENT_RADIUS;
-      const radiusB = COVALENT_RADII[elemB] || DEFAULT_COVALENT_RADIUS;
-      const pairCutoff = Math.min(cutoff, radiusA + radiusB + BOND_TOLERANCE);
+      if (distanceSq > maxDistanceSq || distanceSq >= bestDistanceSq) continue;
 
-      if (distanceSq <= maxDistanceSq && distanceSq <= pairCutoff * pairCutoff) {
-        const bondOrder = existingBondOrders[k] ?? 1;
-        bondSets[i].add(j);
-        bondSets[j].add(i);
-        bondOrders[i].set(j, bondOrder);
-        bondOrders[j].set(i, bondOrder);
+      bestDistanceSq = distanceSq;
+      bestIndex = j;
+    }
+
+    if (bestIndex >= 0) {
+      const atomB = atoms[bestIndex];
+      const strongCutoff = getAdsorptionPairCutoff(atomA, atomB, cutoff);
+      if (bestDistanceSq <= strongCutoff * strongCutoff) {
+        addBondBetweenAtoms(atomA, i, atomB, bestIndex, 1);
+      } else {
+        targetViewer.addLine({
+          start: { x: atomA.x, y: atomA.y, z: atomA.z },
+          end: { x: atomB.x, y: atomB.y, z: atomB.z },
+          color: WEAK_ADSORPTION_LINE_COLOR,
+          linewidth: 2.5,
+          dashed: true
+        });
       }
     }
-  }
-
-  for (let i = 0; i < atoms.length; i++) {
-    const sortedBonds = Array.from(bondSets[i]).sort((a, b) => a - b);
-    atoms[i].bonds = sortedBonds;
-    atoms[i].bondOrder = sortedBonds.map((j) => bondOrders[i].get(j) ?? 1);
   }
 }
 
@@ -522,7 +554,7 @@ function addStructureModel(targetViewer, xyzText, matrix) {
     "xyz"
   );
   const atoms = model.selectedAtoms({});
-  assignBondsByDistance(atoms, maxBondDistance);
+  addNearestMetalAdsorptionBonds(targetViewer, atoms, maxBondDistance);
   model.setColorByElement({}, getColorScheme());
 }
 
@@ -584,6 +616,9 @@ function renderAtomLegend() {
     ${legendItems}
     <span style="display:inline-flex;align-items:center;gap:6px;margin-left:10px;">
       <span style="width:14px;height:14px;background:${FIXED_ATOM_COLOR};border:1px solid #444;display:inline-block;"></span> Fixed atom
+    </span>
+    <span style="display:inline-flex;align-items:center;gap:6px;margin-left:10px;">
+      <span style="width:18px;height:0;border-top:2px dashed ${WEAK_ADSORPTION_LINE_COLOR};display:inline-block;"></span> Weak adsorption bond
     </span>
   `;
 }
