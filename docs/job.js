@@ -468,61 +468,26 @@ function updateBondDistanceLabel() {
   if (el) el.textContent = formatBondDistance(maxBondDistance);
 }
 
-function buildDisplayAtoms(xyzText, matrix) {
-  const atoms = parseXYZAtoms(xyzText);
-  if (!atoms.length) return [];
-  const colorScheme = getColorScheme();
-  if (!matrix || (cellRepeat.x === 1 && cellRepeat.y === 1 && cellRepeat.z === 1)) {
-    return atoms.map((atom) => ({
-      ...atom,
-      color: colorScheme[normalizeElementSymbol(atom.elem)] || colorScheme[atom.elem]
-    }));
-  }
-
-  const expandedAtoms = [];
-  const a = matrix[0];
-  const b = matrix[1];
-  const c = matrix[2];
-
-  for (let ix = 0; ix < cellRepeat.x; ix++) {
-    for (let iy = 0; iy < cellRepeat.y; iy++) {
-      for (let iz = 0; iz < cellRepeat.z; iz++) {
-        const dx = ix * a[0] + iy * b[0] + iz * c[0];
-        const dy = ix * a[1] + iy * b[1] + iz * c[1];
-        const dz = ix * a[2] + iy * b[2] + iz * c[2];
-
-        for (const atom of atoms) {
-          expandedAtoms.push({
-            elem: atom.elem,
-            color: colorScheme[normalizeElementSymbol(atom.elem)] || colorScheme[atom.elem],
-            x: atom.x + dx,
-            y: atom.y + dy,
-            z: atom.z + dz
-          });
-        }
-      }
-    }
-  }
-
-  return expandedAtoms;
-}
-
 function assignBondsByDistance(atoms, maxDistance) {
   const cutoff = Number(maxDistance);
-  if (!Array.isArray(atoms) || atoms.length < 2 || !Number.isFinite(cutoff) || cutoff <= 0) {
+  if (!Array.isArray(atoms) || !atoms.length || !Number.isFinite(cutoff) || cutoff <= 0) {
     return;
   }
 
   const maxDistanceSq = cutoff * cutoff;
-  for (const atom of atoms) {
-    atom.bonds = [];
-    atom.bondOrder = [];
-  }
+  const bondSets = atoms.map(() => new Set());
+  const bondOrders = atoms.map(() => new Map());
 
-  for (let i = 0; i < atoms.length - 1; i++) {
+  for (let i = 0; i < atoms.length; i++) {
     const atomA = atoms[i];
-    for (let j = i + 1; j < atoms.length; j++) {
+    const existingBonds = Array.isArray(atomA.bonds) ? atomA.bonds : [];
+    const existingBondOrders = Array.isArray(atomA.bondOrder) ? atomA.bondOrder : [];
+
+    for (let k = 0; k < existingBonds.length; k++) {
+      const j = existingBonds[k];
       const atomB = atoms[j];
+      if (!atomB || j === i) continue;
+
       const dx = atomA.x - atomB.x;
       const dy = atomA.y - atomB.y;
       const dz = atomA.z - atomB.z;
@@ -534,23 +499,31 @@ function assignBondsByDistance(atoms, maxDistance) {
       const pairCutoff = Math.min(cutoff, radiusA + radiusB + BOND_TOLERANCE);
 
       if (distanceSq <= maxDistanceSq && distanceSq <= pairCutoff * pairCutoff) {
-        atomA.bonds.push(j);
-        atomA.bondOrder.push(1);
-        atomB.bonds.push(i);
-        atomB.bondOrder.push(1);
+        const bondOrder = existingBondOrders[k] ?? 1;
+        bondSets[i].add(j);
+        bondSets[j].add(i);
+        bondOrders[i].set(j, bondOrder);
+        bondOrders[j].set(i, bondOrder);
       }
     }
+  }
+
+  for (let i = 0; i < atoms.length; i++) {
+    const sortedBonds = Array.from(bondSets[i]).sort((a, b) => a - b);
+    atoms[i].bonds = sortedBonds;
+    atoms[i].bondOrder = sortedBonds.map((j) => bondOrders[i].get(j) ?? 1);
   }
 }
 
 function addStructureModel(targetViewer, xyzText, matrix) {
   if (!targetViewer || !xyzText) return;
-
-  const atoms = buildDisplayAtoms(xyzText, matrix);
+  const model = targetViewer.addModel(
+    buildDisplayXYZ(xyzText, matrix, `Structure | ${cellRepeat.x} x ${cellRepeat.y} x ${cellRepeat.z}`),
+    "xyz"
+  );
+  const atoms = model.selectedAtoms({});
   assignBondsByDistance(atoms, maxBondDistance);
-
-  const model = targetViewer.addModel();
-  model.addAtoms(atoms);
+  model.setColorByElement({}, getColorScheme());
 }
 
 function normalizeElementSymbol(elem) {
