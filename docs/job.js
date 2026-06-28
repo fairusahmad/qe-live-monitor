@@ -83,7 +83,9 @@ const BOND_TOLERANCE = 0.45;
 const METAL_ELEMENTS = new Set(["Ni", "Cu", "Fe", "Co", "Pt", "Pd", "Ag", "Au", "Zn", "Al"]);
 const ADSORBATE_BOND_ELEMENTS = new Set(["O", "N", "S", "C", "P", "F", "Cl", "Br", "I"]);
 const WEAK_ADSORPTION_LINE_COLOR = "#111827";
-const WEAK_ADSORPTION_LINE_WIDTH = 6;
+const WEAK_ADSORPTION_DASH_RADIUS = 0.16;
+const WEAK_ADSORPTION_DASH_LENGTH = 0.22;
+const WEAK_ADSORPTION_GAP_LENGTH = 0.14;
 const EXTRA_ELEMENT_PALETTE = [
   "#ec4899",
   "#06b6d4",
@@ -491,6 +493,42 @@ function addBondBetweenAtoms(atomA, atomAIndex, atomB, atomBIndex, bondOrder = 1
   }
 }
 
+function addDashedBondCylinder(targetViewer, start, end, color) {
+  if (!targetViewer || !start || !end) return;
+
+  const dx = end.x - start.x;
+  const dy = end.y - start.y;
+  const dz = end.z - start.z;
+  const length = Math.sqrt(dx * dx + dy * dy + dz * dz);
+  if (!Number.isFinite(length) || length <= 0) return;
+
+  const ux = dx / length;
+  const uy = dy / length;
+  const uz = dz / length;
+  const stride = WEAK_ADSORPTION_DASH_LENGTH + WEAK_ADSORPTION_GAP_LENGTH;
+
+  for (let offset = 0; offset < length; offset += stride) {
+    const dashStart = offset;
+    const dashEnd = Math.min(offset + WEAK_ADSORPTION_DASH_LENGTH, length);
+    if (dashEnd <= dashStart) continue;
+
+    targetViewer.addCylinder({
+      start: {
+        x: start.x + ux * dashStart,
+        y: start.y + uy * dashStart,
+        z: start.z + uz * dashStart
+      },
+      end: {
+        x: start.x + ux * dashEnd,
+        y: start.y + uy * dashEnd,
+        z: start.z + uz * dashEnd
+      },
+      radius: WEAK_ADSORPTION_DASH_RADIUS,
+      color
+    });
+  }
+}
+
 function getAdsorptionPairCutoff(atomA, atomB, maxDistance) {
   const cutoff = Number(maxDistance);
   const elemA = normalizeElementSymbol(atomA.elem);
@@ -532,13 +570,12 @@ function addAdsorptionMetalContacts(targetViewer, atoms, maxDistance) {
         const pairKey = i < j ? `${i}:${j}` : `${j}:${i}`;
         if (weakLinePairs.has(pairKey)) continue;
         weakLinePairs.add(pairKey);
-        targetViewer.addLine({
-          start: { x: atomA.x, y: atomA.y, z: atomA.z },
-          end: { x: atomB.x, y: atomB.y, z: atomB.z },
-          color: WEAK_ADSORPTION_LINE_COLOR,
-          linewidth: WEAK_ADSORPTION_LINE_WIDTH,
-          dashed: true
-        });
+        addDashedBondCylinder(
+          targetViewer,
+          { x: atomA.x, y: atomA.y, z: atomA.z },
+          { x: atomB.x, y: atomB.y, z: atomB.z },
+          WEAK_ADSORPTION_LINE_COLOR
+        );
       }
     }
   }
