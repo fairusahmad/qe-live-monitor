@@ -83,9 +83,9 @@ const BOND_TOLERANCE = 0.45;
 const METAL_ELEMENTS = new Set(["Ni", "Cu", "Fe", "Co", "Pt", "Pd", "Ag", "Au", "Zn", "Al"]);
 const ADSORBATE_BOND_ELEMENTS = new Set(["O", "N", "S", "C", "P", "F", "Cl", "Br", "I"]);
 const WEAK_ADSORPTION_LINE_COLOR = "#111827";
-const WEAK_ADSORPTION_DASH_RADIUS = 0.16;
-const WEAK_ADSORPTION_DASH_LENGTH = 0.22;
-const WEAK_ADSORPTION_GAP_LENGTH = 0.14;
+const WEAK_ADSORPTION_DASH_RADIUS = 0.24;
+const WEAK_ADSORPTION_DASH_LENGTH = 0.30;
+const WEAK_ADSORPTION_GAP_LENGTH = 0.08;
 const EXTRA_ELEMENT_PALETTE = [
   "#ec4899",
   "#06b6d4",
