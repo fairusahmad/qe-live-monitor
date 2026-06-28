@@ -499,20 +499,19 @@ function getAdsorptionPairCutoff(atomA, atomB, maxDistance) {
   return Math.min(cutoff, radiusA + radiusB + BOND_TOLERANCE);
 }
 
-function addNearestMetalAdsorptionBonds(targetViewer, atoms, maxDistance) {
+function addAdsorptionMetalContacts(targetViewer, atoms, maxDistance) {
   const cutoff = Number(maxDistance);
   if (!targetViewer || !Array.isArray(atoms) || !atoms.length || !Number.isFinite(cutoff) || cutoff <= 0) {
     return;
   }
 
   const maxDistanceSq = cutoff * cutoff;
+  const weakLinePairs = new Set();
   for (let i = 0; i < atoms.length; i++) {
     const atomA = atoms[i];
     const elemA = normalizeElementSymbol(atomA.elem);
     if (!ADSORBATE_BOND_ELEMENTS.has(elemA)) continue;
 
-    let bestIndex = -1;
-    let bestDistanceSq = Infinity;
     for (let j = 0; j < atoms.length; j++) {
       if (i === j) continue;
       const atomB = atoms[j];
@@ -523,18 +522,15 @@ function addNearestMetalAdsorptionBonds(targetViewer, atoms, maxDistance) {
       const dy = atomA.y - atomB.y;
       const dz = atomA.z - atomB.z;
       const distanceSq = dx * dx + dy * dy + dz * dz;
-      if (distanceSq > maxDistanceSq || distanceSq >= bestDistanceSq) continue;
+      if (distanceSq > maxDistanceSq) continue;
 
-      bestDistanceSq = distanceSq;
-      bestIndex = j;
-    }
-
-    if (bestIndex >= 0) {
-      const atomB = atoms[bestIndex];
       const strongCutoff = getAdsorptionPairCutoff(atomA, atomB, cutoff);
       if (bestDistanceSq <= strongCutoff * strongCutoff) {
-        addBondBetweenAtoms(atomA, i, atomB, bestIndex, 1);
+        addBondBetweenAtoms(atomA, i, atomB, j, 1);
       } else {
+        const pairKey = i < j ? `${i}:${j}` : `${j}:${i}`;
+        if (weakLinePairs.has(pairKey)) continue;
+        weakLinePairs.add(pairKey);
         targetViewer.addLine({
           start: { x: atomA.x, y: atomA.y, z: atomA.z },
           end: { x: atomB.x, y: atomB.y, z: atomB.z },
@@ -554,7 +550,7 @@ function addStructureModel(targetViewer, xyzText, matrix) {
     "xyz"
   );
   const atoms = model.selectedAtoms({});
-  addNearestMetalAdsorptionBonds(targetViewer, atoms, maxBondDistance);
+  addAdsorptionMetalContacts(targetViewer, atoms, maxBondDistance);
   model.setColorByElement({}, getColorScheme());
 }
 
