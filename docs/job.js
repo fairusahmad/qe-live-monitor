@@ -55,6 +55,31 @@ const KNOWN_ELEMENT_COLORS = {
   Pt: "#475569",
   Pd: "#6b7280"
 };
+const COVALENT_RADII = {
+  H: 0.31,
+  C: 0.76,
+  N: 0.71,
+  O: 0.66,
+  F: 0.57,
+  P: 1.07,
+  S: 1.05,
+  Cl: 1.02,
+  Br: 1.20,
+  I: 1.39,
+  Si: 1.11,
+  Al: 1.21,
+  Fe: 1.24,
+  Co: 1.18,
+  Ni: 1.21,
+  Cu: 1.38,
+  Zn: 1.31,
+  Ag: 1.45,
+  Au: 1.36,
+  Pt: 1.36,
+  Pd: 1.39
+};
+const DEFAULT_COVALENT_RADIUS = 1.2;
+const BOND_TOLERANCE = 0.45;
 const EXTRA_ELEMENT_PALETTE = [
   "#ec4899",
   "#06b6d4",
@@ -446,8 +471,12 @@ function updateBondDistanceLabel() {
 function buildDisplayAtoms(xyzText, matrix) {
   const atoms = parseXYZAtoms(xyzText);
   if (!atoms.length) return [];
+  const colorScheme = getColorScheme();
   if (!matrix || (cellRepeat.x === 1 && cellRepeat.y === 1 && cellRepeat.z === 1)) {
-    return atoms.map((atom) => ({ ...atom }));
+    return atoms.map((atom) => ({
+      ...atom,
+      color: colorScheme[normalizeElementSymbol(atom.elem)] || colorScheme[atom.elem]
+    }));
   }
 
   const expandedAtoms = [];
@@ -465,6 +494,7 @@ function buildDisplayAtoms(xyzText, matrix) {
         for (const atom of atoms) {
           expandedAtoms.push({
             elem: atom.elem,
+            color: colorScheme[normalizeElementSymbol(atom.elem)] || colorScheme[atom.elem],
             x: atom.x + dx,
             y: atom.y + dy,
             z: atom.z + dz
@@ -497,8 +527,13 @@ function assignBondsByDistance(atoms, maxDistance) {
       const dy = atomA.y - atomB.y;
       const dz = atomA.z - atomB.z;
       const distanceSq = dx * dx + dy * dy + dz * dz;
+      const elemA = normalizeElementSymbol(atomA.elem);
+      const elemB = normalizeElementSymbol(atomB.elem);
+      const radiusA = COVALENT_RADII[elemA] || DEFAULT_COVALENT_RADIUS;
+      const radiusB = COVALENT_RADII[elemB] || DEFAULT_COVALENT_RADIUS;
+      const pairCutoff = Math.min(cutoff, radiusA + radiusB + BOND_TOLERANCE);
 
-      if (distanceSq <= maxDistanceSq) {
+      if (distanceSq <= maxDistanceSq && distanceSq <= pairCutoff * pairCutoff) {
         atomA.bonds.push(j);
         atomA.bondOrder.push(1);
         atomB.bonds.push(i);
