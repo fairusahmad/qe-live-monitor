@@ -284,6 +284,20 @@
         <span id="viewSaveStatus" class="stepbox"></span>
       </div>
 
+      <div class="toolbar">
+        <label for="bondDistanceSlider">Max bond distance</label>
+        <input
+          id="bondDistanceSlider"
+          type="range"
+          min="1.00"
+          max="4.00"
+          step="0.05"
+          value="2.80"
+          oninput="setBondDistance(this.value)"
+        >
+        <span id="bondDistanceValue" class="stepbox">2.80 A</span>
+      </div>
+
 
 	<div class="toolbar" id="legendBox"></div>
     </div>
@@ -299,7 +313,7 @@
     </div>
   </div>
 
-  <script src="job.js?v=20260618-live-monitor-1"></script>
+  <script src="job.js?v=20260628-live-monitor-bond-slider-1"></script>
 </body>
 </html>
 

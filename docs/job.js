@@ -22,6 +22,7 @@ let showCell = true;
 let showAxes = true;
 let currentStyle = "ballstick";
 let cellRepeat = { x: 2, y: 2, z: 1 };
+let maxBondDistance = 2.8;
 const FIXED_GLOW_TRANSPARENCY = 42;
 let measureMode = false;
 let measurementState = {
@@ -431,6 +432,92 @@ function parseXYZAtoms(xyzText) {
   return atoms;
 }
 
+function formatBondDistance(value) {
+  return `${Number(value).toFixed(2)} A`;
+}
+
+function updateBondDistanceLabel() {
+  const slider = document.getElementById("bondDistanceSlider");
+  if (slider) slider.value = String(maxBondDistance);
+  const el = document.getElementById("bondDistanceValue");
+  if (el) el.textContent = formatBondDistance(maxBondDistance);
+}
+
+function buildDisplayAtoms(xyzText, matrix) {
+  const atoms = parseXYZAtoms(xyzText);
+  if (!atoms.length) return [];
+  if (!matrix || (cellRepeat.x === 1 && cellRepeat.y === 1 && cellRepeat.z === 1)) {
+    return atoms.map((atom) => ({ ...atom }));
+  }
+
+  const expandedAtoms = [];
+  const a = matrix[0];
+  const b = matrix[1];
+  const c = matrix[2];
+
+  for (let ix = 0; ix < cellRepeat.x; ix++) {
+    for (let iy = 0; iy < cellRepeat.y; iy++) {
+      for (let iz = 0; iz < cellRepeat.z; iz++) {
+        const dx = ix * a[0] + iy * b[0] + iz * c[0];
+        const dy = ix * a[1] + iy * b[1] + iz * c[1];
+        const dz = ix * a[2] + iy * b[2] + iz * c[2];
+
+        for (const atom of atoms) {
+          expandedAtoms.push({
+            elem: atom.elem,
+            x: atom.x + dx,
+            y: atom.y + dy,
+            z: atom.z + dz
+          });
+        }
+      }
+    }
+  }
+
+  return expandedAtoms;
+}
+
+function assignBondsByDistance(atoms, maxDistance) {
+  const cutoff = Number(maxDistance);
+  if (!Array.isArray(atoms) || atoms.length < 2 || !Number.isFinite(cutoff) || cutoff <= 0) {
+    return;
+  }
+
+  const maxDistanceSq = cutoff * cutoff;
+  for (const atom of atoms) {
+    atom.bonds = [];
+    atom.bondOrder = [];
+  }
+
+  for (let i = 0; i < atoms.length - 1; i++) {
+    const atomA = atoms[i];
+    for (let j = i + 1; j < atoms.length; j++) {
+      const atomB = atoms[j];
+      const dx = atomA.x - atomB.x;
+      const dy = atomA.y - atomB.y;
+      const dz = atomA.z - atomB.z;
+      const distanceSq = dx * dx + dy * dy + dz * dz;
+
+      if (distanceSq <= maxDistanceSq) {
+        atomA.bonds.push(j);
+        atomA.bondOrder.push(1);
+        atomB.bonds.push(i);
+        atomB.bondOrder.push(1);
+      }
+    }
+  }
+}
+
+function addStructureModel(targetViewer, xyzText, matrix) {
+  if (!targetViewer || !xyzText) return;
+
+  const atoms = buildDisplayAtoms(xyzText, matrix);
+  assignBondsByDistance(atoms, maxBondDistance);
+
+  const model = targetViewer.addModel();
+  model.addAtoms(atoms);
+}
+
 function normalizeElementSymbol(elem) {
   const clean = String(elem ?? "").trim();
   if (!clean) return "";
@@ -798,10 +885,7 @@ function renderOriginalStructure(preserveView = false) {
   if (preserveView && originalViewer) savedView = originalViewer.getView();
 
   originalViewer.clear();
-  originalViewer.addModel(
-    buildDisplayXYZ(originalStructure, originalLattice, `Original structure | ${cellRepeat.x} x ${cellRepeat.y} x ${cellRepeat.z}`),
-    "xyz"
-  );
+  addStructureModel(originalViewer, originalStructure, originalLattice);
   clearMeasurement("original");
   originalViewer.setClickable({}, true, function(atom) {
     handleMeasurementClick("original", atom);
@@ -833,10 +917,7 @@ function renderFrame(index, preserveView = false) {
   if (preserveView) savedView = viewer.getView();
 
   viewer.clear();
-  viewer.addModel(
-    buildDisplayXYZ(frame.xyz, currentLattice, `${frame.comment} | ${cellRepeat.x} x ${cellRepeat.y} x ${cellRepeat.z}`),
-    "xyz"
-  );
+  addStructureModel(viewer, frame.xyz, currentLattice);
   clearMeasurement("current");
   viewer.setClickable({}, true, function(atom) {
     handleMeasurementClick("current", atom);
@@ -897,6 +978,15 @@ function changeCellRepeat(value) {
 
 function toggleAxes() {
   showAxes = !showAxes;
+  renderFrame(currentStep, true);
+  renderOriginalStructure(true);
+}
+
+function setBondDistance(value) {
+  const parsed = Number(value);
+  if (!Number.isFinite(parsed) || parsed <= 0) return;
+  maxBondDistance = parsed;
+  updateBondDistanceLabel();
   renderFrame(currentStep, true);
   renderOriginalStructure(true);
 }
@@ -1394,6 +1484,7 @@ async function main() {
     return;
   }
 
+  updateBondDistanceLabel();
   bindChartControls();
 
   try {
