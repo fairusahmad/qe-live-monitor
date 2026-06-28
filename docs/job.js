@@ -83,6 +83,7 @@ const BOND_TOLERANCE = 0.45;
 const METAL_ELEMENTS = new Set(["Ni", "Cu", "Fe", "Co", "Pt", "Pd", "Ag", "Au", "Zn", "Al"]);
 const ADSORBATE_BOND_ELEMENTS = new Set(["O", "N", "S", "C", "P", "F", "Cl", "Br", "I"]);
 const WEAK_ADSORPTION_LINE_COLOR = "#111827";
+const WEAK_ADSORPTION_LINE_WIDTH = 6;
 const EXTRA_ELEMENT_PALETTE = [
   "#ec4899",
   "#06b6d4",
@@ -535,7 +536,7 @@ function addAdsorptionMetalContacts(targetViewer, atoms, maxDistance) {
           start: { x: atomA.x, y: atomA.y, z: atomA.z },
           end: { x: atomB.x, y: atomB.y, z: atomB.z },
           color: WEAK_ADSORPTION_LINE_COLOR,
-          linewidth: 2.5,
+          linewidth: WEAK_ADSORPTION_LINE_WIDTH,
           dashed: true
         });
       }
