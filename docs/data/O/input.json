@@ -29,8 +29,8 @@
     "nstep": "200",
     "tprnfor": ".True.",
     "ibrav": "0",
-    "nat": "2",
-    "ntyp": "2",
+    "nat": "1",
+    "ntyp": "1",
     "ecutwfc": "47",
     "ecutrho": "350",
     "occupations": "smearing",
@@ -49,5 +49,5 @@
     "ion_dynamics": "bfgs",
     "upscale": "100"
   },
-  "text": "&control\n  prefix        = 'wm',\n  outdir = './output/'\n  verbosity     = 'high',\n  calculation   = 'relax',\n  pseudo_dir = '/home/node1/PSP/PseudosP/pslibrary-master/pbe/PSEUDOPOTENTIALS/'\n  restart_mode  = 'from_scratch',\n  wf_collect    = .True.,\n  forc_conv_thr = 0.5d-3\n  nstep         = 200,\n  tprnfor       = .True.,\n/\n&SYSTEM\n ibrav = 0\n nat = 2\n ntyp = 2\n\n ecutwfc = 47\n ecutrho = 350\n\n occupations = 'smearing'\n smearing    = 'mv'\n degauss     = 0.01\n\n nspin = 1\n !tot_magnetization = 1\n\n nosym = .false.\n noinv = .false.\n noncolin = .false.\n\n vdw_corr = 'grimme-d3'\n/\n\n&ELECTRONS\n conv_thr = 1.0d-7\n electron_maxstep = 150\n mixing_beta = 0.10\n mixing_mode = 'plain'\n scf_must_converge = .true.\n/\n\n&IONS\n ion_dynamics = 'bfgs'\n upscale = 100\n/\n\nATOMIC_SPECIES\nO 15.9994  O.pbe-n-rrkjus_psl.1.0.0.UPF\nH 1.00797  H.pbe-rrkjus_psl.1.0.0.UPF\n\nK_POINTS gamma\n\nCELL_PARAMETERS angstrom\n  7.371898000   0.000000000   0.000000000\n  3.685948614   6.384247701   0.000000000\n  0.000000000   0.000000000  10.000000000\n\nATOMIC_POSITIONS angstrom\nO   5.208408450   3.095010376   5.168940729\nH   6.189868730   3.060532785   5.183878455"
+  "text": "&control\n  prefix        = 'wm',\n  outdir = './output/'\n  verbosity     = 'high',\n  calculation   = 'relax',\n  pseudo_dir = '/home/node1/PSP/PseudosP/pslibrary-master/pbe/PSEUDOPOTENTIALS/'\n  restart_mode  = 'from_scratch',\n  wf_collect    = .True.,\n  forc_conv_thr = 0.5d-3\n  nstep         = 200,\n  tprnfor       = .True.,\n/\n&SYSTEM\n ibrav = 0\n nat = 1\n ntyp = 1\n\n ecutwfc = 47\n ecutrho = 350\n\n occupations = 'smearing'\n smearing    = 'mv'\n degauss     = 0.01\n\n nspin = 1\n !tot_magnetization = 1\n\n nosym = .false.\n noinv = .false.\n noncolin = .false.\n\n vdw_corr = 'grimme-d3'\n/\n\n&ELECTRONS\n conv_thr = 1.0d-7\n electron_maxstep = 150\n mixing_beta = 0.10\n mixing_mode = 'plain'\n scf_must_converge = .true.\n/\n\n&IONS\n ion_dynamics = 'bfgs'\n upscale = 100\n/\n\nATOMIC_SPECIES\nO 15.9994  O.pbe-n-rrkjus_psl.1.0.0.UPF\n\nK_POINTS gamma\n\nCELL_PARAMETERS angstrom\n  7.371898000   0.000000000   0.000000000\n  3.685948614   6.384247701   0.000000000\n  0.000000000   0.000000000  10.000000000\n\nATOMIC_POSITIONS angstrom\nO   5.208408450   3.095010376   5.168940729\n"
 }
