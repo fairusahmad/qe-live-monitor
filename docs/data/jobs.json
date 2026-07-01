@@ -505,7 +505,7 @@
     "source_dir": "/media/node1/Fairus2TB/fairus/Nguyen/Ni_Glu_O_(DONE)",
     "found": true,
     "output_file": "/media/node1/Fairus2TB/fairus/Nguyen/Ni_Glu_O_(DONE)/output_relax.pw.x",
-    "status": "OK",
+    "status": "calculating...",
     "structure_capable": true,
     "input_file": "/media/node1/Fairus2TB/fairus/Nguyen/Ni_Glu_O_(DONE)/input.pw_relax.x",
     "input_file_name": "input.pw_relax.x",
@@ -523,16 +523,16 @@
       "mixing_mode": "plain",
       "scf_must_converge": null,
       "startingwfc": null,
-      "forc_conv_thr": "1.1d-3"
+      "forc_conv_thr": "0.5d-3"
     },
     "input_file_data": "data/Ni_Glu_O__DONE_/input.json",
-    "latest_energy_ry": -10372.4316534,
-    "latest_total_force_ry_bohr": 0.002711,
-    "latest_gradient_error_ry_bohr": 0.00056,
-    "converged": true,
-    "nat_latest": 125,
-    "has_structure": true,
-    "num_structure_steps": 49,
+    "latest_energy_ry": null,
+    "latest_total_force_ry_bohr": null,
+    "latest_gradient_error_ry_bohr": null,
+    "converged": false,
+    "nat_latest": 0,
+    "has_structure": false,
+    "num_structure_steps": 0,
     "status_file": "data/Ni_Glu_O__DONE_/status.json",
     "energy_file": "data/Ni_Glu_O__DONE_/energy.csv",
     "total_force_file": "data/Ni_Glu_O__DONE_/total_force.csv",
@@ -547,7 +547,8 @@
     "original_lattice_file": "data/Ni_Glu_O__DONE_/original_lattice.json",
     "original_constraints_file": "data/Ni_Glu_O__DONE_/original_constraints.json",
     "output_tail_file": "data/Ni_Glu_O__DONE_/latest_output_tail.txt",
-    "atomic_positions_file": "data/Ni_Glu_O__DONE_/latest_atomic_positions.txt"
+    "atomic_positions_file": "data/Ni_Glu_O__DONE_/latest_atomic_positions.txt",
+    "note": "Output parsed, but no final structure block was found."
   },
   {
     "job_id": "Ni_Glu_OH__DONE_",
