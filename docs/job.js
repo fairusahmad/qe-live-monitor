@@ -1085,8 +1085,7 @@ function renderDeltaChargeStructure(preserveView = false) {
       inFront: true,
       fontSize: 15,
       fontColor: "#111827",
-      backgroundColor: "white",
-      backgroundOpacity: 0.92
+      backgroundOpacity: 0
     });
   }
 
