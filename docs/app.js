@@ -642,6 +642,7 @@ function renderJobs(jobs) {
 
     card.innerHTML = `
       <div class="title">${escapeHTML(job.label)}</div>
+      ${job.bader_charge_changes_file ? `<span class="badge">Delta charge available</span>` : ""}
       <div class="meta"><b>Status:</b> <span class="${statusClass}">${escapeHTML(job.status)}</span></div>
       <div class="meta"><b>Source dir:</b> ${escapeHTML(job.source_dir)}</div>
       <div class="meta"><b>Picked output:</b> ${escapeHTML(job.output_file ?? "-")}</div>

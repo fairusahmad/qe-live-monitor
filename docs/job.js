@@ -1015,8 +1015,8 @@ function updateDeltaChargePanel() {
   const grid = document.querySelector(".viewer-grid");
   if (!panel || !grid) return;
 
-  panel.hidden = !hasBaderChargeChanges;
-  grid.classList.toggle("has-delta-charge", hasBaderChargeChanges);
+  panel.hidden = false;
+  grid.classList.add("has-delta-charge");
 }
 
 function updateDeltaChargeStatus() {
@@ -1024,7 +1024,7 @@ function updateDeltaChargeStatus() {
   if (!el) return;
 
   if (!hasBaderChargeChanges) {
-    el.textContent = "No Bader charge changes loaded.";
+    el.textContent = "No Bader charge changes found for this job.";
     return;
   }
 
@@ -1040,7 +1040,17 @@ function renderDeltaChargeStructure(preserveView = false) {
   updateDeltaChargePanel();
   updateDeltaChargeStatus();
 
-  if (!hasBaderChargeChanges || !trajectoryFrames.length) return;
+  if (!hasBaderChargeChanges || !trajectoryFrames.length) {
+    const viewerDiv = document.getElementById("deltaChargeViewer");
+    if (viewerDiv) {
+      viewerDiv.innerHTML = `<div class="viewer-placeholder">${
+        hasBaderChargeChanges
+          ? "No structure frames available for delta charge rendering."
+          : "Add bader_charge_changes.csv to this job folder to render delta charge spheres."
+      }</div>`;
+    }
+    return;
+  }
 
   initViewer();
   const frame = trajectoryFrames[currentStep] || trajectoryFrames[trajectoryFrames.length - 1];
