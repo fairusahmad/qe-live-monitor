@@ -1,6 +1,7 @@
 import os
 import json
 import re
+import shutil
 from parse_qe import INPUT_COMPARE_KEYS, export_qe_run, export_neb_structure, parse_qe_input_details
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -125,6 +126,20 @@ def find_axsf_file(job_dir):
         if f.endswith(".axsf") and os.path.isfile(os.path.join(job_dir, f)):
             return os.path.join(job_dir, f)
     return None
+
+def find_bader_charge_changes_file(job_dir):
+    candidate = os.path.join(job_dir, "bader_charge_changes.csv")
+    return candidate if os.path.isfile(candidate) else None
+
+def copy_bader_charge_changes(job_dir, outdir):
+    source = find_bader_charge_changes_file(job_dir)
+    if not source:
+        return None
+
+    os.makedirs(outdir, exist_ok=True)
+    dest = os.path.join(outdir, "bader_charge_changes.csv")
+    shutil.copy2(source, dest)
+    return dest
 
 def attach_input_details(item, input_details, job_id):
     if input_details:
@@ -282,6 +297,9 @@ def main():
             item["input_file_data"] = f"data/{job_id}/input.json"
             item["output_tail_file"] = f"data/{job_id}/latest_output_tail.txt"
             item["atomic_positions_file"] = f"data/{job_id}/latest_atomic_positions.txt"
+
+            if copy_bader_charge_changes(job_dir, outdir):
+                item["bader_charge_changes_file"] = f"data/{job_id}/bader_charge_changes.csv"
 
             if not item["has_structure"] and not item["structure_capable"]:
                 item["note"] = "Output parsed, but this calculation type usually does not contain a final structure block."

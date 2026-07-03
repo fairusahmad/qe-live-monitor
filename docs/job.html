@@ -41,6 +41,9 @@
       grid-template-columns: 1fr 1fr;
       gap: 16px;
     }
+    .viewer-grid.has-delta-charge {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
     .viewer-panel h3 {
       margin-top: 0;
       margin-bottom: 10px;
@@ -151,7 +154,8 @@
     @media (max-width: 900px) {
       .grid,
       .charts-row,
-      .viewer-grid {
+      .viewer-grid,
+      .viewer-grid.has-delta-charge {
         grid-template-columns: 1fr;
       }
     }
@@ -252,6 +256,14 @@
             <div id="viewer" class="viewer"></div>
           </div>
         </div>
+
+        <div id="deltaChargePanel" class="viewer-panel" hidden>
+          <h3>Delta Charge</h3>
+          <div id="deltaChargeStatus" class="viewer-meta">No Bader charge changes loaded.</div>
+          <div class="viewerWrap">
+            <div id="deltaChargeViewer" class="viewer"></div>
+          </div>
+        </div>
       </div>
 
       <div class="toolbar">
@@ -313,8 +325,6 @@
     </div>
   </div>
 
-  <script src="job.js?v=20260628-live-monitor-bond-slider-2"></script>
+  <script src="job.js?v=20260703-delta-charge-viewer"></script>
 </body>
 </html>
-
-

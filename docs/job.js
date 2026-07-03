@@ -1,5 +1,6 @@
 let viewer = null;
 let originalViewer = null;
+let deltaChargeViewer = null;
 let energyChart = null;
 let gradientChart = null;
 let scfAccuracyChart = null;
@@ -18,6 +19,8 @@ let currentLattice = null;
 let originalLattice = null;
 let originalInputFile = null;
 let originalConstraints = [];
+let baderChargeChanges = [];
+let hasBaderChargeChanges = false;
 let showCell = true;
 let showAxes = true;
 let currentStyle = "ballstick";
@@ -86,6 +89,9 @@ const WEAK_ADSORPTION_LINE_COLOR = "#111827";
 const WEAK_ADSORPTION_DASH_RADIUS = 0.24;
 const WEAK_ADSORPTION_DASH_LENGTH = 0.30;
 const WEAK_ADSORPTION_GAP_LENGTH = 0.22;
+const DELTA_CHARGE_POSITIVE_COLOR = "#dc2626";
+const DELTA_CHARGE_NEGATIVE_COLOR = "#2563eb";
+const DELTA_CHARGE_NEUTRAL_COLOR = "#6b7280";
 const EXTRA_ELEMENT_PALETTE = [
   "#ec4899",
   "#06b6d4",
@@ -243,24 +249,21 @@ function updateSyncViewsButton() {
 
 function applyViewerLinkState() {
   if (!viewer || !originalViewer) return;
+  const syncedViewers = [viewer, originalViewer, deltaChargeViewer].filter(Boolean);
   if (!syncViewsEnabled) {
-    viewer.setViewChangeCallback(null);
-    originalViewer.setViewChangeCallback(null);
+    syncedViewers.forEach((targetViewer) => targetViewer.setViewChangeCallback(null));
     return;
   }
 
-  viewer.setViewChangeCallback((view) => {
-    if (isApplyingSyncedView) return;
-    isApplyingSyncedView = true;
-    originalViewer.setView(view, true);
-    isApplyingSyncedView = false;
-  });
-
-  originalViewer.setViewChangeCallback((view) => {
-    if (isApplyingSyncedView) return;
-    isApplyingSyncedView = true;
-    viewer.setView(view, true);
-    isApplyingSyncedView = false;
+  syncedViewers.forEach((sourceViewer) => {
+    sourceViewer.setViewChangeCallback((view) => {
+      if (isApplyingSyncedView) return;
+      isApplyingSyncedView = true;
+      syncedViewers.forEach((targetViewer) => {
+        if (targetViewer !== sourceViewer) targetViewer.setView(view, true);
+      });
+      isApplyingSyncedView = false;
+    });
   });
 }
 
@@ -287,6 +290,10 @@ function initViewer() {
         originalViewer.resize();
         originalViewer.render();
       }
+      if (deltaChargeViewer) {
+        deltaChargeViewer.resize();
+        deltaChargeViewer.render();
+      }
     });
   }
 
@@ -294,8 +301,13 @@ function initViewer() {
     originalViewer = $3Dmol.createViewer("originalViewer", { backgroundColor: "white" });
   }
 
+  if (!deltaChargeViewer && document.getElementById("deltaChargeViewer")) {
+    deltaChargeViewer = $3Dmol.createViewer("deltaChargeViewer", { backgroundColor: "white" });
+  }
+
   enableMiddleMousePan("viewer");
   enableMiddleMousePan("originalViewer");
+  enableMiddleMousePan("deltaChargeViewer");
   applyViewerLinkState();
   updateSyncViewsButton();
 }
@@ -873,6 +885,22 @@ function applyStyleToViewer(targetViewer) {
   }
 }
 
+function getDeltaChargeColor(value, maxAbsDelta) {
+  const magnitude = maxAbsDelta > 0 ? Math.min(Math.abs(value) / maxAbsDelta, 1) : 0;
+  if (Math.abs(value) < 1e-12) return DELTA_CHARGE_NEUTRAL_COLOR;
+
+  const strong = value > 0 ? DELTA_CHARGE_POSITIVE_COLOR : DELTA_CHARGE_NEGATIVE_COLOR;
+  const weak = value > 0 ? "#fecaca" : "#bfdbfe";
+  return magnitude > 0.66 ? strong : weak;
+}
+
+function formatDeltaCharge(value) {
+  if (value === null || value === undefined) return "-";
+  const num = Number(value);
+  if (!Number.isFinite(num)) return "-";
+  return `${num >= 0 ? "+" : ""}${num.toFixed(4)} e`;
+}
+
 function addLatticeBox(targetViewer, matrix) {
   if (!matrix || !showCell) return;
 
@@ -982,6 +1010,90 @@ function renderOriginalStructure(preserveView = false) {
   originalViewer.render();
 }
 
+function updateDeltaChargePanel() {
+  const panel = document.getElementById("deltaChargePanel");
+  const grid = document.querySelector(".viewer-grid");
+  if (!panel || !grid) return;
+
+  panel.hidden = !hasBaderChargeChanges;
+  grid.classList.toggle("has-delta-charge", hasBaderChargeChanges);
+}
+
+function updateDeltaChargeStatus() {
+  const el = document.getElementById("deltaChargeStatus");
+  if (!el) return;
+
+  if (!hasBaderChargeChanges) {
+    el.textContent = "No Bader charge changes loaded.";
+    return;
+  }
+
+  const values = baderChargeChanges
+    .map((entry) => entry.deltaCharge)
+    .filter((value) => Number.isFinite(value));
+  const min = values.length ? Math.min(...values) : null;
+  const max = values.length ? Math.max(...values) : null;
+  el.textContent = `${baderChargeChanges.length} atoms | range ${formatDeltaCharge(min)} to ${formatDeltaCharge(max)}`;
+}
+
+function renderDeltaChargeStructure(preserveView = false) {
+  updateDeltaChargePanel();
+  updateDeltaChargeStatus();
+
+  if (!hasBaderChargeChanges || !trajectoryFrames.length) return;
+
+  initViewer();
+  const frame = trajectoryFrames[currentStep] || trajectoryFrames[trajectoryFrames.length - 1];
+  const atoms = parseXYZAtoms(frame.xyz);
+  const maxAbsDelta = Math.max(...baderChargeChanges.map((entry) => Math.abs(entry.deltaCharge)).filter(Number.isFinite), 0);
+  const chargeByAtom = new Map(baderChargeChanges.map((entry) => [entry.atomIndex, entry]));
+
+  let savedView = null;
+  if (preserveView && deltaChargeViewer) savedView = deltaChargeViewer.getView();
+
+  deltaChargeViewer.clear();
+  addStructureModel(deltaChargeViewer, frame.xyz, currentLattice);
+  deltaChargeViewer.setStyle({}, {
+    stick: { radius: 0.12, color: "#9ca3af" },
+    sphere: { scale: 0.22, color: "#d1d5db" }
+  });
+
+  for (const atom of atoms) {
+    const entry = chargeByAtom.get(atom.index);
+    if (!entry) continue;
+    const color = getDeltaChargeColor(entry.deltaCharge, maxAbsDelta);
+    const scale = 0.34 + (maxAbsDelta > 0 ? Math.min(Math.abs(entry.deltaCharge) / maxAbsDelta, 1) * 0.34 : 0);
+
+    deltaChargeViewer.addSphere({
+      center: { x: atom.x, y: atom.y, z: atom.z },
+      radius: scale,
+      color,
+      opacity: 0.72
+    });
+    deltaChargeViewer.addLabel(formatDeltaCharge(entry.deltaCharge), {
+      position: { x: atom.x, y: atom.y, z: atom.z + 0.35 },
+      inFront: true,
+      fontSize: 11,
+      fontColor: color,
+      backgroundColor: "white",
+      backgroundOpacity: 0.72
+    });
+  }
+
+  addLatticeBox(deltaChargeViewer, getDisplayLattice(currentLattice));
+  addAxes(deltaChargeViewer, getDisplayLattice(currentLattice));
+
+  if (preserveView && savedView) {
+    deltaChargeViewer.setView(savedView);
+  } else {
+    applySavedOrDefaultView(deltaChargeViewer);
+  }
+
+  deltaChargeViewer.resize();
+  deltaChargeViewer.render();
+  applyViewerLinkState();
+}
+
 function renderFrame(index, preserveView = false) {
   if (!trajectoryFrames.length) return;
 
@@ -1012,6 +1124,7 @@ function renderFrame(index, preserveView = false) {
 
   viewer.resize();
   viewer.render();
+  renderDeltaChargeStructure(preserveView);
 
   const slider = document.getElementById("stepSlider");
   slider.max = trajectoryFrames.length;
@@ -1025,24 +1138,28 @@ function setBallStick() {
   currentStyle = "ballstick";
   renderFrame(currentStep, true);
   renderOriginalStructure(true);
+  renderDeltaChargeStructure(true);
 }
 
 function setStick() {
   currentStyle = "stick";
   renderFrame(currentStep, true);
   renderOriginalStructure(true);
+  renderDeltaChargeStructure(true);
 }
 
 function setSphere() {
   currentStyle = "sphere";
   renderFrame(currentStep, true);
   renderOriginalStructure(true);
+  renderDeltaChargeStructure(true);
 }
 
 function toggleCell() {
   showCell = !showCell;
   renderFrame(currentStep, true);
   renderOriginalStructure(true);
+  renderDeltaChargeStructure(true);
 }
 
 function changeCellRepeat(value) {
@@ -1051,12 +1168,14 @@ function changeCellRepeat(value) {
     : { x: 1, y: 1, z: 1 };
   renderFrame(currentStep, false);
   renderOriginalStructure(false);
+  renderDeltaChargeStructure(false);
 }
 
 function toggleAxes() {
   showAxes = !showAxes;
   renderFrame(currentStep, true);
   renderOriginalStructure(true);
+  renderDeltaChargeStructure(true);
 }
 
 function setBondDistance(value) {
@@ -1066,11 +1185,13 @@ function setBondDistance(value) {
   updateBondDistanceLabel();
   renderFrame(currentStep, true);
   renderOriginalStructure(true);
+  renderDeltaChargeStructure(true);
 }
 
 function resetView() {
   if (viewer) renderFrame(currentStep, false);
   if (originalViewer) renderOriginalStructure(false);
+  if (deltaChargeViewer) renderDeltaChargeStructure(false);
 }
 
 function toggleSyncViews() {
@@ -1122,6 +1243,87 @@ function parseSeriesCSV(csv) {
     }
   }
   return data;
+}
+
+function parseCSVLine(line) {
+  const values = [];
+  let value = "";
+  let inQuotes = false;
+
+  for (let i = 0; i < line.length; i++) {
+    const char = line[i];
+    const next = line[i + 1];
+    if (char === '"' && next === '"') {
+      value += '"';
+      i += 1;
+    } else if (char === '"') {
+      inQuotes = !inQuotes;
+    } else if (char === "," && !inQuotes) {
+      values.push(value.trim());
+      value = "";
+    } else {
+      value += char;
+    }
+  }
+
+  values.push(value.trim());
+  return values;
+}
+
+function findHeaderIndex(headers, names) {
+  return headers.findIndex((header) => names.includes(header));
+}
+
+function parseBaderChargeChangesCSV(csv) {
+  const lines = csv.trim().split(/\r?\n/).filter((line) => line.trim());
+  if (lines.length < 2) return [];
+
+  const headers = parseCSVLine(lines[0]).map((header) =>
+    header.toLowerCase().replace(/[^a-z0-9]+/g, "_").replace(/^_+|_+$/g, "")
+  );
+  let atomIndexCol = findHeaderIndex(headers, ["atom", "atom_index", "index", "atom_id", "id", "serial"]);
+  let elementCol = findHeaderIndex(headers, ["element", "elem", "symbol", "atom_symbol"]);
+  let deltaCol = findHeaderIndex(headers, [
+    "delta_charge",
+    "charge_delta",
+    "d_charge",
+    "dq",
+    "delta",
+    "change",
+    "bader_charge_change",
+    "charge_change"
+  ]);
+
+  if (deltaCol < 0) {
+    deltaCol = headers.findIndex((header) => header.includes("delta") || header.includes("change"));
+  }
+
+  const entries = [];
+  for (let i = 1; i < lines.length; i++) {
+    const columns = parseCSVLine(lines[i]);
+    const numericColumns = columns
+      .map((value, index) => ({ index, value: Number(value) }))
+      .filter((item) => Number.isFinite(item.value));
+
+    if (atomIndexCol < 0 || deltaCol < 0) {
+      if (atomIndexCol < 0 && numericColumns.length > 1) atomIndexCol = numericColumns[0].index;
+      if (deltaCol < 0 && numericColumns.length > 1) deltaCol = numericColumns[numericColumns.length - 1].index;
+    }
+
+    const atomIndex = atomIndexCol >= 0 ? Number.parseInt(columns[atomIndexCol], 10) : i;
+    const deltaCharge = deltaCol >= 0
+      ? Number(columns[deltaCol])
+      : numericColumns[numericColumns.length - 1]?.value;
+    if (!Number.isFinite(atomIndex) || !Number.isFinite(deltaCharge)) continue;
+
+    entries.push({
+      atomIndex,
+      element: elementCol >= 0 ? columns[elementCol] : null,
+      deltaCharge
+    });
+  }
+
+  return entries;
 }
 
 function parseAxisValue(inputId) {
@@ -1406,11 +1608,15 @@ async function refreshJob() {
   originalLattice = null;
   originalInputFile = null;
   originalConstraints = [];
+  baderChargeChanges = [];
+  hasBaderChargeChanges = false;
   energySeriesData = [];
   gradientSeriesData = [];
   gradientTargetValue = null;
   scfAccuracySeriesData = [];
   redrawCharts();
+  updateDeltaChargePanel();
+  updateDeltaChargeStatus();
 
   document.getElementById("jobTitle").textContent = job.label;
 
@@ -1529,12 +1735,23 @@ async function refreshJob() {
         originalConstraints = [];
       }
 
+      try {
+        const baderCSV = await loadText(job.bader_charge_changes_file ?? `data/${job.job_id}/bader_charge_changes.csv`);
+        baderChargeChanges = parseBaderChargeChangesCSV(baderCSV);
+        hasBaderChargeChanges = baderChargeChanges.length > 0;
+      } catch (e) {
+        baderChargeChanges = [];
+        hasBaderChargeChanges = false;
+      }
+
       if (!originalStructure) {
         useTrajectoryAsOriginalFallback();
       }
 
       updateOriginalStructureSource();
       updateFixedAtomStatus();
+      updateDeltaChargePanel();
+      updateDeltaChargeStatus();
       renderAtomLegend();
 
       if (trajectoryFrames.length > 0) {
@@ -1574,6 +1791,3 @@ async function main() {
 
 main();
 setInterval(main, 60000);
-
-
-
