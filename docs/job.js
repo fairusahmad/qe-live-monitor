@@ -358,15 +358,6 @@ function updateChargeToggleButton() {
   button.textContent = `Delta Charge: ${chargeMode ? "On" : "Off"}`;
 }
 
-function formatChargeSelections() {
-  return Array.from(chargeSelections.values())
-    .map((selection) => {
-      const label = `${selection.element || "Atom"}${selection.atomIndex}`;
-      return `${label} = ${formatDeltaCharge(selection.deltaCharge)}`;
-    })
-    .join(" | ");
-}
-
 function updateCurrentChargeStatus(message = null) {
   const el = document.getElementById("currentChargeStatus");
   if (!el) return;
@@ -374,9 +365,9 @@ function updateCurrentChargeStatus(message = null) {
   if (message) {
     el.textContent = message;
   } else if (hasBaderChargeChanges) {
-    const selected = formatChargeSelections();
-    if (selected) {
-      el.textContent = `Delta charge selected: ${selected}`;
+    const selectedCount = chargeSelections.size;
+    if (selectedCount) {
+      el.textContent = `Delta charge: ${selectedCount} atom${selectedCount === 1 ? "" : "s"} labeled.`;
     } else {
       el.textContent = chargeMode
         ? "Delta charge mode on: click atoms in the current structure."
@@ -391,6 +382,7 @@ function clearChargeSelections(render = true) {
   if (viewer) {
     for (const selection of chargeSelections.values()) {
       if (selection.marker) viewer.removeShape(selection.marker);
+      if (selection.label) viewer.removeLabel(selection.label);
     }
     if (render) viewer.render();
   }
@@ -429,6 +421,7 @@ function handleChargeClick(atom) {
   if (chargeSelections.has(atomIndex)) {
     const existing = chargeSelections.get(atomIndex);
     if (existing.marker) viewer.removeShape(existing.marker);
+    if (existing.label) viewer.removeLabel(existing.label);
     chargeSelections.delete(atomIndex);
     updateCurrentChargeStatus();
     viewer.render();
@@ -446,6 +439,14 @@ function handleChargeClick(atom) {
       radius: 0.78,
       color,
       alpha: 0.42
+    }),
+    label: viewer.addLabel(formatDeltaCharge(entry.deltaCharge), {
+      position: { x: atom.x, y: atom.y, z: atom.z + 0.45 },
+      inFront: true,
+      backgroundColor: "#111827",
+      fontColor: "white",
+      backgroundOpacity: 0.95,
+      fontSize: 13
     })
   });
 
