@@ -100,6 +100,13 @@
       align-items: center;
       margin-top: 12px;
     }
+    .viewer-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 10px;
+    }
     .chart-controls {
       display: flex;
       flex-wrap: wrap;
@@ -250,6 +257,10 @@
         <div class="viewer-panel">
           <h3>Current Structure</h3>
           <div id="currentChargeStatus" class="viewer-meta">Delta charge: loading...</div>
+          <div class="viewer-actions">
+            <button id="chargeToggle" type="button" onclick="toggleChargeMode()">Delta Charge: Off</button>
+            <button type="button" onclick="clearChargeSelections()">Clear Charge</button>
+          </div>
           <div class="viewerWrap">
             <div id="viewer" class="viewer"></div>
           </div>
@@ -277,8 +288,6 @@
           <option value="2x2x1" selected>2 x 2 x 1</option>
         </select>
         <button onclick="toggleAxes()">Toggle Axes</button>
-        <button id="chargeToggle" onclick="toggleChargeMode()">Delta Charge</button>
-        <button onclick="clearChargeSelections()">Clear Charge</button>
         <button id="measureToggle" onclick="toggleMeasureMode()">Measure Distance</button>
         <button onclick="clearMeasurement()">Clear Measure</button>
         <button onclick="saveCurrentView()">Save View</button>
