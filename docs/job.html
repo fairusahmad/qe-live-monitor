@@ -41,12 +41,6 @@
       grid-template-columns: 1fr 1fr;
       gap: 16px;
     }
-    .viewer-grid.has-delta-charge {
-      grid-template-columns: 1fr 1fr;
-    }
-    .viewer-panel.delta-charge-panel {
-      grid-column: 1 / -1;
-    }
     .viewer-panel h3 {
       margin-top: 0;
       margin-bottom: 10px;
@@ -70,16 +64,6 @@
     .viewer {
       width: 100%;
       height: 100%;
-    }
-    .viewer-placeholder {
-      height: 100%;
-      display: grid;
-      place-items: center;
-      padding: 20px;
-      color: #4b5563;
-      font-size: 14px;
-      text-align: center;
-      background: #f8fafc;
     }
     pre {
       white-space: pre-wrap;
@@ -168,12 +152,8 @@
     @media (max-width: 900px) {
       .grid,
       .charts-row,
-      .viewer-grid,
-      .viewer-grid.has-delta-charge {
+      .viewer-grid {
         grid-template-columns: 1fr;
-      }
-      .viewer-panel.delta-charge-panel {
-        grid-column: auto;
       }
     }
   </style>
@@ -269,16 +249,9 @@
 
         <div class="viewer-panel">
           <h3>Current Structure</h3>
+          <div id="currentChargeStatus" class="viewer-meta">Delta charge: loading...</div>
           <div class="viewerWrap">
             <div id="viewer" class="viewer"></div>
-          </div>
-        </div>
-
-        <div id="deltaChargePanel" class="viewer-panel delta-charge-panel" hidden>
-          <h3>Delta Charge</h3>
-          <div id="deltaChargeStatus" class="viewer-meta">No Bader charge changes loaded.</div>
-          <div class="viewerWrap">
-            <div id="deltaChargeViewer" class="viewer"></div>
           </div>
         </div>
       </div>

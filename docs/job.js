@@ -1,6 +1,5 @@
 let viewer = null;
 let originalViewer = null;
-let deltaChargeViewer = null;
 let energyChart = null;
 let gradientChart = null;
 let scfAccuracyChart = null;
@@ -32,6 +31,7 @@ let measurementState = {
   current: { atoms: [], labels: [], line: null },
   original: { atoms: [], labels: [], line: null }
 };
+let chargeSelection = { atomIndex: null, marker: null };
 let syncViewsEnabled = true;
 let isApplyingSyncedView = false;
 const FIXED_ATOM_COLOR = "#00d4ff";
@@ -249,7 +249,7 @@ function updateSyncViewsButton() {
 
 function applyViewerLinkState() {
   if (!viewer || !originalViewer) return;
-  const syncedViewers = [viewer, originalViewer, deltaChargeViewer].filter(Boolean);
+  const syncedViewers = [viewer, originalViewer].filter(Boolean);
   if (!syncViewsEnabled) {
     syncedViewers.forEach((targetViewer) => targetViewer.setViewChangeCallback(null));
     return;
@@ -290,10 +290,6 @@ function initViewer() {
         originalViewer.resize();
         originalViewer.render();
       }
-      if (deltaChargeViewer) {
-        deltaChargeViewer.resize();
-        deltaChargeViewer.render();
-      }
     });
   }
 
@@ -301,13 +297,8 @@ function initViewer() {
     originalViewer = $3Dmol.createViewer("originalViewer", { backgroundColor: "white" });
   }
 
-  if (!deltaChargeViewer && document.getElementById("deltaChargeViewer")) {
-    deltaChargeViewer = $3Dmol.createViewer("deltaChargeViewer", { backgroundColor: "white" });
-  }
-
   enableMiddleMousePan("viewer");
   enableMiddleMousePan("originalViewer");
-  enableMiddleMousePan("deltaChargeViewer");
   applyViewerLinkState();
   updateSyncViewsButton();
 }
@@ -357,6 +348,75 @@ function clearMeasurement(which = null) {
   }
 
   updateMeasurementStatus(measureMode ? "Select atom 1 of 2" : "Measurement off");
+}
+
+function updateCurrentChargeStatus(message = null) {
+  const el = document.getElementById("currentChargeStatus");
+  if (!el) return;
+
+  if (message) {
+    el.textContent = message;
+  } else if (hasBaderChargeChanges) {
+    el.textContent = "Delta charge: click an atom in the current structure.";
+  } else {
+    el.textContent = "Delta charge: no Bader charge changes found for this job.";
+  }
+}
+
+function clearChargeSelection(render = false) {
+  if (viewer && chargeSelection.marker) {
+    viewer.removeShape(chargeSelection.marker);
+    if (render) viewer.render();
+  }
+  chargeSelection = { atomIndex: null, marker: null };
+}
+
+function resolveClickedChargeAtomIndex(atom) {
+  if (!atom || !baderChargeChanges.length) return null;
+  const nat = baderChargeChanges.length;
+  const candidates = [atom.serial, atom.index]
+    .map((value) => Number.parseInt(value, 10))
+    .filter((value) => Number.isFinite(value));
+
+  for (const value of candidates) {
+    if (value >= 1 && value <= nat) return value;
+  }
+
+  for (const value of candidates) {
+    if (value >= 0) return (value % nat) + 1;
+  }
+
+  return null;
+}
+
+function handleChargeClick(atom) {
+  if (measureMode || !hasBaderChargeChanges || !viewer || !atom) return;
+
+  const atomIndex = resolveClickedChargeAtomIndex(atom);
+  const entry = baderChargeChanges.find((item) => item.atomIndex === atomIndex);
+  if (!entry) {
+    updateCurrentChargeStatus(`Delta charge: no value found for ${formatAtomLabel(atom)}.`);
+    clearChargeSelection(true);
+    return;
+  }
+
+  clearChargeSelection(false);
+  const maxAbsDelta = Math.max(...baderChargeChanges.map((item) => Math.abs(item.deltaCharge)).filter(Number.isFinite), 0);
+  const color = getDeltaChargeColor(entry.deltaCharge, maxAbsDelta);
+  chargeSelection = {
+    atomIndex,
+    marker: viewer.addSphere({
+      center: { x: atom.x, y: atom.y, z: atom.z },
+      radius: 0.78,
+      color,
+      alpha: 0.42
+    })
+  };
+
+  updateCurrentChargeStatus(
+    `Delta charge: ${entry.element || atom.elem || "Atom"}${atomIndex} = ${formatDeltaCharge(entry.deltaCharge)}`
+  );
+  viewer.render();
 }
 
 function handleMeasurementClick(which, atom) {
@@ -1010,97 +1070,8 @@ function renderOriginalStructure(preserveView = false) {
   originalViewer.render();
 }
 
-function updateDeltaChargePanel() {
-  const panel = document.getElementById("deltaChargePanel");
-  const grid = document.querySelector(".viewer-grid");
-  if (!panel || !grid) return;
-
-  panel.hidden = false;
-  grid.classList.add("has-delta-charge");
-}
-
 function updateDeltaChargeStatus() {
-  const el = document.getElementById("deltaChargeStatus");
-  if (!el) return;
-
-  if (!hasBaderChargeChanges) {
-    el.textContent = "No Bader charge changes found for this job.";
-    return;
-  }
-
-  const values = baderChargeChanges
-    .map((entry) => entry.deltaCharge)
-    .filter((value) => Number.isFinite(value));
-  const min = values.length ? Math.min(...values) : null;
-  const max = values.length ? Math.max(...values) : null;
-  el.textContent = `${baderChargeChanges.length} atoms | range ${formatDeltaCharge(min)} to ${formatDeltaCharge(max)}`;
-}
-
-function renderDeltaChargeStructure(preserveView = false) {
-  updateDeltaChargePanel();
-  updateDeltaChargeStatus();
-
-  if (!hasBaderChargeChanges || !trajectoryFrames.length) {
-    const viewerDiv = document.getElementById("deltaChargeViewer");
-    if (viewerDiv) {
-      viewerDiv.innerHTML = `<div class="viewer-placeholder">${
-        hasBaderChargeChanges
-          ? "No structure frames available for delta charge rendering."
-          : "Add bader_charge_changes.csv to this job folder to render delta charge spheres."
-      }</div>`;
-    }
-    return;
-  }
-
-  initViewer();
-  const frame = trajectoryFrames[currentStep] || trajectoryFrames[trajectoryFrames.length - 1];
-  const atoms = parseXYZAtoms(frame.xyz);
-  const maxAbsDelta = Math.max(...baderChargeChanges.map((entry) => Math.abs(entry.deltaCharge)).filter(Number.isFinite), 0);
-  const chargeByAtom = new Map(baderChargeChanges.map((entry) => [entry.atomIndex, entry]));
-
-  let savedView = null;
-  if (preserveView && deltaChargeViewer) savedView = deltaChargeViewer.getView();
-
-  deltaChargeViewer.clear();
-  addStructureModel(deltaChargeViewer, frame.xyz, currentLattice);
-  deltaChargeViewer.setStyle({}, {
-    stick: { radius: 0.12, color: "#9ca3af" },
-    sphere: { scale: 0.22, color: "#d1d5db" }
-  });
-
-  for (const atom of atoms) {
-    const entry = chargeByAtom.get(atom.index);
-    if (!entry) continue;
-    const color = getDeltaChargeColor(entry.deltaCharge, maxAbsDelta);
-    const scale = 0.34 + (maxAbsDelta > 0 ? Math.min(Math.abs(entry.deltaCharge) / maxAbsDelta, 1) * 0.34 : 0);
-
-    deltaChargeViewer.addSphere({
-      center: { x: atom.x, y: atom.y, z: atom.z },
-      radius: scale,
-      color,
-      opacity: 0.72
-    });
-    deltaChargeViewer.addLabel(formatDeltaCharge(entry.deltaCharge), {
-      position: { x: atom.x, y: atom.y, z: atom.z + 0.35 },
-      inFront: true,
-      fontSize: 15,
-      fontColor: "#111827",
-      backgroundOpacity: 0
-    });
-  }
-
-  addLatticeBox(deltaChargeViewer, getDisplayLattice(currentLattice));
-  addAxes(deltaChargeViewer, getDisplayLattice(currentLattice));
-
-  if (preserveView && savedView) {
-    deltaChargeViewer.setView(savedView);
-  } else {
-    applySavedOrDefaultView(deltaChargeViewer);
-  }
-
-  deltaChargeViewer.resize();
-  deltaChargeViewer.render();
-  applyViewerLinkState();
+  updateCurrentChargeStatus();
 }
 
 function renderFrame(index, preserveView = false) {
@@ -1114,10 +1085,12 @@ function renderFrame(index, preserveView = false) {
   let savedView = null;
   if (preserveView) savedView = viewer.getView();
 
+  clearChargeSelection(false);
   viewer.clear();
   addStructureModel(viewer, frame.xyz, currentLattice);
   clearMeasurement("current");
   viewer.setClickable({}, true, function(atom) {
+    handleChargeClick(atom);
     handleMeasurementClick("current", atom);
   });
 
@@ -1133,7 +1106,7 @@ function renderFrame(index, preserveView = false) {
 
   viewer.resize();
   viewer.render();
-  renderDeltaChargeStructure(preserveView);
+  updateDeltaChargeStatus();
 
   const slider = document.getElementById("stepSlider");
   slider.max = trajectoryFrames.length;
@@ -1147,28 +1120,24 @@ function setBallStick() {
   currentStyle = "ballstick";
   renderFrame(currentStep, true);
   renderOriginalStructure(true);
-  renderDeltaChargeStructure(true);
 }
 
 function setStick() {
   currentStyle = "stick";
   renderFrame(currentStep, true);
   renderOriginalStructure(true);
-  renderDeltaChargeStructure(true);
 }
 
 function setSphere() {
   currentStyle = "sphere";
   renderFrame(currentStep, true);
   renderOriginalStructure(true);
-  renderDeltaChargeStructure(true);
 }
 
 function toggleCell() {
   showCell = !showCell;
   renderFrame(currentStep, true);
   renderOriginalStructure(true);
-  renderDeltaChargeStructure(true);
 }
 
 function changeCellRepeat(value) {
@@ -1177,14 +1146,12 @@ function changeCellRepeat(value) {
     : { x: 1, y: 1, z: 1 };
   renderFrame(currentStep, false);
   renderOriginalStructure(false);
-  renderDeltaChargeStructure(false);
 }
 
 function toggleAxes() {
   showAxes = !showAxes;
   renderFrame(currentStep, true);
   renderOriginalStructure(true);
-  renderDeltaChargeStructure(true);
 }
 
 function setBondDistance(value) {
@@ -1194,13 +1161,11 @@ function setBondDistance(value) {
   updateBondDistanceLabel();
   renderFrame(currentStep, true);
   renderOriginalStructure(true);
-  renderDeltaChargeStructure(true);
 }
 
 function resetView() {
   if (viewer) renderFrame(currentStep, false);
   if (originalViewer) renderOriginalStructure(false);
-  if (deltaChargeViewer) renderDeltaChargeStructure(false);
 }
 
 function toggleSyncViews() {
@@ -1624,7 +1589,6 @@ async function refreshJob() {
   gradientTargetValue = null;
   scfAccuracySeriesData = [];
   redrawCharts();
-  updateDeltaChargePanel();
   updateDeltaChargeStatus();
 
   document.getElementById("jobTitle").textContent = job.label;
@@ -1759,7 +1723,6 @@ async function refreshJob() {
 
       updateOriginalStructureSource();
       updateFixedAtomStatus();
-      updateDeltaChargePanel();
       updateDeltaChargeStatus();
       renderAtomLegend();
 
