@@ -3,6 +3,12 @@ async function loadJobs() {
   return await res.json();
 }
 
+async function loadVersion() {
+  const res = await fetch("data/version.json?t=" + Date.now());
+  if (!res.ok) throw new Error("Failed to load version metadata");
+  return await res.json();
+}
+
 const RY_TO_EV = 13.6057039763;
 const INPUT_COMPARE_KEYS = [
   "occupations",
@@ -61,6 +67,27 @@ function escapeHTML(value) {
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#039;");
+}
+
+function renderVersionStamp(version) {
+  const el = document.getElementById("versionStamp");
+  if (!el) return;
+
+  const updatedAt = version?.updated_at_local || version?.updated_at_iso || "Not available";
+  const commit = version?.source_commit ? `Commit before update: ${version.source_commit}` : "";
+  el.innerHTML = `
+    <strong>Latest update</strong>
+    <span>${escapeHTML(updatedAt)}</span>
+    ${commit ? `<span>${escapeHTML(commit)}</span>` : ""}
+  `;
+}
+
+async function refreshVersionStamp() {
+  try {
+    renderVersionStamp(await loadVersion());
+  } catch (e) {
+    renderVersionStamp({ updated_at_local: "No update timestamp yet" });
+  }
 }
 
 function formatEnergy(value) {
@@ -659,6 +686,8 @@ function renderJobs(jobs) {
 }
 
 async function main() {
+  refreshVersionStamp();
+
   try {
     const jobs = await loadJobs();
     renderCalculator(jobs);

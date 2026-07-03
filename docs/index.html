@@ -9,6 +9,31 @@
     body { font-family: Arial, sans-serif; margin: clamp(12px, 3vw, 24px); background: #f6f7fb; color: #222; }
     h1 { margin-bottom: 6px; }
     .page { display: grid; gap: 18px; }
+    .page-header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px 18px;
+    }
+    .page-header p { margin: 0; }
+    .version-stamp {
+      display: inline-flex;
+      flex-direction: column;
+      gap: 3px;
+      padding: 8px 10px;
+      border: 1px solid #d8deea;
+      border-radius: 8px;
+      background: #fff;
+      color: #334155;
+      font-size: 12px;
+      line-height: 1.35;
+      max-width: 100%;
+    }
+    .version-stamp strong {
+      color: #111827;
+      font-size: 13px;
+    }
     .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
     .card {
       background: white; border-radius: 14px; padding: 16px;
@@ -135,9 +160,15 @@
 </head>
 <body>
   <div class="page">
-    <div>
-      <h1>Quantum ESPRESSO Dashboard</h1>
-      <p>Auto-discovered QE jobs from your project folders</p>
+    <div class="page-header">
+      <div>
+        <h1>Quantum ESPRESSO Dashboard</h1>
+        <p>Auto-discovered QE jobs from your project folders</p>
+      </div>
+      <div id="versionStamp" class="version-stamp" aria-live="polite">
+        <strong>Latest update</strong>
+        <span>Loading...</span>
+      </div>
     </div>
 
     <section class="card">
@@ -279,6 +310,6 @@
 
     <div id="jobs" class="grid"></div>
   </div>
-  <script src="app.js?v=20260626-calculators-4"></script>
+  <script src="app.js?v=20260703-version-stamp"></script>
 </body>
 </html>

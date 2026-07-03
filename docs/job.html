@@ -13,6 +13,32 @@
       background: #f6f7fb;
       color: #222;
     }
+    .topbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px 18px;
+      margin-bottom: 10px;
+    }
+    .topbar p { margin: 0; }
+    .version-stamp {
+      display: inline-flex;
+      flex-direction: column;
+      gap: 3px;
+      padding: 8px 10px;
+      border: 1px solid #d8deea;
+      border-radius: 8px;
+      background: #fff;
+      color: #334155;
+      font-size: 12px;
+      line-height: 1.35;
+      max-width: 100%;
+    }
+    .version-stamp strong {
+      color: #111827;
+      font-size: 13px;
+    }
     .grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -166,7 +192,13 @@
   </style>
 </head>
 <body>
-  <p><a href="index.html">← Back to all jobs</a></p>
+  <div class="topbar">
+    <p><a href="index.html">← Back to all jobs</a></p>
+    <div id="versionStamp" class="version-stamp" aria-live="polite">
+      <strong>Latest update</strong>
+      <span>Loading...</span>
+    </div>
+  </div>
   <h1 id="jobTitle">QE Job</h1>
 
   <div class="grid">
@@ -326,6 +358,6 @@
     </div>
   </div>
 
-  <script src="job.js?v=20260703-delta-charge-viewer"></script>
+  <script src="job.js?v=20260703-version-stamp"></script>
 </body>
 </html>

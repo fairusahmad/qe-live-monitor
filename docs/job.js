@@ -191,6 +191,12 @@ async function loadJobs() {
   return await res.json();
 }
 
+async function loadVersion() {
+  const res = await fetch("data/version.json?t=" + Date.now());
+  if (!res.ok) throw new Error("Failed to load version metadata");
+  return await res.json();
+}
+
 async function loadText(path) {
   const res = await fetch(path + "?t=" + Date.now());
   if (!res.ok) throw new Error(`Failed to load ${path}`);
@@ -201,6 +207,27 @@ async function loadJSON(path) {
   const res = await fetch(path + "?t=" + Date.now());
   if (!res.ok) throw new Error(`Failed to load ${path}`);
   return await res.json();
+}
+
+function renderVersionStamp(version) {
+  const el = document.getElementById("versionStamp");
+  if (!el) return;
+
+  const updatedAt = version?.updated_at_local || version?.updated_at_iso || "Not available";
+  const commit = version?.source_commit ? `Commit before update: ${version.source_commit}` : "";
+  el.innerHTML = `
+    <strong>Latest update</strong>
+    <span>${escapeHTML(updatedAt)}</span>
+    ${commit ? `<span>${escapeHTML(commit)}</span>` : ""}
+  `;
+}
+
+async function refreshVersionStamp() {
+  try {
+    renderVersionStamp(await loadVersion());
+  } catch (e) {
+    renderVersionStamp({ updated_at_local: "No update timestamp yet" });
+  }
 }
 
 function updateOriginalStructureSource() {
@@ -1806,6 +1833,8 @@ async function refreshJob() {
 }
 
 async function main() {
+  refreshVersionStamp();
+
   currentJob = getJobId();
   if (!currentJob) {
     document.getElementById("status").innerHTML = "No job selected.";
