@@ -1083,10 +1083,10 @@ function renderDeltaChargeStructure(preserveView = false) {
     deltaChargeViewer.addLabel(formatDeltaCharge(entry.deltaCharge), {
       position: { x: atom.x, y: atom.y, z: atom.z + 0.35 },
       inFront: true,
-      fontSize: 11,
-      fontColor: color,
+      fontSize: 15,
+      fontColor: "#111827",
       backgroundColor: "white",
-      backgroundOpacity: 0.72
+      backgroundOpacity: 0.92
     });
   }
 

@@ -42,17 +42,21 @@
       gap: 16px;
     }
     .viewer-grid.has-delta-charge {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-columns: 1fr 1fr;
+    }
+    .viewer-panel.delta-charge-panel {
+      grid-column: 1 / -1;
     }
     .viewer-panel h3 {
       margin-top: 0;
       margin-bottom: 10px;
-      font-size: 18px;
+      font-size: 20px;
     }
     .viewer-meta {
       margin-bottom: 10px;
-      font-size: 13px;
-      color: #4b5563;
+      font-size: 15px;
+      color: #1f2937;
+      font-weight: 600;
     }
     .viewerWrap {
       width: 100%;
@@ -168,6 +172,9 @@
       .viewer-grid.has-delta-charge {
         grid-template-columns: 1fr;
       }
+      .viewer-panel.delta-charge-panel {
+        grid-column: auto;
+      }
     }
   </style>
 </head>
@@ -267,7 +274,7 @@
           </div>
         </div>
 
-        <div id="deltaChargePanel" class="viewer-panel" hidden>
+        <div id="deltaChargePanel" class="viewer-panel delta-charge-panel" hidden>
           <h3>Delta Charge</h3>
           <div id="deltaChargeStatus" class="viewer-meta">No Bader charge changes loaded.</div>
           <div class="viewerWrap">
