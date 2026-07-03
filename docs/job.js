@@ -31,7 +31,8 @@ let measurementState = {
   current: { atoms: [], labels: [], line: null },
   original: { atoms: [], labels: [], line: null }
 };
-let chargeSelection = { atomIndex: null, marker: null };
+let chargeMode = false;
+let chargeSelections = new Map();
 let syncViewsEnabled = true;
 let isApplyingSyncedView = false;
 const FIXED_ATOM_COLOR = "#00d4ff";
@@ -301,6 +302,7 @@ function initViewer() {
   enableMiddleMousePan("originalViewer");
   applyViewerLinkState();
   updateSyncViewsButton();
+  updateChargeToggleButton();
 }
 
 function formatAtomLabel(atom) {
@@ -350,6 +352,21 @@ function clearMeasurement(which = null) {
   updateMeasurementStatus(measureMode ? "Select atom 1 of 2" : "Measurement off");
 }
 
+function updateChargeToggleButton() {
+  const button = document.getElementById("chargeToggle");
+  if (!button) return;
+  button.textContent = `Delta Charge: ${chargeMode ? "On" : "Off"}`;
+}
+
+function formatChargeSelections() {
+  return Array.from(chargeSelections.values())
+    .map((selection) => {
+      const label = `${selection.element || "Atom"}${selection.atomIndex}`;
+      return `${label} = ${formatDeltaCharge(selection.deltaCharge)}`;
+    })
+    .join(" | ");
+}
+
 function updateCurrentChargeStatus(message = null) {
   const el = document.getElementById("currentChargeStatus");
   if (!el) return;
@@ -357,18 +374,28 @@ function updateCurrentChargeStatus(message = null) {
   if (message) {
     el.textContent = message;
   } else if (hasBaderChargeChanges) {
-    el.textContent = "Delta charge: click an atom in the current structure.";
+    const selected = formatChargeSelections();
+    if (selected) {
+      el.textContent = `Delta charge selected: ${selected}`;
+    } else {
+      el.textContent = chargeMode
+        ? "Delta charge mode on: click atoms in the current structure."
+        : "Delta charge mode off.";
+    }
   } else {
     el.textContent = "Delta charge: no Bader charge changes found for this job.";
   }
 }
 
-function clearChargeSelection(render = false) {
-  if (viewer && chargeSelection.marker) {
-    viewer.removeShape(chargeSelection.marker);
+function clearChargeSelections(render = true) {
+  if (viewer) {
+    for (const selection of chargeSelections.values()) {
+      if (selection.marker) viewer.removeShape(selection.marker);
+    }
     if (render) viewer.render();
   }
-  chargeSelection = { atomIndex: null, marker: null };
+  chargeSelections.clear();
+  updateCurrentChargeStatus();
 }
 
 function resolveClickedChargeAtomIndex(atom) {
@@ -390,32 +417,39 @@ function resolveClickedChargeAtomIndex(atom) {
 }
 
 function handleChargeClick(atom) {
-  if (measureMode || !hasBaderChargeChanges || !viewer || !atom) return;
+  if (!chargeMode || measureMode || !hasBaderChargeChanges || !viewer || !atom) return;
 
   const atomIndex = resolveClickedChargeAtomIndex(atom);
   const entry = baderChargeChanges.find((item) => item.atomIndex === atomIndex);
   if (!entry) {
     updateCurrentChargeStatus(`Delta charge: no value found for ${formatAtomLabel(atom)}.`);
-    clearChargeSelection(true);
     return;
   }
 
-  clearChargeSelection(false);
+  if (chargeSelections.has(atomIndex)) {
+    const existing = chargeSelections.get(atomIndex);
+    if (existing.marker) viewer.removeShape(existing.marker);
+    chargeSelections.delete(atomIndex);
+    updateCurrentChargeStatus();
+    viewer.render();
+    return;
+  }
+
   const maxAbsDelta = Math.max(...baderChargeChanges.map((item) => Math.abs(item.deltaCharge)).filter(Number.isFinite), 0);
   const color = getDeltaChargeColor(entry.deltaCharge, maxAbsDelta);
-  chargeSelection = {
+  chargeSelections.set(atomIndex, {
     atomIndex,
+    element: entry.element || atom.elem || "Atom",
+    deltaCharge: entry.deltaCharge,
     marker: viewer.addSphere({
       center: { x: atom.x, y: atom.y, z: atom.z },
       radius: 0.78,
       color,
       alpha: 0.42
     })
-  };
+  });
 
-  updateCurrentChargeStatus(
-    `Delta charge: ${entry.element || atom.elem || "Atom"}${atomIndex} = ${formatDeltaCharge(entry.deltaCharge)}`
-  );
+  updateCurrentChargeStatus();
   viewer.render();
 }
 
@@ -1071,6 +1105,7 @@ function renderOriginalStructure(preserveView = false) {
 }
 
 function updateDeltaChargeStatus() {
+  updateChargeToggleButton();
   updateCurrentChargeStatus();
 }
 
@@ -1085,7 +1120,7 @@ function renderFrame(index, preserveView = false) {
   let savedView = null;
   if (preserveView) savedView = viewer.getView();
 
-  clearChargeSelection(false);
+  clearChargeSelections(false);
   viewer.clear();
   addStructureModel(viewer, frame.xyz, currentLattice);
   clearMeasurement("current");
@@ -1176,11 +1211,35 @@ function toggleSyncViews() {
 
 function toggleMeasureMode() {
   measureMode = !measureMode;
+  if (measureMode && chargeMode) {
+    chargeMode = false;
+    updateChargeToggleButton();
+    updateCurrentChargeStatus();
+  }
   const button = document.getElementById("measureToggle");
   if (button) {
     button.textContent = measureMode ? "Exit Measure" : "Measure Distance";
   }
   clearMeasurement();
+}
+
+function toggleChargeMode() {
+  if (!hasBaderChargeChanges) {
+    chargeMode = false;
+    updateChargeToggleButton();
+    updateCurrentChargeStatus();
+    return;
+  }
+
+  chargeMode = !chargeMode;
+  if (chargeMode && measureMode) {
+    measureMode = false;
+    const measureButton = document.getElementById("measureToggle");
+    if (measureButton) measureButton.textContent = "Measure Distance";
+    clearMeasurement();
+  }
+  updateChargeToggleButton();
+  updateCurrentChargeStatus();
 }
 
 function goFirst() {
@@ -1584,6 +1643,8 @@ async function refreshJob() {
   originalConstraints = [];
   baderChargeChanges = [];
   hasBaderChargeChanges = false;
+  chargeMode = false;
+  clearChargeSelections(false);
   energySeriesData = [];
   gradientSeriesData = [];
   gradientTargetValue = null;
