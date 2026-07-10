@@ -657,6 +657,25 @@ function renderInputComparison(jobs) {
   renderInputComparisonTable(jobs);
 }
 
+function sortJobs(jobs, mode) {
+  const sorted = [...jobs];
+
+  if (mode === "alphabetical") {
+    sorted.sort((a, b) =>
+      (a.label ?? "").localeCompare(b.label ?? "", undefined, { numeric: true, sensitivity: "base" })
+    );
+  } else {
+    sorted.sort((a, b) => {
+      const aTime = typeof a.output_mtime === "number" ? a.output_mtime : -Infinity;
+      const bTime = typeof b.output_mtime === "number" ? b.output_mtime : -Infinity;
+      if (bTime !== aTime) return bTime - aTime;
+      return (a.label ?? "").localeCompare(b.label ?? "", undefined, { numeric: true, sensitivity: "base" });
+    });
+  }
+
+  return sorted;
+}
+
 function renderJobs(jobs) {
   const el = document.getElementById("jobs");
   el.innerHTML = "";
@@ -695,7 +714,13 @@ async function main() {
     renderCalculator3(jobs);
     renderCalculator4(jobs);
     renderInputComparison(jobs);
-    renderJobs(jobs);
+
+    const sortSelect = document.getElementById("jobsSort");
+    const applyJobsSort = () => renderJobs(sortJobs(jobs, sortSelect ? sortSelect.value : "newest"));
+    if (sortSelect) {
+      sortSelect.addEventListener("change", applyJobsSort);
+    }
+    applyJobsSort();
   } catch (e) {
     document.getElementById("energyFormula").textContent = "Unable to load energy data";
     document.getElementById("energyResult").textContent = "-";

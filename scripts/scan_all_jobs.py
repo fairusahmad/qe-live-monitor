@@ -260,6 +260,10 @@ def main():
 
         item["found"] = True
         item["output_file"] = output_file
+        try:
+            item["output_mtime"] = os.path.getmtime(output_file)
+        except OSError:
+            item["output_mtime"] = None
 
         basename = os.path.basename(output_file)
         item["structure_capable"] = basename in STRUCTURE_FRIENDLY
