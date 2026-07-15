@@ -236,6 +236,16 @@ function updateOriginalStructureSource() {
   el.textContent = `Source: ${originalInputFile ?? "not available"}`;
 }
 
+function updateCurrentStructureSource(sourcePath) {
+  const el = document.getElementById("currentStructureSource");
+  if (!el) return;
+
+  const fileName = typeof sourcePath === "string"
+    ? sourcePath.split(/[\\/]/).filter(Boolean).pop()
+    : null;
+  el.textContent = `Source: ${fileName || "not available"}`;
+}
+
 function updateFixedAtomStatus() {
   const el = document.getElementById("fixedAtomStatus");
   if (!el) return;
@@ -1649,6 +1659,7 @@ function renderStatus(status, job) {
     <div><b>SCF cycles:</b> ${escapeHTML(status.scf_cycles ?? "-")}</div>
     <div><b>Atoms:</b> ${escapeHTML(status.nat_latest ?? "-")}</div>
     <div><b>Geometry steps:</b> ${escapeHTML(status.num_structure_steps ?? "-")}</div>
+    <div><b>Structure source:</b> ${escapeHTML(job.structure_source_file ?? "-")}</div>
     <div><b>Last update:</b> ${escapeHTML(status.last_update ?? "-")}</div>
     ${job.note ? `<div><b>Note:</b> ${escapeHTML(job.note)}</div>` : ""}
   `;
@@ -1662,6 +1673,8 @@ async function refreshJob() {
     document.getElementById("status").innerHTML = "Job not found in jobs.json.";
     return;
   }
+
+  updateCurrentStructureSource(job.structure_source_file);
 
   trajectoryFrames = [];
   originalStructure = null;

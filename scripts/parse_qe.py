@@ -887,6 +887,72 @@ def export_neb_structure(axsf_file, outdir):
         "lattice": lattice,
         "nat": len(frames[0]) if frames else 0,
         "num_images": len(frames),
+        "source_file": axsf_file,
     }
 
+
+def export_neb_input_structure(input_file, outdir):
+    """Export all images embedded in a parsed neb.x input file."""
+    lines = read_file_lines_if_exists(input_file)
+    if not lines:
+        raise ValueError(f"Could not read NEB input file: {input_file}")
+
+    cell_block = find_latest_cell_block_in_lines(lines)
+    position_blocks = find_position_blocks_in_lines(lines, cell_block)
+    if not position_blocks:
+        raise ValueError(f"No ATOMIC_POSITIONS images found in {input_file}")
+
+    os.makedirs(outdir, exist_ok=True)
+    neb_blocks = [
+        {
+            "header": f"NEB input image {index}",
+            "atoms_ang": block["atoms_ang"],
+        }
+        for index, block in enumerate(position_blocks, start=1)
+    ]
+    first = position_blocks[0]
+    last = position_blocks[-1]
+
+    write_trajectory_xyz(neb_blocks, os.path.join(outdir, "trajectory.xyz"))
+    write_xyz(
+        last["atoms_ang"],
+        os.path.join(outdir, "structure.xyz"),
+        comment=f"Last NEB input image from {os.path.basename(input_file)} (Cartesian Angstrom)",
+    )
+    write_xyz(
+        first["atoms_ang"],
+        os.path.join(outdir, "original_structure.xyz"),
+        comment=f"First NEB input image from {os.path.basename(input_file)} (Cartesian Angstrom)",
+    )
+
+    matrix = cell_block["matrix_angstrom"] if cell_block else None
+    cell_format = cell_block["header"] if cell_block else None
+    lattice_data = {
+        "input_file": input_file,
+        "cell_format": cell_format,
+        "cell_source": os.path.basename(input_file),
+        "matrix_angstrom": matrix,
+    }
+    with open(os.path.join(outdir, "lattice.json"), "w", encoding="utf-8") as f:
+        json.dump(lattice_data, f, indent=2)
+    with open(os.path.join(outdir, "original_lattice.json"), "w", encoding="utf-8") as f:
+        json.dump(lattice_data, f, indent=2)
+    with open(os.path.join(outdir, "original_constraints.json"), "w", encoding="utf-8") as f:
+        json.dump({
+            "input_file": input_file,
+            "constraints": first.get("constraints", []),
+        }, f, indent=2)
+
+    write_latest_atomic_positions(
+        input_file,
+        os.path.join(outdir, "latest_atomic_positions.txt"),
+    )
+
+    return {
+        "frames": [block["atoms_ang"] for block in position_blocks],
+        "lattice": matrix,
+        "nat": len(first["atoms_ang"]),
+        "num_images": len(position_blocks),
+        "source_file": input_file,
+    }
 

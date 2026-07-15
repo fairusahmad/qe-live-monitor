@@ -2,7 +2,14 @@ import os
 import json
 import re
 import shutil
-from parse_qe import INPUT_COMPARE_KEYS, export_qe_run, export_neb_structure, parse_qe_input_details
+from datetime import datetime
+from parse_qe import (
+    INPUT_COMPARE_KEYS,
+    export_neb_input_structure,
+    export_neb_structure,
+    export_qe_run,
+    parse_qe_input_details,
+)
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 REPO_DIR = os.path.dirname(SCRIPT_DIR)
@@ -121,6 +128,10 @@ def find_input_file(job_dir):
 
     return None
 
+def find_neb_input_file(job_dir):
+    candidate = os.path.join(job_dir, "input.neb.x")
+    return candidate if os.path.isfile(candidate) else None
+
 def find_axsf_file(job_dir):
     for f in sorted(os.listdir(job_dir)):
         if f.endswith(".axsf") and os.path.isfile(os.path.join(job_dir, f)):
@@ -161,6 +172,23 @@ def write_standalone_input_json(input_details, outdir):
     os.makedirs(outdir, exist_ok=True)
     with open(os.path.join(outdir, "input.json"), "w", encoding="utf-8") as f:
         json.dump(input_details, f, indent=2)
+
+def write_neb_input_status(neb, output_path, job_name):
+    status = {
+        "job": job_name,
+        "last_update": datetime.now().isoformat(),
+        "status": "input structure available",
+        "converged": None,
+        "job_done": False,
+        "nat_latest": neb["nat"],
+        "num_structure_steps": neb["num_images"],
+        "positions_format": "NEB images from input.neb.x",
+        "cell_format": None,
+        "cell_source": os.path.basename(neb["source_file"]),
+        "xyz_units": "angstrom",
+    }
+    with open(output_path, "w", encoding="utf-8") as f:
+        json.dump(status, f, indent=2)
 
 def natural_sort_key(value):
     return [int(part) if part.isdigit() else part.lower() for part in re.split(r"(\d+)", value)]
@@ -221,7 +249,11 @@ def discover_jobs(base_dir):
                 current_dir,
             ))
 
-        stack[0:0] = child_dirs
+        # Once a directory is identified as a QE job, its child directories are
+        # internal implementation details (for example pseudo/output folders),
+        # not separate jobs to publish on the dashboard index.
+        if not has_job_markers:
+            stack[0:0] = child_dirs
 
     jobs.sort(key=lambda item: natural_sort_key(item[1]))
     return jobs
@@ -252,9 +284,38 @@ def main():
         if input_details:
             write_standalone_input_json(input_details, os.path.join(DATA_DIR, job_id))
 
+        outdir = os.path.join(DATA_DIR, job_id)
+        neb_input = find_neb_input_file(job_dir)
+        neb_input_result = None
+        if neb_input:
+            try:
+                neb_input_result = export_neb_input_structure(neb_input, outdir)
+                item["structure_capable"] = True
+                item["has_structure"] = True
+                item["nat_latest"] = neb_input_result["nat"]
+                item["num_structure_steps"] = neb_input_result["num_images"]
+                item["structure_source_file"] = neb_input
+                item["structure_file"] = f"data/{job_id}/structure.xyz"
+                item["original_structure_file"] = f"data/{job_id}/original_structure.xyz"
+                item["trajectory_file"] = f"data/{job_id}/trajectory.xyz"
+                item["lattice_file"] = f"data/{job_id}/lattice.json"
+                item["original_lattice_file"] = f"data/{job_id}/original_lattice.json"
+                item["original_constraints_file"] = f"data/{job_id}/original_constraints.json"
+                item["atomic_positions_file"] = f"data/{job_id}/latest_atomic_positions.txt"
+            except Exception as e:
+                item["neb_input_structure_error"] = str(e)
+
         output_file = find_output_file(job_dir)
         if output_file is None:
             item["status"] = STATUS_NOT_FOUND
+            if neb_input_result:
+                write_neb_input_status(
+                    neb_input_result,
+                    os.path.join(outdir, "status.json"),
+                    label,
+                )
+                item["status_file"] = f"data/{job_id}/status.json"
+                item["note"] = "No output file found; showing NEB images from input.neb.x."
             jobs_summary.append(item)
             continue
 
@@ -268,8 +329,6 @@ def main():
         basename = os.path.basename(output_file)
         item["structure_capable"] = basename in STRUCTURE_FRIENDLY
 
-        outdir = os.path.join(DATA_DIR, job_id)
-
         try:
             result = export_qe_run(output_file, outdir, job_name=label)
 
@@ -281,6 +340,8 @@ def main():
             item["nat_latest"] = len(result["latest_atoms_ang"])
             item["has_structure"] = len(result["latest_atoms_ang"]) > 0
             item["num_structure_steps"] = len(result["position_blocks"])
+            if item["has_structure"]:
+                item["structure_source_file"] = output_file
 
             input_details = result.get("input_details") or input_details
             attach_input_details(item, input_details, job_id)
@@ -323,9 +384,17 @@ def main():
                         item["has_structure"] = True
                         item["nat_latest"] = neb["nat"]
                         item["num_structure_steps"] = neb["num_images"]
+                        item["structure_source_file"] = axsf_file
                         item.pop("note", None)
                 except Exception as e:
                     item["neb_structure_error"] = str(e)
+            elif neb_input_result and not item.get("has_structure"):
+                item["structure_capable"] = True
+                item["has_structure"] = True
+                item["nat_latest"] = neb_input_result["nat"]
+                item["num_structure_steps"] = neb_input_result["num_images"]
+                item["structure_source_file"] = neb_input
+                item.pop("note", None)
 
         jobs_summary.append(item)
 
