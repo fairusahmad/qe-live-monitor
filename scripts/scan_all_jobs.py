@@ -138,6 +138,43 @@ def find_axsf_file(job_dir):
             return os.path.join(job_dir, f)
     return None
 
+def find_neb_profile_file(job_dir):
+    """Return the NEB profile produced by path.x/neb.x, excluding its input file."""
+    candidates = [
+        os.path.join(job_dir, name)
+        for name in os.listdir(job_dir)
+        if name.endswith(".dat") and name != "neb.dat"
+        and os.path.isfile(os.path.join(job_dir, name))
+    ]
+    return sorted(candidates, key=lambda path: natural_sort_key(os.path.basename(path)))[0] if candidates else None
+
+def export_neb_profile(source_path, outdir):
+    rows = []
+    with open(source_path, "r", encoding="utf-8", errors="ignore") as f:
+        for line in f:
+            fields = line.split()
+            if len(fields) < 2:
+                continue
+            try:
+                coordinate = float(fields[0])
+                energy_ev = float(fields[1])
+                error_ev_ang = float(fields[2]) if len(fields) > 2 else None
+            except ValueError:
+                continue
+            rows.append((coordinate, energy_ev, error_ev_ang))
+
+    if not rows:
+        raise ValueError(f"No NEB profile rows found in {source_path}")
+
+    os.makedirs(outdir, exist_ok=True)
+    output_path = os.path.join(outdir, "neb_profile.csv")
+    with open(output_path, "w", encoding="utf-8") as f:
+        f.write("reaction_coordinate,energy_ev,error_ev_ang\n")
+        for coordinate, energy_ev, error_ev_ang in rows:
+            error_text = "" if error_ev_ang is None else f"{error_ev_ang:.10g}"
+            f.write(f"{coordinate:.10g},{energy_ev:.10g},{error_text}\n")
+    return rows
+
 def find_bader_charge_changes_file(job_dir):
     candidate = os.path.join(job_dir, "bader_charge_changes.csv")
     return candidate if os.path.isfile(candidate) else None
@@ -375,6 +412,19 @@ def main():
             item["error"] = str(e)
 
         if basename == "output.neb.x":
+            profile_file = find_neb_profile_file(job_dir)
+            if profile_file:
+                try:
+                    profile = export_neb_profile(profile_file, outdir)
+                    item["neb_profile_file"] = f"data/{job_id}/neb_profile.csv"
+                    item["neb_profile_source_file"] = profile_file
+                    item["num_neb_images"] = len(profile)
+                    peak_energy = max(row[1] for row in profile)
+                    item["activation_energy_forward_ev"] = peak_energy - profile[0][1]
+                    item["activation_energy_reverse_ev"] = peak_energy - profile[-1][1]
+                    item["reaction_energy_ev"] = profile[-1][1]
+                except Exception as e:
+                    item["neb_profile_error"] = str(e)
             axsf_file = find_axsf_file(job_dir)
             if axsf_file:
                 try:

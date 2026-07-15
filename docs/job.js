@@ -3,6 +3,7 @@ let originalViewer = null;
 let energyChart = null;
 let gradientChart = null;
 let scfAccuracyChart = null;
+let nebProfileChart = null;
 let currentJob = null;
 const RECENT_HISTORY_POINT_LIMIT = 30;
 let energySeriesData = [];
@@ -1316,6 +1317,68 @@ function parseSeriesCSV(csv) {
   return data;
 }
 
+function parseNebProfileCSV(csv) {
+  return csv.trim().split(/\r?\n/).slice(1).map((line) => {
+    const [coordinate, energy, error] = line.split(",");
+    return {
+      coordinate: Number(coordinate),
+      energy: Number(energy),
+      error: error === "" ? null : Number(error)
+    };
+  }).filter((point) => Number.isFinite(point.coordinate) && Number.isFinite(point.energy));
+}
+
+function renderNebProfile(points, job) {
+  const card = document.getElementById("nebProfileCard");
+  if (!card) return;
+  card.hidden = points.length === 0;
+  if (nebProfileChart) nebProfileChart.destroy();
+  nebProfileChart = null;
+  if (!points.length) return;
+
+  const peak = points.reduce((best, point) => point.energy > best.energy ? point : best);
+  const forwardActivationEnergy = peak.energy - points[0].energy;
+  const reactionEnergy = points.at(-1).energy;
+  const reverseActivationEnergy = peak.energy - reactionEnergy;
+  document.getElementById("nebProfileSummary").textContent =
+    `Activation energy (forward): ${forwardActivationEnergy.toFixed(3)} eV · ` +
+    `Activation energy (reverse): ${reverseActivationEnergy.toFixed(3)} eV · ` +
+    `Transition-state coordinate: ${peak.coordinate.toFixed(3)} · ` +
+    `Reaction energy: ${reactionEnergy.toFixed(3)} eV · ${points.length} images`;
+
+  nebProfileChart = new Chart(document.getElementById("nebProfileChart").getContext("2d"), {
+    type: "line",
+    data: {
+      datasets: [{
+        label: "Relative energy (eV)",
+        data: points.map((point) => ({ x: point.coordinate, y: point.energy })),
+        borderColor: "#7c3aed",
+        backgroundColor: "#7c3aed",
+        pointRadius: 5,
+        tension: 0.25
+      }]
+    },
+    options: {
+      responsive: true,
+      parsing: false,
+      scales: {
+        x: { type: "linear", title: { display: true, text: "Reaction coordinate" } },
+        y: { title: { display: true, text: "Relative energy (eV)" } }
+      },
+      plugins: {
+        tooltip: {
+          callbacks: {
+            afterLabel(context) {
+              const error = points[context.dataIndex]?.error;
+              return Number.isFinite(error) ? `Path error: ${error.toFixed(3)} eV/A` : "";
+            }
+          }
+        }
+      }
+    }
+  });
+}
+
 function parseCSVLine(line) {
   const values = [];
   let value = "";
@@ -1690,6 +1753,7 @@ async function refreshJob() {
   gradientSeriesData = [];
   gradientTargetValue = null;
   scfAccuracySeriesData = [];
+  renderNebProfile([], job);
   redrawCharts();
   updateDeltaChargeStatus();
 
@@ -1719,6 +1783,15 @@ async function refreshJob() {
 
   const status = await loadJSON(`data/${job.job_id}/status.json`);
   renderStatus(status, job);
+
+  if (job.neb_profile_file) {
+    try {
+      renderNebProfile(parseNebProfileCSV(await loadText(job.neb_profile_file)), job);
+    } catch (e) {
+      renderNebProfile([], job);
+      console.error(e);
+    }
+  }
 
   try {
     const csv = await loadText(`data/${job.job_id}/energy.csv`);
