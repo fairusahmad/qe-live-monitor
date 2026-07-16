@@ -1355,8 +1355,9 @@ function renderNebProfile(points, job) {
           data: points.map((point) => ({ x: point.coordinate, y: point.energy })),
           borderColor: "#7c3aed",
           backgroundColor: "#7c3aed",
-          pointRadius: 5,
-          tension: 0.25
+          pointRadius: points.map((point) => point === peak ? 7 : 5),
+          pointBackgroundColor: points.map((point) => point === peak ? "#dc2626" : "#7c3aed"),
+          tension: 0
         },
         {
           label: `Activation energy = ${forwardActivationEnergy.toFixed(3)} eV`,
@@ -1368,7 +1369,8 @@ function renderNebProfile(points, job) {
           backgroundColor: "#dc2626",
           borderDash: [6, 4],
           pointRadius: 0,
-          tension: 0
+          tension: 0,
+          order: -1
         }
       ]
     },
