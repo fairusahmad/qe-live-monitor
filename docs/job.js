@@ -1349,14 +1349,28 @@ function renderNebProfile(points, job) {
   nebProfileChart = new Chart(document.getElementById("nebProfileChart").getContext("2d"), {
     type: "line",
     data: {
-      datasets: [{
-        label: "Relative energy (eV)",
-        data: points.map((point) => ({ x: point.coordinate, y: point.energy })),
-        borderColor: "#7c3aed",
-        backgroundColor: "#7c3aed",
-        pointRadius: 5,
-        tension: 0.25
-      }]
+      datasets: [
+        {
+          label: "Relative energy (eV)",
+          data: points.map((point) => ({ x: point.coordinate, y: point.energy })),
+          borderColor: "#7c3aed",
+          backgroundColor: "#7c3aed",
+          pointRadius: 5,
+          tension: 0.25
+        },
+        {
+          label: `Activation energy = ${forwardActivationEnergy.toFixed(3)} eV`,
+          data: [
+            { x: peak.coordinate, y: points[0].energy },
+            { x: peak.coordinate, y: peak.energy }
+          ],
+          borderColor: "#dc2626",
+          backgroundColor: "#dc2626",
+          borderDash: [6, 4],
+          pointRadius: 0,
+          tension: 0
+        }
+      ]
     },
     options: {
       responsive: true,
@@ -1369,6 +1383,7 @@ function renderNebProfile(points, job) {
         tooltip: {
           callbacks: {
             afterLabel(context) {
+              if (context.datasetIndex !== 0) return "";
               const error = points[context.dataIndex]?.error;
               return Number.isFinite(error) ? `Path error: ${error.toFixed(3)} eV/A` : "";
             }

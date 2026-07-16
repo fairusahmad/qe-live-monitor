@@ -6,9 +6,29 @@ cd "$SCRIPT_DIR"
 
 FAIRUS_DIR="/media/node1/Fairus2TB/fairus"
 DEFAULT_FOLDER="Nguyen"
+POLL_SECONDS="${QE_WATCH_POLL_SECONDS:-15}"
+DEBOUNCE_SECONDS="${QE_WATCH_DEBOUNCE_SECONDS:-5}"
 
 log() {
   echo "[$(date '+%Y-%m-%d %H:%M:%S')] $*"
+}
+
+source_signature() {
+  find "$QE_BASE_DIR" \
+    \( -type d \( -name .git -o -name __pycache__ -o -name pseudo -o -name output \) -prune \) -o \
+    \( -type f \( \
+      -name '*.out' -o -name '*.pw.x' -o -name 'output.neb.x' -o \
+      -name 'input*.x' -o -name '*.axsf' -o -name '*.dat' -o \
+      -name 'bader_charge_changes.csv' \
+    \) -printf '%p\t%T@\t%s\n' \) \
+    | sort \
+    | sha256sum \
+    | cut -d ' ' -f 1
+}
+
+run_update() {
+  log "Relevant QE files changed; starting update cycle..."
+  ./update_and_push.sh || log "Update cycle failed; waiting for the next source change."
 }
 
 resolve_base_dir() {
@@ -65,10 +85,18 @@ export QE_BASE_DIR
 QE_BASE_DIR="$(resolve_base_dir "$FOLDER_CHOICE")"
 log "Watching folder: $QE_BASE_DIR"
 
-while true; do
-  log "Starting update cycle..."
-  ./update_and_push.sh || log "Update cycle failed; retrying after sleep."
-  log "Sleeping for 300 seconds."
-  sleep 300
-done
+run_update
+last_signature="$(source_signature)"
+log "Idle until a relevant QE output/input file changes (checking every ${POLL_SECONDS}s)."
 
+while true; do
+  sleep "$POLL_SECONDS"
+  current_signature="$(source_signature)"
+  [[ "$current_signature" == "$last_signature" ]] && continue
+
+  log "Change detected; waiting ${DEBOUNCE_SECONDS}s for writes to settle."
+  sleep "$DEBOUNCE_SECONDS"
+  current_signature="$(source_signature)"
+  run_update
+  last_signature="$current_signature"
+done

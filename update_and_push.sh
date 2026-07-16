@@ -50,7 +50,7 @@ cat > docs/data/version.json <<EOF
 }
 EOF
 
-git add docs/data/jobs.json docs/data/version.json docs/data/*/status.json docs/data/*/energy.csv docs/data/*/gradient_error.csv docs/data/*/total_force.csv docs/data/*/scf_accuracy.csv docs/data/*/conv_thr.csv docs/data/*/total_magnetization.csv docs/data/*/structure.xyz docs/data/*/trajectory.xyz docs/data/*/original_structure.xyz docs/data/*/lattice.json docs/data/*/original_lattice.json docs/data/*/original_constraints.json docs/data/*/input.json docs/data/*/latest_output_tail.txt docs/data/*/latest_atomic_positions.txt
+git add docs/data/jobs.json docs/data/version.json docs/data/*/status.json docs/data/*/energy.csv docs/data/*/neb_profile.csv docs/data/*/gradient_error.csv docs/data/*/total_force.csv docs/data/*/scf_accuracy.csv docs/data/*/conv_thr.csv docs/data/*/total_magnetization.csv docs/data/*/structure.xyz docs/data/*/trajectory.xyz docs/data/*/original_structure.xyz docs/data/*/lattice.json docs/data/*/original_lattice.json docs/data/*/original_constraints.json docs/data/*/input.json docs/data/*/latest_output_tail.txt docs/data/*/latest_atomic_positions.txt
 
 if git diff --cached --quiet; then
   log "No changes to commit."
