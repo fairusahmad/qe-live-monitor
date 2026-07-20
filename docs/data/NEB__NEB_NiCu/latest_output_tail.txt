@@ -1,23 +1,4 @@
 
-     Parsing file: input.neb.x
-     Reading input from pw_1.in
-     file Ni.pbe-n-rrkjus_psl.1.0.0.UPF: wavefunction(s)  3D renormalized
-     file Cu.pbe-dn-rrkjus_psl.1.0.0.UPF: wavefunction(s)  3D renormalized
-     Reading input from pw_2.in
-     file Ni.pbe-n-rrkjus_psl.1.0.0.UPF: wavefunction(s)  3D renormalized
-     file Cu.pbe-dn-rrkjus_psl.1.0.0.UPF: wavefunction(s)  3D renormalized
-     Reading input from pw_3.in
-     file Ni.pbe-n-rrkjus_psl.1.0.0.UPF: wavefunction(s)  3D renormalized
-     file Cu.pbe-dn-rrkjus_psl.1.0.0.UPF: wavefunction(s)  3D renormalized
-     Reading input from pw_4.in
-     file Ni.pbe-n-rrkjus_psl.1.0.0.UPF: wavefunction(s)  3D renormalized
-     file Cu.pbe-dn-rrkjus_psl.1.0.0.UPF: wavefunction(s)  3D renormalized
-     Reading input from pw_5.in
-     file Ni.pbe-n-rrkjus_psl.1.0.0.UPF: wavefunction(s)  3D renormalized
-     file Cu.pbe-dn-rrkjus_psl.1.0.0.UPF: wavefunction(s)  3D renormalized
-
-     reading file 'NiCu111_4x4_neb.path'
-
  
      string_method                 =    neb
      restart_mode                  =    restart
@@ -298,3 +279,22 @@
 
      tcpu =   7896.1    self-consistency for image   2
      tcpu =   8074.6    self-consistency for image   3
+     tcpu =   8233.6    self-consistency for image   4
+
+     activation energy (->) =   0.391953 eV
+     activation energy (<-) =   0.922945 eV
+
+     image        energy (eV)        error (eV/A)        frozen
+
+         1     -99645.4059646            0.043239            T
+         2     -99645.3316812            0.829733            F
+         3     -99645.0140118            0.195190            F
+         4     -99645.7461476            0.147410            F
+         5     -99645.9369563            0.054543            T
+
+     path length          = 28.708 bohr
+     inter-image distance =  7.177 bohr
+
+     ------------------------------ iteration 135 ------------------------------
+
+     tcpu =   8367.3    self-consistency for image   2
