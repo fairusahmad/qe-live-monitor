@@ -1,23 +1,3 @@
-
-     Parsing file: input.neb.x
-     Reading input from pw_1.in
-     file Ni.pbe-n-rrkjus_psl.1.0.0.UPF: wavefunction(s)  3D renormalized
-     Reading input from pw_2.in
-     file Ni.pbe-n-rrkjus_psl.1.0.0.UPF: wavefunction(s)  3D renormalized
-     Reading input from pw_3.in
-     file Ni.pbe-n-rrkjus_psl.1.0.0.UPF: wavefunction(s)  3D renormalized
-     Reading input from pw_4.in
-     file Ni.pbe-n-rrkjus_psl.1.0.0.UPF: wavefunction(s)  3D renormalized
-     Reading input from pw_5.in
-     file Ni.pbe-n-rrkjus_psl.1.0.0.UPF: wavefunction(s)  3D renormalized
-
-     reading file 'Ni111_4x4_neb.path'
-
- 
-     string_method                 =    neb
-     restart_mode                  =    restart
-     opt_scheme                    =    broyden
-     num_of_images                 =    5
      nstep_path                    =    300
      CI_scheme                     =    auto
      first_last_opt                =    F
@@ -298,3 +278,23 @@
      tcpu =  17004.0    self-consistency for image   2
      tcpu =  17646.7    self-consistency for image   3
      tcpu =  18357.0    self-consistency for image   4
+
+     activation energy (->) =   0.722088 eV
+     activation energy (<-) =   0.899184 eV
+
+     image        energy (eV)        error (eV/A)        frozen
+
+         1     -89990.7548136            0.057880            T
+         2     -89990.0327253            4.065154            F
+         3     -89990.5356290            1.735288            F
+         4     -89990.4720675            8.289419            F
+         5     -89990.9319094            0.606797            T
+
+     climbing image =  2
+
+     path length          = 26.182 bohr
+     inter-image distance =  6.545 bohr
+
+     ------------------------------ iteration  68 ------------------------------
+
+     tcpu =  19160.1    self-consistency for image   2
