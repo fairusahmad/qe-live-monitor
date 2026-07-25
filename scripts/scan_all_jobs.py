@@ -144,6 +144,7 @@ def find_neb_profile_file(job_dir):
         os.path.join(job_dir, name)
         for name in os.listdir(job_dir)
         if name.endswith(".dat") and name != "neb.dat"
+        and not name.endswith("_positions.dat")
         and os.path.isfile(os.path.join(job_dir, name))
     ]
     return sorted(candidates, key=lambda path: natural_sort_key(os.path.basename(path)))[0] if candidates else None
@@ -445,6 +446,16 @@ def main():
                 item["num_structure_steps"] = neb_input_result["num_images"]
                 item["structure_source_file"] = neb_input
                 item.pop("note", None)
+
+            # export_qe_run() and export_neb_structure() may replace this file
+            # with output/AXSF metadata, which has no if_pos flags. The NEB input
+            # is the authoritative source for fixed-atom constraints.
+            if neb_input_result:
+                with open(os.path.join(outdir, "original_constraints.json"), "w", encoding="utf-8") as f:
+                    json.dump({
+                        "input_file": neb_input,
+                        "constraints": neb_input_result["constraints"],
+                    }, f, indent=2)
 
         jobs_summary.append(item)
 

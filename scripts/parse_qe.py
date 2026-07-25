@@ -954,5 +954,5 @@ def export_neb_input_structure(input_file, outdir):
         "nat": len(first["atoms_ang"]),
         "num_images": len(position_blocks),
         "source_file": input_file,
+        "constraints": first.get("constraints", []),
     }
-
