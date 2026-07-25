@@ -1,5 +1,5 @@
 
-     Program NEB v.7.5 starts on 25Jul2026 at 10:19:22 
+     Program NEB v.7.5 starts on 25Jul2026 at 10:37:23 
 
      This program is part of the open-source Quantum ESPRESSO suite
      for quantum simulation of materials; please cite
@@ -10,10 +10,12 @@
      in publications or presentations arising from this work. More details at
      http://www.quantum-espresso.org/quote
 
-     Parallel version (MPI), running on    35 processors
+     Parallel version (MPI & OpenMP), running on      80 processor cores
+     Number of MPI processes:                 2
+     Threads/MPI process:                    40
 
      MPI processes distributed on     1 nodes
-     209687 MiB available memory on the printing compute node when the environment starts
+     208328 MiB available memory on the printing compute node when the environment starts
  
 
      Parsing file: input.neb.x
@@ -27,6 +29,18 @@
      file Ni.pbe-n-rrkjus_psl.1.0.0.UPF: wavefunction(s)  3D renormalized
      Reading input from pw_5.in
      file Ni.pbe-n-rrkjus_psl.1.0.0.UPF: wavefunction(s)  3D renormalized
+
+     File ./out_Ni111_4x4_neb/Ni111_4x4_neb_1/Ni111_4x4_neb.update deleted, as requested
+
+     File ./out_Ni111_4x4_neb/Ni111_4x4_neb_1/PW.out deleted, as requested
+
+     File ./out_Ni111_4x4_neb/Ni111_4x4_neb_2/Ni111_4x4_neb.update deleted, as requested
+
+     File ./out_Ni111_4x4_neb/Ni111_4x4_neb_2/PW.out deleted, as requested
+
+     File ./out_Ni111_4x4_neb/Ni111_4x4_neb_3/Ni111_4x4_neb.update deleted, as requested
+
+     File ./out_Ni111_4x4_neb/Ni111_4x4_neb_3/PW.out deleted, as requested
 
      initial path length           = 16.8519 bohr
      initial inter-image distance  =  4.2130 bohr
@@ -48,6 +62,4 @@
 
      ------------------------------ iteration   1 ------------------------------
 
-     tcpu =      0.9    self-consistency for image   1
-     tcpu =    386.6    self-consistency for image   2
-     tcpu =    965.6    self-consistency for image   3
+     tcpu =      2.7    self-consistency for image   1
