@@ -19,6 +19,7 @@ DATA_DIR = os.path.join(DASHBOARD_DIR, "docs", "data")
 STATUS_NOT_FOUND = "not found"
 STATUS_OK = "OK"
 STATUS_CALCULATING = "calculating..."
+EV_TO_KJ_MOL = 96.4853321233
 
 # Ordered to match your notebook workflow
 OUTPUT_PRIORITY = [
@@ -424,6 +425,15 @@ def main():
                     item["activation_energy_forward_ev"] = peak_energy - profile[0][1]
                     item["activation_energy_reverse_ev"] = peak_energy - profile[-1][1]
                     item["reaction_energy_ev"] = profile[-1][1]
+                    item["activation_energy_forward_kj_mol"] = (
+                        item["activation_energy_forward_ev"] * EV_TO_KJ_MOL
+                    )
+                    item["activation_energy_reverse_kj_mol"] = (
+                        item["activation_energy_reverse_ev"] * EV_TO_KJ_MOL
+                    )
+                    item["reaction_energy_kj_mol"] = (
+                        item["reaction_energy_ev"] * EV_TO_KJ_MOL
+                    )
                 except Exception as e:
                     item["neb_profile_error"] = str(e)
             axsf_file = find_axsf_file(job_dir)

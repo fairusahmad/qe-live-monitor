@@ -37,6 +37,7 @@ let chargeSelections = new Map();
 let syncViewsEnabled = true;
 let isApplyingSyncedView = false;
 const FIXED_ATOM_COLOR = "#00d4ff";
+const EV_TO_KJ_MOL = 96.4853321233;
 const KNOWN_ELEMENT_COLORS = {
   H: "#ffffff",
   C: "#808080",
@@ -1336,33 +1337,38 @@ function renderNebProfile(points, job) {
   nebProfileChart = null;
   if (!points.length) return;
 
-  const peak = points.reduce((best, point) => point.energy > best.energy ? point : best);
-  const forwardActivationEnergy = peak.energy - points[0].energy;
-  const reactionEnergy = points.at(-1).energy;
+  const convertedPoints = points.map((point) => ({
+    ...point,
+    energy: point.energy * EV_TO_KJ_MOL,
+    error: Number.isFinite(point.error) ? point.error * EV_TO_KJ_MOL : null
+  }));
+  const peak = convertedPoints.reduce((best, point) => point.energy > best.energy ? point : best);
+  const forwardActivationEnergy = peak.energy - convertedPoints[0].energy;
+  const reactionEnergy = convertedPoints.at(-1).energy;
   const reverseActivationEnergy = peak.energy - reactionEnergy;
   document.getElementById("nebProfileSummary").textContent =
-    `Activation energy (forward): ${forwardActivationEnergy.toFixed(3)} eV · ` +
-    `Activation energy (reverse): ${reverseActivationEnergy.toFixed(3)} eV · ` +
+    `Activation energy (forward): ${forwardActivationEnergy.toFixed(2)} kJ/mol · ` +
+    `Activation energy (reverse): ${reverseActivationEnergy.toFixed(2)} kJ/mol · ` +
     `Transition-state coordinate: ${peak.coordinate.toFixed(3)} · ` +
-    `Reaction energy: ${reactionEnergy.toFixed(3)} eV · ${points.length} images`;
+    `Reaction energy: ${reactionEnergy.toFixed(2)} kJ/mol · ${convertedPoints.length} images`;
 
   nebProfileChart = new Chart(document.getElementById("nebProfileChart").getContext("2d"), {
     type: "line",
     data: {
       datasets: [
         {
-          label: "Relative energy (eV)",
-          data: points.map((point) => ({ x: point.coordinate, y: point.energy })),
+          label: "Relative energy (kJ/mol)",
+          data: convertedPoints.map((point) => ({ x: point.coordinate, y: point.energy })),
           borderColor: "#7c3aed",
           backgroundColor: "#7c3aed",
-          pointRadius: points.map((point) => point === peak ? 7 : 5),
-          pointBackgroundColor: points.map((point) => point === peak ? "#dc2626" : "#7c3aed"),
+          pointRadius: convertedPoints.map((point) => point === peak ? 7 : 5),
+          pointBackgroundColor: convertedPoints.map((point) => point === peak ? "#dc2626" : "#7c3aed"),
           tension: 0
         },
         {
-          label: `Activation energy = ${forwardActivationEnergy.toFixed(3)} eV`,
+          label: `Activation energy = ${forwardActivationEnergy.toFixed(2)} kJ/mol`,
           data: [
-            { x: peak.coordinate, y: points[0].energy },
+            { x: peak.coordinate, y: convertedPoints[0].energy },
             { x: peak.coordinate, y: peak.energy }
           ],
           borderColor: "#dc2626",
@@ -1379,15 +1385,15 @@ function renderNebProfile(points, job) {
       parsing: false,
       scales: {
         x: { type: "linear", title: { display: true, text: "Reaction coordinate" } },
-        y: { title: { display: true, text: "Relative energy (eV)" } }
+        y: { title: { display: true, text: "Relative energy (kJ/mol)" } }
       },
       plugins: {
         tooltip: {
           callbacks: {
             afterLabel(context) {
               if (context.datasetIndex !== 0) return "";
-              const error = points[context.dataIndex]?.error;
-              return Number.isFinite(error) ? `Path error: ${error.toFixed(3)} eV/A` : "";
+              const error = convertedPoints[context.dataIndex]?.error;
+              return Number.isFinite(error) ? `Path error: ${error.toFixed(2)} kJ mol⁻¹ Å⁻¹` : "";
             }
           }
         }
