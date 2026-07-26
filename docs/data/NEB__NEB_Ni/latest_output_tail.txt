@@ -1,23 +1,4 @@
 
-     Program NEB v.7.5 starts on 26Jul2026 at  9:18:48 
-
-     This program is part of the open-source Quantum ESPRESSO suite
-     for quantum simulation of materials; please cite
-         "P. Giannozzi et al., J. Phys.:Condens. Matter 21 395502 (2009);
-         "P. Giannozzi et al., J. Phys.:Condens. Matter 29 465901 (2017);
-         "P. Giannozzi et al., J. Chem. Phys. 152 154105 (2020);
-          URL http://www.quantum-espresso.org", 
-     in publications or presentations arising from this work. More details at
-     http://www.quantum-espresso.org/quote
-
-     Parallel version (MPI & OpenMP), running on      80 processor cores
-     Number of MPI processes:                 2
-     Threads/MPI process:                    40
-
-     MPI processes distributed on     1 nodes
-     222918 MiB available memory on the printing compute node when the environment starts
- 
-
      Parsing file: input.neb.x
      Reading input from pw_1.in
      file Ni.pbe-n-rrkjus_psl.1.0.0.UPF: wavefunction(s)  3D renormalized
@@ -297,3 +278,23 @@
      tcpu =   8547.9    self-consistency for image   2
      tcpu =   8647.8    self-consistency for image   3
      tcpu =   8851.4    self-consistency for image   4
+
+     activation energy (->) =   0.905730 eV
+     activation energy (<-) =   1.284803 eV
+
+     image        energy (eV)        error (eV/A)        frozen
+
+         1     -89533.4548216            0.764443            T
+         2     -89532.5490912            0.831128            F
+         3     -89533.0876614            1.563401            F
+         4     -89533.6398264            1.071843            F
+         5     -89533.8338940            0.582715            T
+
+     climbing image =  2
+
+     path length          = 17.209 bohr
+     inter-image distance =  4.302 bohr
+
+     ------------------------------ iteration  13 ------------------------------
+
+     tcpu =   9032.3    self-consistency for image   2
