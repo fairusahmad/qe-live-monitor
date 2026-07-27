@@ -1,5 +1,5 @@
 
-     Program NEB v.7.5 starts on 28Jul2026 at  0:23:50 
+     Program NEB v.7.5 starts on 28Jul2026 at  0:24:48 
 
      This program is part of the open-source Quantum ESPRESSO suite
      for quantum simulation of materials; please cite
@@ -15,7 +15,7 @@
      Threads/MPI process:                    40
 
      MPI processes distributed on     1 nodes
-     217498 MiB available memory on the printing compute node when the environment starts
+     217479 MiB available memory on the printing compute node when the environment starts
  
 
      Parsing file: input.neb.x
@@ -30,14 +30,11 @@
      Reading input from pw_5.in
      file Ni.pbe-n-rrkjus_psl.1.0.0.UPF: wavefunction(s)  3D renormalized
 
-     restart file 'Ni111_4x4_neb.path' not found: 
-     starting from scratch
+     reading file 'Ni111_4x4_neb.path'
 
-     initial path length           = 16.9010 bohr
-     initial inter-image distance  =  4.2252 bohr
  
      string_method                 =    neb
-     restart_mode                  =    from_scratch
+     restart_mode                  =    restart
      opt_scheme                    =    broyden
      num_of_images                 =    5
      nstep_path                    =    400
@@ -45,12 +42,12 @@
      first_last_opt                =    F
      use_freezing                  =    F
      ds                            =    0.5000 a.u.
-     k_max                         =   15.4213 a.u.
-     k_min                         =   10.2808 a.u.
+     k_max                         =    2.4674 a.u.
+     k_min                         =    1.6449 a.u.
      suggested k_max               =    2.4674 a.u.
      suggested k_min               =    1.6449 a.u.
      path_thr                      =    0.0600 eV / A
 
      ------------------------------ iteration   1 ------------------------------
 
-     tcpu =      2.9    self-consistency for image   1
+     tcpu =      2.7    self-consistency for image   1
