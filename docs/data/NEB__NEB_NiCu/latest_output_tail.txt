@@ -1,21 +1,3 @@
-     file Ni.pbe-n-rrkjus_psl.1.0.0.UPF: wavefunction(s)  3D renormalized
-     file Cu.pbe-dn-rrkjus_psl.1.0.0.UPF: wavefunction(s)  3D renormalized
-     Reading input from pw_2.in
-     file Ni.pbe-n-rrkjus_psl.1.0.0.UPF: wavefunction(s)  3D renormalized
-     file Cu.pbe-dn-rrkjus_psl.1.0.0.UPF: wavefunction(s)  3D renormalized
-     Reading input from pw_3.in
-     file Ni.pbe-n-rrkjus_psl.1.0.0.UPF: wavefunction(s)  3D renormalized
-     file Cu.pbe-dn-rrkjus_psl.1.0.0.UPF: wavefunction(s)  3D renormalized
-     Reading input from pw_4.in
-     file Ni.pbe-n-rrkjus_psl.1.0.0.UPF: wavefunction(s)  3D renormalized
-     file Cu.pbe-dn-rrkjus_psl.1.0.0.UPF: wavefunction(s)  3D renormalized
-     Reading input from pw_5.in
-     file Ni.pbe-n-rrkjus_psl.1.0.0.UPF: wavefunction(s)  3D renormalized
-     file Cu.pbe-dn-rrkjus_psl.1.0.0.UPF: wavefunction(s)  3D renormalized
-
-     initial path length           = 17.5073 bohr
-     initial inter-image distance  =  4.3768 bohr
- 
      string_method                 =    neb
      restart_mode                  =    from_scratch
      opt_scheme                    =    broyden
@@ -298,3 +280,21 @@
      tcpu =   9235.1    self-consistency for image   2
      tcpu =   9407.7    self-consistency for image   3
      tcpu =   9565.8    self-consistency for image   4
+
+     activation energy (->) =   1.545603 eV
+     activation energy (<-) =   1.376749 eV
+
+     image        energy (eV)        error (eV/A)        frozen
+
+         1     -99189.6650202            0.025891            T
+         2     -99188.1386651            2.420221            F
+         3     -99188.1194174            1.226113            F
+         4     -99188.8870785            0.825036            F
+         5     -99189.4961665            0.049778            T
+
+     path length          = 17.916 bohr
+     inter-image distance =  4.479 bohr
+
+     ------------------------------ iteration  15 ------------------------------
+
+     tcpu =   9716.3    self-consistency for image   2
