@@ -1,21 +1,3 @@
-
-     This program is part of the open-source Quantum ESPRESSO suite
-     for quantum simulation of materials; please cite
-         "P. Giannozzi et al., J. Phys.:Condens. Matter 21 395502 (2009);
-         "P. Giannozzi et al., J. Phys.:Condens. Matter 29 465901 (2017);
-         "P. Giannozzi et al., J. Chem. Phys. 152 154105 (2020);
-          URL http://www.quantum-espresso.org", 
-     in publications or presentations arising from this work. More details at
-     http://www.quantum-espresso.org/quote
-
-     Parallel version (MPI & OpenMP), running on      80 processor cores
-     Number of MPI processes:                 2
-     Threads/MPI process:                    40
-
-     MPI processes distributed on     1 nodes
-     206566 MiB available memory on the printing compute node when the environment starts
- 
-
      Parsing file: input.neb.x
      Reading input from pw_1.in
      file Ni.pbe-n-rrkjus_psl.1.0.0.UPF: wavefunction(s)  3D renormalized
@@ -298,3 +280,21 @@
      tcpu =   8766.2    self-consistency for image   2
      tcpu =   8932.9    self-consistency for image   3
      tcpu =   9077.8    self-consistency for image   4
+
+     activation energy (->) =   1.655175 eV
+     activation energy (<-) =   1.486321 eV
+
+     image        energy (eV)        error (eV/A)        frozen
+
+         1     -99189.6650202            0.025891            T
+         2     -99188.0098452            2.076603            F
+         3     -99188.0603081            1.274147            F
+         4     -99188.8539714            0.817791            F
+         5     -99189.4961665            0.049778            T
+
+     path length          = 17.893 bohr
+     inter-image distance =  4.473 bohr
+
+     ------------------------------ iteration  14 ------------------------------
+
+     tcpu =   9235.1    self-consistency for image   2
