@@ -1,21 +1,3 @@
-     opt_scheme                    =    broyden
-     num_of_images                 =    5
-     nstep_path                    =    400
-     CI_scheme                     =    no-CI
-     first_last_opt                =    F
-     use_freezing                  =    F
-     ds                            =    0.5000 a.u.
-     k_max                         =    2.4674 a.u.
-     k_min                         =    1.6449 a.u.
-     suggested k_max               =    2.4674 a.u.
-     suggested k_min               =    1.6449 a.u.
-     path_thr                      =    0.0600 eV / A
-
-     ------------------------------ iteration   1 ------------------------------
-
-     tcpu =      3.9    self-consistency for image   1
-     tcpu =    408.5    self-consistency for image   2
-     tcpu =    922.8    self-consistency for image   3
      tcpu =   1439.4    self-consistency for image   4
      tcpu =   2009.1    self-consistency for image   5
 
@@ -298,3 +280,21 @@
      tcpu =   9716.3    self-consistency for image   2
      tcpu =   9917.0    self-consistency for image   3
      tcpu =  10100.8    self-consistency for image   4
+
+     activation energy (->) =   1.455364 eV
+     activation energy (<-) =   1.286510 eV
+
+     image        energy (eV)        error (eV/A)        frozen
+
+         1     -99189.6650202            0.025891            T
+         2     -99188.3816729            2.473720            F
+         3     -99188.2096565            0.989995            F
+         4     -99188.9361572            0.647532            F
+         5     -99189.4961665            0.049778            T
+
+     path length          = 17.967 bohr
+     inter-image distance =  4.492 bohr
+
+     ------------------------------ iteration  16 ------------------------------
+
+     tcpu =  10261.9    self-consistency for image   2
