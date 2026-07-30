@@ -1,25 +1,3 @@
-
-     Total force =     0.012622     Total SCF correction =     0.000074
-
-     DFT-D3 dispersion Force =     0.028020
-     Energy error            =      2.5E-04 Ry
-     Gradient error          =      5.4E-03 Ry/Bohr
-
-     number of scf cycles    =  15
-     number of bfgs steps    =  14
-
-     energy             old  =   -7290.2821086909 Ry
-     energy             new  =   -7290.2823635883 Ry
-
-     CASE: energy            _new < energy            _old
-
-     new trust radius        =       0.0219890752 bohr
-     new conv_thr            =       0.0000000025 Ry
-
-
-ATOMIC_POSITIONS (angstrom)
-Ni               1.2286497520        0.7093615510       11.2500000000    0   0   0
-Ni               2.4572990100        2.8374462050       11.2500000000    0   0   0
 Ni               3.6859482670        4.9655308580       11.2500000000    0   0   0
 Ni               4.9145975240        7.0936155120       11.2500000000    0   0   0
 Ni               3.6859497520        0.7093615510       11.2500000000    0   0   0
@@ -298,3 +276,25 @@ H                9.1007459871        4.7945944183       24.9279693405
      GPU memory used/free/total (MiB): 14300 / 1968 / 16269
 ------------------
      ethr =  1.74E-09,  avg # of iterations =  5.0
+
+     negative rho (up, down):  3.078E-03 2.890E-03
+
+     total cpu time spent up to now is     4113.8 secs
+
+     total energy              =   -7290.28257450 Ry
+     estimated scf accuracy    <       0.00000581 Ry
+
+     total magnetization       =    16.33 Bohr mag/cell
+     absolute magnetization    =    19.41 Bohr mag/cell
+[tb_dev] Currently allocated     0.00E+00 Mbytes, locked:    0 /   0
+[tb_pin] Currently allocated     0.00E+00 Mbytes, locked:    0 /   0
+
+     iteration #  9     ecut=    50.00 Ry     beta= 0.10
+     Davidson diagonalization with overlap
+
+---- Real-time Memory Report at c_bands before calling an iterative solver
+          4760 MiB given to the printing process from OS
+          -817 MiB allocation reported by mallinfo(arena+hblkhd)
+        175916 MiB available memory on the node where the printing process lives
+     GPU memory used/free/total (MiB): 14300 / 1968 / 16269
+------------------
