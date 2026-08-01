@@ -1,26 +1,3 @@
-        53        Cu     tau(  53) = (   0.8329436   0.2884303   3.1648207  )
-        54        Cu     tau(  54) = (   0.5016835   0.2896469   2.3192883  )
-        55        Cu     tau(  55) = (   0.8346090   0.4818616   2.6031514  )
-        56        Cu     tau(  56) = (   0.6670704   0.3851331   2.8868634  )
-        57        Cu     tau(  57) = (   0.9995345   0.5770814   3.1648542  )
-        58        Cu     tau(  58) = (   0.3350528   0.5782603   2.3194210  )
-        59        Cu     tau(  59) = (   0.6678971   0.7704376   2.6030356  )
-        60        Cu     tau(  60) = (   0.5004382   0.6738144   2.8868455  )
-        61        Cu     tau(  61) = (   0.6683619   0.5782889   2.3193881  )
-        62        Cu     tau(  62) = (   1.0012155   0.7704735   2.6030819  )
-        63        Cu     tau(  63) = (   0.8337019   0.6738087   2.8868253  )
-        64        Cu     tau(  64) = (   0.6683148   0.0010339   2.3194210  )
-        65        Cu     tau(  65) = (   1.0011674   0.1931969   2.6030356  )
-        66        Cu     tau(  66) = (   0.8337597   0.0964848   2.8868455  )
-        67        Cu     tau(  67) = (   0.8349940   0.2896738   2.3193881  )
-        68        Cu     tau(  68) = (   1.1678575   0.4818413   2.6030819  )
-        69        Cu     tau(  69) = (   1.0003866   0.3851025   2.8868253  )
-        70        Cu     tau(  70) = (   1.0016817   0.5783211   2.3194802  )
-        71        Cu     tau(  71) = (   1.3344649   0.7704536   2.6030102  )
-        72        Cu     tau(  72) = (   1.1670109   0.6737740   2.8867960  )
-
-     --------------------------------------------
-     DFT-D3 Dispersion Correction (3-body terms):
      --------------------------------------------
        Reference C6 values for interpolation: 
 
@@ -297,4 +274,27 @@
           -281 MiB allocation reported by mallinfo(arena+hblkhd)
         183331 MiB available memory on the node where the printing process lives
      GPU memory used/free/total (MiB): 8236 / 8032 / 16269
+------------------
+     ethr =  1.00E-02,  avg # of iterations = 12.3
+
+     negative rho (up, down):  9.259E-04 5.715E-04
+
+     total cpu time spent up to now is      102.6 secs
+
+     total energy              =   -7599.21410919 Ry
+     estimated scf accuracy    <   91585.95547556 Ry
+
+     total magnetization       =     2.77 Bohr mag/cell
+     absolute magnetization    =     2.92 Bohr mag/cell
+[tb_dev] Currently allocated     0.00E+00 Mbytes, locked:    0 /   0
+[tb_pin] Currently allocated     0.00E+00 Mbytes, locked:    0 /   0
+
+     iteration #  3     ecut=    50.00 Ry     beta= 0.10
+     Davidson diagonalization with overlap
+
+---- Real-time Memory Report at c_bands before calling an iterative solver
+          5405 MiB given to the printing process from OS
+          -223 MiB allocation reported by mallinfo(arena+hblkhd)
+        183187 MiB available memory on the node where the printing process lives
+     GPU memory used/free/total (MiB): 8248 / 8020 / 16269
 ------------------
