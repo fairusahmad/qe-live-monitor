@@ -1,7 +1,7 @@
 &CONTROL
  calculation = 'scf'
  !forc_conv_thr = 5.0d-4
- nstep = 100
+ nstep = 200
  outdir = './output/'
  prefix = 'NiCu_slab'
  pseudo_dir = '/home/node1/PSP/PseudosP/pslibrary-master/pbe/PSEUDOPOTENTIALS/'
@@ -51,9 +51,9 @@ K_POINTS automatic
 3 3 1 0 0 0
 
 CELL_PARAMETERS angstrom
-  7.371898000   0.000000000   0.000000000
-  3.685949000   6.384250942   0.000000000
-  0.000000000   0.000000000  42.044635000
+  7.371900000   0.000000000   0.000000000
+  3.685947771   6.384253961   0.000000000
+  0.000007231  -0.000004175  41.430840000
 
 ATOMIC_POSITIONS angstrom
 Ni               1.2286390390        0.7093535490        9.0128649340    
