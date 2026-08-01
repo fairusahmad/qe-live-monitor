@@ -447,9 +447,9 @@
     "label": "ChargeDensity / Cu_spin_scf",
     "source_dir": "/media/node1/Fairus2TB/fairus/Nguyen1/ChargeDensity/Cu_spin_scf",
     "found": true,
-    "output_file": "/media/node1/Fairus2TB/fairus/Nguyen1/ChargeDensity/Cu_spin_scf/input.pw.x",
+    "output_file": "/media/node1/Fairus2TB/fairus/Nguyen1/ChargeDensity/Cu_spin_scf/output_scf.pw.x",
     "status": "calculating...",
-    "structure_capable": false,
+    "structure_capable": true,
     "input_file": "/media/node1/Fairus2TB/fairus/Nguyen1/ChargeDensity/Cu_spin_scf/input.pw.x",
     "input_file_name": "input.pw.x",
     "input_parameters": {
@@ -469,14 +469,14 @@
       "forc_conv_thr": null
     },
     "input_file_data": "data/ChargeDensity__Cu_spin_scf/input.json",
-    "output_mtime": 1785594922.856858,
+    "output_mtime": 1785595032.4273248,
     "latest_energy_ry": null,
     "latest_total_force_ry_bohr": null,
     "latest_gradient_error_ry_bohr": null,
     "converged": false,
     "nat_latest": 0,
     "has_structure": false,
-    "num_structure_steps": 1,
+    "num_structure_steps": 0,
     "status_file": "data/ChargeDensity__Cu_spin_scf/status.json",
     "energy_file": "data/ChargeDensity__Cu_spin_scf/energy.csv",
     "total_force_file": "data/ChargeDensity__Cu_spin_scf/total_force.csv",
@@ -492,7 +492,7 @@
     "original_constraints_file": "data/ChargeDensity__Cu_spin_scf/original_constraints.json",
     "output_tail_file": "data/ChargeDensity__Cu_spin_scf/latest_output_tail.txt",
     "atomic_positions_file": "data/ChargeDensity__Cu_spin_scf/latest_atomic_positions.txt",
-    "note": "Output parsed, but this calculation type usually does not contain a final structure block."
+    "note": "Output parsed, but no final structure block was found."
   },
   {
     "job_id": "ChargeDensity__Ni_Cu_spin_scf",
