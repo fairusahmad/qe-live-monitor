@@ -1,49 +1,3 @@
-        46        Cu     tau(  46) = (  0.2230948  0.5563772  0.4631773  )
-        47        Cu     tau(  47) = (  0.1114261  0.4447468  0.5136700  )
-        48        Cu     tau(  48) = (  0.3330504  0.6664182  0.5631250  )
-        49        Cu     tau(  49) = (  0.6665639 -0.0002842  0.5631302  )
-        50        Cu     tau(  50) = (  0.3344503  0.0011324  0.4126830  )
-        51        Cu     tau(  51) = (  0.5563769  0.2230951  0.4631773  )
-        52        Cu     tau(  52) = (  0.4447464  0.1114266  0.5136700  )
-        53        Cu     tau(  53) = (  0.6664177  0.3330509  0.5631250  )
-        54        Cu     tau(  54) = (  0.3344554  0.3344556  0.4126772  )
-        55        Cu     tau(  55) = (  0.5564057  0.5564060  0.4631857  )
-        56        Cu     tau(  56) = (  0.4447132  0.4447136  0.5136673  )
-        57        Cu     tau(  57) = (  0.6663560  0.6663565  0.5631310  )
-        58        Cu     tau(  58) = (  0.0011938  0.6677177  0.4127008  )
-        59        Cu     tau(  59) = (  0.2230845  0.8896249  0.4631651  )
-        60        Cu     tau(  60) = (  0.1114109  0.7780540  0.5136641  )
-        61        Cu     tau(  61) = (  0.3344864  0.6677506  0.4126949  )
-        62        Cu     tau(  62) = (  0.5563822  0.8896663  0.4631733  )
-        63        Cu     tau(  63) = (  0.4446779  0.7780475  0.5136605  )
-        64        Cu     tau(  64) = (  0.6677174  0.0011941  0.4127008  )
-        65        Cu     tau(  65) = (  0.8896245  0.2230849  0.4631651  )
-        66        Cu     tau(  66) = (  0.7780536  0.1114114  0.5136641  )
-        67        Cu     tau(  67) = (  0.6677504  0.3344866  0.4126949  )
-        68        Cu     tau(  68) = (  0.8896659  0.5563825  0.4631733  )
-        69        Cu     tau(  69) = (  0.7780470  0.4446784  0.5136605  )
-        70        Cu     tau(  70) = (  0.6677876  0.6677878  0.4127113  )
-        71        Cu     tau(  71) = (  0.8896430  0.8896434  0.4631605  )
-        72        Cu     tau(  72) = (  0.7780069  0.7780074  0.5136553  )
-
-     number of k points=     5  Gaussian smearing, width (Ry)=  0.0200
-                       cart. coord. in units 2pi/alat
-        k(    1) = (   0.0000000   0.0000000   0.0000000), wk =   0.1111111
-        k(    2) = (   0.0000000   0.3849001   0.0000000), wk =   0.2222222
-        k(    3) = (   0.3333333  -0.1924499  -0.0000001), wk =   0.2222222
-        k(    4) = (   0.3333333   0.1924502  -0.0000000), wk =   0.2222222
-        k(    5) = (   0.3333333  -0.5773500  -0.0000001), wk =   0.2222222
-
-                       cryst. coord.
-        k(    1) = (   0.0000000   0.0000000   0.0000000), wk =   0.1111111
-        k(    2) = (   0.0000000   0.3333333  -0.0000000), wk =   0.2222222
-        k(    3) = (   0.3333333  -0.0000000   0.0000000), wk =   0.2222222
-        k(    4) = (   0.3333333   0.3333333  -0.0000000), wk =   0.2222222
-        k(    5) = (   0.3333333  -0.3333333   0.0000000), wk =   0.2222222
-
-     Dense  grid:  1777951 G-vectors     FFT dimensions: (  90,  90, 500)
-
-     Smooth grid:   628661 G-vectors     FFT dimensions: (  64,  64, 360)
 
      Dynamical RAM for                 wfc:     272.12 MB
 
@@ -296,5 +250,51 @@
           5625 MiB given to the printing process from OS
            -98 MiB allocation reported by mallinfo(arena+hblkhd)
         182697 MiB available memory on the node where the printing process lives
+     GPU memory used/free/total (MiB): 8248 / 8020 / 16269
+------------------
+     ethr =  2.53E-03,  avg # of iterations =  1.6
+
+     negative rho (up, down):  8.595E-04 3.642E-04
+
+     total cpu time spent up to now is      290.9 secs
+
+     total energy              =   -8040.05808074 Ry
+     estimated scf accuracy    <      19.79743911 Ry
+
+     total magnetization       =    31.05 Bohr mag/cell
+     absolute magnetization    =    33.13 Bohr mag/cell
+[tb_dev] Currently allocated     0.00E+00 Mbytes, locked:    0 /   0
+[tb_pin] Currently allocated     0.00E+00 Mbytes, locked:    0 /   0
+
+     iteration # 10     ecut=    50.00 Ry     beta= 0.10
+     Davidson diagonalization with overlap
+
+---- Real-time Memory Report at c_bands before calling an iterative solver
+          5672 MiB given to the printing process from OS
+           -60 MiB allocation reported by mallinfo(arena+hblkhd)
+        182667 MiB available memory on the node where the printing process lives
+     GPU memory used/free/total (MiB): 8248 / 8020 / 16269
+------------------
+     ethr =  2.53E-03,  avg # of iterations =  1.7
+
+     negative rho (up, down):  9.035E-04 4.227E-04
+
+     total cpu time spent up to now is      312.8 secs
+
+     total energy              =   -8040.48372786 Ry
+     estimated scf accuracy    <      15.42373042 Ry
+
+     total magnetization       =    30.75 Bohr mag/cell
+     absolute magnetization    =    33.76 Bohr mag/cell
+[tb_dev] Currently allocated     0.00E+00 Mbytes, locked:    0 /   0
+[tb_pin] Currently allocated     0.00E+00 Mbytes, locked:    0 /   0
+
+     iteration # 11     ecut=    50.00 Ry     beta= 0.10
+     Davidson diagonalization with overlap
+
+---- Real-time Memory Report at c_bands before calling an iterative solver
+          5672 MiB given to the printing process from OS
+           -60 MiB allocation reported by mallinfo(arena+hblkhd)
+        182604 MiB available memory on the node where the printing process lives
      GPU memory used/free/total (MiB): 8248 / 8020 / 16269
 ------------------
