@@ -4,10 +4,21 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$SCRIPT_DIR"
 
+# A duplicate watcher produces duplicate commits and can overwhelm the GitHub
+# Pages deployment queue. Keep the lock descriptor open for this process's
+# entire lifetime so only one watcher can run from this checkout.
+WATCH_LOCK_FILE="$(git rev-parse --git-path watch_qe.lock)"
+exec 9>"$WATCH_LOCK_FILE"
+if ! flock -n 9; then
+  echo "Another watch_qe.sh instance is already running for $SCRIPT_DIR." >&2
+  exit 1
+fi
+
 FAIRUS_DIR="/media/node1/Fairus2TB/fairus"
 DEFAULT_FOLDER="Nguyen"
 POLL_SECONDS="${QE_WATCH_POLL_SECONDS:-15}"
 DEBOUNCE_SECONDS="${QE_WATCH_DEBOUNCE_SECONDS:-5}"
+MIN_UPDATE_SECONDS="${QE_WATCH_MIN_UPDATE_SECONDS:-300}"
 
 log() {
   echo "[$(date '+%Y-%m-%d %H:%M:%S')] $*"
@@ -28,7 +39,11 @@ source_signature() {
 
 run_update() {
   log "Relevant QE files changed; starting update cycle..."
-  ./update_and_push.sh || log "Update cycle failed; waiting for the next source change."
+  if ./update_and_push.sh; then
+    last_update_epoch="$(date +%s)"
+  else
+    log "Update cycle failed; waiting for the next source change."
+  fi
 }
 
 resolve_base_dir() {
@@ -85,16 +100,32 @@ export QE_BASE_DIR
 QE_BASE_DIR="$(resolve_base_dir "$FOLDER_CHOICE")"
 log "Watching folder: $QE_BASE_DIR"
 
+for setting in POLL_SECONDS DEBOUNCE_SECONDS MIN_UPDATE_SECONDS; do
+  if ! [[ "${!setting}" =~ ^[0-9]+$ ]]; then
+    log "$setting must be a non-negative integer (received '${!setting}')."
+    exit 1
+  fi
+done
+
+last_update_epoch=0
 run_update
 last_signature="$(source_signature)"
-log "Idle until a relevant QE output/input file changes (checking every ${POLL_SECONDS}s)."
+log "Idle until a relevant QE output/input file changes (checking every ${POLL_SECONDS}s; publishing at most once every ${MIN_UPDATE_SECONDS}s)."
 
 while true; do
   sleep "$POLL_SECONDS"
   current_signature="$(source_signature)"
   [[ "$current_signature" == "$last_signature" ]] && continue
 
-  log "Change detected; waiting ${DEBOUNCE_SECONDS}s for writes to settle."
+  now_epoch="$(date +%s)"
+  next_update_epoch="$((last_update_epoch + MIN_UPDATE_SECONDS))"
+  if (( now_epoch < next_update_epoch )); then
+    wait_seconds="$((next_update_epoch - now_epoch))"
+    log "Change detected; batching updates for ${wait_seconds}s to avoid flooding GitHub Pages."
+    sleep "$wait_seconds"
+  fi
+
+  log "Waiting ${DEBOUNCE_SECONDS}s for writes to settle."
   sleep "$DEBOUNCE_SECONDS"
   current_signature="$(source_signature)"
   run_update
