@@ -292,9 +292,9 @@
     "label": "Ni-Ag-OH_(CD) / Ni_Ag_OH",
     "source_dir": "/media/node1/Fairus2TB/fairus/Nguyen/Ni-Ag-OH_(CD)/Ni_Ag_OH",
     "found": true,
-    "output_file": "/media/node1/Fairus2TB/fairus/Nguyen/Ni-Ag-OH_(CD)/Ni_Ag_OH/input.pw.x",
+    "output_file": "/media/node1/Fairus2TB/fairus/Nguyen/Ni-Ag-OH_(CD)/Ni_Ag_OH/output_relax.pw.x",
     "status": "calculating...",
-    "structure_capable": false,
+    "structure_capable": true,
     "input_file": "/media/node1/Fairus2TB/fairus/Nguyen/Ni-Ag-OH_(CD)/Ni_Ag_OH/input.pw_relax.x",
     "input_file_name": "input.pw_relax.x",
     "input_parameters": {
@@ -311,18 +311,17 @@
       "mixing_mode": "plain",
       "scf_must_converge": null,
       "startingwfc": null,
-      "forc_conv_thr": "0.5d-3"
+      "forc_conv_thr": "1d-3"
     },
     "input_file_data": "data/Ni-Ag-OH__CD___Ni_Ag_OH/input.json",
-    "output_mtime": 1786002616.3583848,
+    "output_mtime": 1786004479.290032,
     "latest_energy_ry": null,
     "latest_total_force_ry_bohr": null,
     "latest_gradient_error_ry_bohr": null,
     "converged": false,
-    "nat_latest": 124,
-    "has_structure": true,
-    "num_structure_steps": 1,
-    "structure_source_file": "/media/node1/Fairus2TB/fairus/Nguyen/Ni-Ag-OH_(CD)/Ni_Ag_OH/input.pw.x",
+    "nat_latest": 0,
+    "has_structure": false,
+    "num_structure_steps": 0,
     "status_file": "data/Ni-Ag-OH__CD___Ni_Ag_OH/status.json",
     "energy_file": "data/Ni-Ag-OH__CD___Ni_Ag_OH/energy.csv",
     "total_force_file": "data/Ni-Ag-OH__CD___Ni_Ag_OH/total_force.csv",
@@ -337,7 +336,8 @@
     "original_lattice_file": "data/Ni-Ag-OH__CD___Ni_Ag_OH/original_lattice.json",
     "original_constraints_file": "data/Ni-Ag-OH__CD___Ni_Ag_OH/original_constraints.json",
     "output_tail_file": "data/Ni-Ag-OH__CD___Ni_Ag_OH/latest_output_tail.txt",
-    "atomic_positions_file": "data/Ni-Ag-OH__CD___Ni_Ag_OH/latest_atomic_positions.txt"
+    "atomic_positions_file": "data/Ni-Ag-OH__CD___Ni_Ag_OH/latest_atomic_positions.txt",
+    "note": "Output parsed, but no final structure block was found."
   },
   {
     "job_id": "Ni-Ag-OH__CD___OH",
