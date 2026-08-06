@@ -1,16 +1,3 @@
-     atom  118 type  2   force =     0.00004010   -0.00000912    0.00002986
-     atom  119 type  2   force =    -0.00014195   -0.00008701   -0.00001319
-     atom  120 type  2   force =     0.00003691   -0.00005040    0.00000619
-     atom  121 type  2   force =    -0.00001916    0.00005333   -0.00002977
-     atom  122 type  2   force =    -0.00003503    0.00000895    0.00002085
-
-     DFT-D3 dispersion contribution to forces:
-     atom    1 type  1   force =     0.00000664    0.00003232    0.00324042
-     atom    2 type  1   force =     0.00002219    0.00006422    0.00324757
-     atom    3 type  1   force =     0.00002769    0.00003707    0.00322943
-     atom    4 type  1   force =    -0.00003919   -0.00003984    0.00319475
-     atom    5 type  1   force =    -0.00005254   -0.00004576    0.00314177
-     atom    6 type  1   force =    -0.00003402   -0.00001036    0.00322921
      atom    7 type  1   force =     0.00005405    0.00003022    0.00322178
      atom    8 type  1   force =     0.00004218    0.00004036    0.00318311
      atom    9 type  1   force =     0.00001316   -0.00001075    0.00318438
@@ -297,4 +284,17 @@ AG              14.5252396040        8.4154777766        8.1246879684
            169 MiB allocation reported by mallinfo(arena+hblkhd)
          94450 MiB available memory on the node where the printing process lives
      GPU memory used/free/total (MiB): 10866 / 5402 / 16269
+------------------
+     ethr =  1.00E-06,  avg # of iterations =  3.5
+
+     Threshold (ethr) on eigenvalues was too large:
+     Diagonalizing with lowered threshold
+
+     Davidson diagonalization with overlap
+
+---- Real-time Memory Report at c_bands before calling an iterative solver
+          9224 MiB given to the printing process from OS
+           169 MiB allocation reported by mallinfo(arena+hblkhd)
+         95167 MiB available memory on the node where the printing process lives
+     GPU memory used/free/total (MiB): 16082 / 186 / 16269
 ------------------
