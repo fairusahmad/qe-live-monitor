@@ -1,29 +1,3 @@
-     negative rho (up, down):  3.667E-03 3.167E-03
-
-     total cpu time spent up to now is      148.6 secs
-
-     total energy              =  -11451.76179410 Ry
-     estimated scf accuracy    <      21.06267249 Ry
-
-     total magnetization       =    80.74 Bohr mag/cell
-     absolute magnetization    =    82.76 Bohr mag/cell
-[tb_dev] Currently allocated     0.00E+00 Mbytes, locked:    0 /   0
-[tb_pin] Currently allocated     0.00E+00 Mbytes, locked:    0 /   0
-
-     iteration #  8     ecut=    47.00 Ry     beta= 0.05
-     Davidson diagonalization with overlap
-
----- Real-time Memory Report at c_bands before calling an iterative solver
-          8710 MiB given to the printing process from OS
-           237 MiB allocation reported by mallinfo(arena+hblkhd)
-         92860 MiB available memory on the node where the printing process lives
-     GPU memory used/free/total (MiB): 12704 / 3564 / 16269
-------------------
-     ethr =  1.65E-03,  avg # of iterations =  1.5
-
-     negative rho (up, down):  3.629E-03 3.158E-03
-
-     total cpu time spent up to now is      165.2 secs
 
      total energy              =  -11453.04931459 Ry
      estimated scf accuracy    <       9.93735178 Ry
@@ -298,3 +272,29 @@
      GPU memory used/free/total (MiB): 12704 / 3564 / 16269
 ------------------
      ethr =  6.63E-06,  avg # of iterations =  2.0
+
+     negative rho (up, down):  3.871E-03 4.131E-03
+
+     total cpu time spent up to now is      387.1 secs
+
+     total energy              =  -11455.17760616 Ry
+     estimated scf accuracy    <       0.02140279 Ry
+
+     total magnetization       =    42.03 Bohr mag/cell
+     absolute magnetization    =    54.47 Bohr mag/cell
+[tb_dev] Currently allocated     0.00E+00 Mbytes, locked:    0 /   0
+[tb_pin] Currently allocated     0.00E+00 Mbytes, locked:    0 /   0
+
+     iteration # 21     ecut=    47.00 Ry     beta= 0.05
+     Davidson diagonalization with overlap
+
+---- Real-time Memory Report at c_bands before calling an iterative solver
+          8873 MiB given to the printing process from OS
+           337 MiB allocation reported by mallinfo(arena+hblkhd)
+         92557 MiB available memory on the node where the printing process lives
+     GPU memory used/free/total (MiB): 12704 / 3564 / 16269
+------------------
+     c_bands:  2 eigenvalues not converged
+     ethr =  1.69E-06,  avg # of iterations = 31.0
+
+     negative rho (up, down):  3.816E-03 3.964E-03
