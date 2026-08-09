@@ -819,7 +819,7 @@
     "source_dir": "/media/node1/Fairus2TB/fairus/Nguyen/Ni_OH_(CD)/Ni",
     "found": true,
     "output_file": "/media/node1/Fairus2TB/fairus/Nguyen/Ni_OH_(CD)/Ni/output_scf.pw.x",
-    "status": "calculating...",
+    "status": "OK",
     "structure_capable": true,
     "input_file": "/media/node1/Fairus2TB/fairus/Nguyen/Ni_OH_(CD)/Ni/input.pw.x",
     "input_file_name": "input.pw.x",
@@ -840,9 +840,9 @@
       "forc_conv_thr": "0.5d-3"
     },
     "input_file_data": "data/Ni_OH__CD___Ni/input.json",
-    "output_mtime": 1786262987.4033177,
+    "output_mtime": 1786263118.9353263,
     "latest_energy_ry": -10057.23766829,
-    "latest_total_force_ry_bohr": null,
+    "latest_total_force_ry_bohr": 0.066487,
     "latest_gradient_error_ry_bohr": null,
     "converged": true,
     "nat_latest": 0,
@@ -922,9 +922,9 @@
     "label": "Ni_OH_(CD) / OH",
     "source_dir": "/media/node1/Fairus2TB/fairus/Nguyen/Ni_OH_(CD)/OH",
     "found": true,
-    "output_file": "/media/node1/Fairus2TB/fairus/Nguyen/Ni_OH_(CD)/OH/input.pp.x",
-    "status": "calculating...",
-    "structure_capable": false,
+    "output_file": "/media/node1/Fairus2TB/fairus/Nguyen/Ni_OH_(CD)/OH/output_scf.pw.x",
+    "status": "OK",
+    "structure_capable": true,
     "input_file": "/media/node1/Fairus2TB/fairus/Nguyen/Ni_OH_(CD)/OH/input.pw.x",
     "input_file_name": "input.pw.x",
     "input_parameters": {
@@ -944,11 +944,11 @@
       "forc_conv_thr": "0.5d-3"
     },
     "input_file_data": "data/Ni_OH__CD___OH/input.json",
-    "output_mtime": 1786196133.611549,
-    "latest_energy_ry": null,
-    "latest_total_force_ry_bohr": null,
+    "output_mtime": 1786263187.3793187,
+    "latest_energy_ry": -33.34478275,
+    "latest_total_force_ry_bohr": 0.039586,
     "latest_gradient_error_ry_bohr": null,
-    "converged": false,
+    "converged": true,
     "nat_latest": 0,
     "has_structure": false,
     "num_structure_steps": 0,
@@ -967,7 +967,7 @@
     "original_constraints_file": "data/Ni_OH__CD___OH/original_constraints.json",
     "output_tail_file": "data/Ni_OH__CD___OH/latest_output_tail.txt",
     "atomic_positions_file": "data/Ni_OH__CD___OH/latest_atomic_positions.txt",
-    "note": "Output parsed, but this calculation type usually does not contain a final structure block."
+    "note": "Output parsed, but no final structure block was found."
   },
   {
     "job_id": "O__DONE_",
