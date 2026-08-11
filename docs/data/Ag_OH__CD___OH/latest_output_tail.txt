@@ -1,0 +1,56 @@
+&control
+  prefix        = 'wm',
+  outdir = './output/'
+  verbosity     = 'high',
+  calculation   = 'scf',
+  pseudo_dir = '/home/node1/PSP/PseudosP/pslibrary-master/pbe/PSEUDOPOTENTIALS/'
+  restart_mode  = 'from_scratch',
+  wf_collect    = .True.,
+  forc_conv_thr = 0.5d-3
+  nstep         = 200,
+  tprnfor       = .True.,
+/
+&system
+  ibrav         = 0,
+  nat           = 2,
+  !nspin         = 2,
+  !starting_magnetization(1) = 0.5,
+  ntyp          = 2,
+  ecutwfc       = 47.,
+  ecutrho       = 350,
+  occupations   = 'smearing',
+  smearing      = 'gaussian',
+  degauss       = 0.01,
+  nosym         = .False.,
+  noinv         = .False.,
+  tot_charge    = 0.,
+  vdw_corr      = 'grimme-d3',
+/
+&electrons
+  conv_thr            = 2d-7,
+  mixing_beta         = 0.05,
+  mixing_mode         = 'plain',
+  electron_maxstep    = 200,
+  diagonalization     = 'david',
+/
+
+
+ATOMIC_SPECIES
+  O  15.9994 O.pbe-n-rrkjus_psl.1.0.0.UPF
+  H  1.00797 H.pbe-rrkjus_psl.1.0.0.UPF
+
+ATOMIC_POSITIONS angstrom
+
+O                8.7302024088        6.6824715133       10.1835751943
+H                8.7396038975        6.6757041693       11.1564990569
+
+
+K_POINTS {automatic}
+2 2 1 1 1 1
+
+CELL_PARAMETERS angstrom
+ 14.511091073   0.000000000   0.000000000
+  7.255545536  12.566973506   0.000000000
+  0.000000000   0.000000000  40.000000000
+
+
