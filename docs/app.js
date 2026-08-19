@@ -676,6 +676,115 @@ function sortJobs(jobs, mode) {
   return sorted;
 }
 
+function parseXYZ(xyzText) {
+  const lines = xyzText.trim().split(/\r?\n/);
+  const atomCount = Number.parseInt(lines[0], 10);
+  if (!Number.isInteger(atomCount) || atomCount < 1) throw new Error("Invalid XYZ atom count");
+
+  const atoms = lines.slice(2, atomCount + 2).map((line) => {
+    const fields = line.trim().split(/\s+/);
+    const coordinates = fields.slice(1, 4).map(Number);
+    if (fields.length < 4 || coordinates.some((value) => !Number.isFinite(value))) {
+      throw new Error("Invalid XYZ atom row");
+    }
+    const symbol = fields[0].charAt(0).toUpperCase() + fields[0].slice(1).toLowerCase();
+    return { symbol, coordinates };
+  });
+
+  if (atoms.length !== atomCount) throw new Error("Incomplete XYZ structure");
+  return atoms;
+}
+
+function vectorLength(vector) {
+  return Math.hypot(...vector);
+}
+
+function vectorAngle(first, second) {
+  const cosine = first.reduce((sum, value, index) => sum + value * second[index], 0)
+    / (vectorLength(first) * vectorLength(second));
+  return Math.acos(Math.max(-1, Math.min(1, cosine))) * 180 / Math.PI;
+}
+
+function cartesianToFractional(coordinates, lattice) {
+  const [a, b, c] = lattice;
+  const determinant =
+    a[0] * (b[1] * c[2] - b[2] * c[1])
+    - b[0] * (a[1] * c[2] - a[2] * c[1])
+    + c[0] * (a[1] * b[2] - a[2] * b[1]);
+  if (Math.abs(determinant) < 1e-12) throw new Error("Invalid lattice matrix");
+
+  const [x, y, z] = coordinates;
+  return [
+    (x * (b[1] * c[2] - b[2] * c[1]) - b[0] * (y * c[2] - c[1] * z) + c[0] * (y * b[2] - b[1] * z)) / determinant,
+    (a[0] * (y * c[2] - c[1] * z) - x * (a[1] * c[2] - a[2] * c[1]) + c[0] * (a[1] * z - y * a[2])) / determinant,
+    (a[0] * (b[1] * z - y * b[2]) - b[0] * (a[1] * z - y * a[2]) + x * (a[1] * b[2] - b[1] * a[2])) / determinant
+  ];
+}
+
+function buildCIF(job, kind, atoms, lattice) {
+  const safeName = String(job.job_id).replace(/[^A-Za-z0-9_]/g, "_");
+  const [a, b, c] = lattice;
+  const lines = [
+    `data_${safeName}_${kind}`,
+    `_audit_creation_method 'QE Live Monitor'`,
+    `_cell_length_a ${vectorLength(a).toFixed(10)}`,
+    `_cell_length_b ${vectorLength(b).toFixed(10)}`,
+    `_cell_length_c ${vectorLength(c).toFixed(10)}`,
+    `_cell_angle_alpha ${vectorAngle(b, c).toFixed(8)}`,
+    `_cell_angle_beta ${vectorAngle(a, c).toFixed(8)}`,
+    `_cell_angle_gamma ${vectorAngle(a, b).toFixed(8)}`,
+    "_symmetry_space_group_name_H-M 'P 1'",
+    "_symmetry_Int_Tables_number 1",
+    "loop_",
+    "_atom_site_label",
+    "_atom_site_type_symbol",
+    "_atom_site_fract_x",
+    "_atom_site_fract_y",
+    "_atom_site_fract_z"
+  ];
+  const counts = new Map();
+  atoms.forEach((atom) => {
+    const count = (counts.get(atom.symbol) || 0) + 1;
+    counts.set(atom.symbol, count);
+    const fractional = cartesianToFractional(atom.coordinates, lattice);
+    lines.push(`${atom.symbol}${count} ${atom.symbol} ${fractional.map((value) => value.toFixed(10)).join(" ")}`);
+  });
+  return lines.join("\n") + "\n";
+}
+
+async function downloadCIF(job, kind, button) {
+  const isInput = kind === "input";
+  const structurePath = isInput ? job.original_structure_file : job.structure_file;
+  const latticePath = isInput ? job.original_lattice_file : job.lattice_file;
+  const originalLabel = button.textContent;
+  button.disabled = true;
+  button.textContent = "Preparing...";
+
+  try {
+    const [xyzResponse, latticeResponse] = await Promise.all([fetch(structurePath), fetch(latticePath)]);
+    if (!xyzResponse.ok || !latticeResponse.ok) throw new Error("Structure data is unavailable");
+    const [xyzText, latticeData] = await Promise.all([xyzResponse.text(), latticeResponse.json()]);
+    const lattice = latticeData.matrix_angstrom;
+    if (!Array.isArray(lattice) || lattice.length !== 3) throw new Error("Lattice data is unavailable");
+
+    const cif = buildCIF(job, kind, parseXYZ(xyzText), lattice);
+    const url = URL.createObjectURL(new Blob([cif], { type: "chemical/x-cif" }));
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `${String(job.job_id).replace(/[^A-Za-z0-9._-]/g, "_")}_${kind}.cif`;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(url);
+  } catch (error) {
+    console.error(error);
+    alert(`Could not create ${kind} CIF: ${error.message}`);
+  } finally {
+    button.disabled = false;
+    button.textContent = originalLabel;
+  }
+}
+
 function renderJobs(jobs) {
   const el = document.getElementById("jobs");
   el.innerHTML = "";
@@ -697,8 +806,18 @@ function renderJobs(jobs) {
       <div class="meta"><b>Converged:</b> ${escapeHTML(job.converged ?? "-")}</div>
       <div class="meta"><b>Atoms:</b> ${escapeHTML(job.nat_latest ?? "-")}</div>
       <div class="meta"><b>Has structure:</b> ${escapeHTML(job.has_structure ?? "-")}</div>
-      <a class="button" href="job.html?job=${encodeURIComponent(job.job_id)}">Open job</a>
+      <div class="job-actions">
+        <a class="button" href="job.html?job=${encodeURIComponent(job.job_id)}">Open job</a>
+        <button class="button cif-button" type="button" data-kind="input"
+          ${job.original_structure_file && job.original_lattice_file ? "" : "disabled"}>Input CIF</button>
+        <button class="button cif-button" type="button" data-kind="output"
+          ${job.has_structure && job.structure_file && job.lattice_file ? "" : "disabled"}>Output CIF</button>
+      </div>
     `;
+
+    card.querySelectorAll(".cif-button:not(:disabled)").forEach((button) => {
+      button.addEventListener("click", () => downloadCIF(job, button.dataset.kind, button));
+    });
 
     el.appendChild(card);
   }
