@@ -1,77 +1,3 @@
----- Real-time Memory Report at c_bands before calling an iterative solver
-          4521 MiB given to the printing process from OS
-         -1472 MiB allocation reported by mallinfo(arena+hblkhd)
-        217247 MiB available memory on the node where the printing process lives
-     GPU memory used/free/total (MiB): 14386 / 1882 / 16269
-------------------
-     ethr =  2.39E-03,  avg # of iterations = 31.5
-
-     negative rho (up, down):  3.421E+03 5.357E+03
-
-     total cpu time spent up to now is     1171.2 secs
-
-     total energy              =  -70238.31073374 Ry
-     estimated scf accuracy    <  634572.04639157 Ry
-
-     total magnetization       =   -21.84 Bohr mag/cell
-     absolute magnetization    =    72.47 Bohr mag/cell
-[tb_dev] Currently allocated     0.00E+00 Mbytes, locked:    0 /   0
-[tb_pin] Currently allocated     0.00E+00 Mbytes, locked:    0 /   0
-
-     iteration #189     ecut=    60.00 Ry     beta= 0.02
-     Davidson diagonalization with overlap
-
----- Real-time Memory Report at c_bands before calling an iterative solver
-          4521 MiB given to the printing process from OS
-         -1472 MiB allocation reported by mallinfo(arena+hblkhd)
-        217189 MiB available memory on the node where the printing process lives
-     GPU memory used/free/total (MiB): 14386 / 1882 / 16269
-------------------
-     ethr =  2.39E-03,  avg # of iterations = 37.0
-
-     negative rho (up, down):  3.720E+03 4.719E+03
-
-     total cpu time spent up to now is     1186.3 secs
-
-     total energy              =   32343.73742918 Ry
-     estimated scf accuracy    <  679319.63348026 Ry
-
-     total magnetization       =     0.11 Bohr mag/cell
-     absolute magnetization    =    31.84 Bohr mag/cell
-[tb_dev] Currently allocated     0.00E+00 Mbytes, locked:    0 /   0
-[tb_pin] Currently allocated     0.00E+00 Mbytes, locked:    0 /   0
-
-     iteration #190     ecut=    60.00 Ry     beta= 0.02
-     Davidson diagonalization with overlap
-
----- Real-time Memory Report at c_bands before calling an iterative solver
-          4521 MiB given to the printing process from OS
-         -1472 MiB allocation reported by mallinfo(arena+hblkhd)
-        217205 MiB available memory on the node where the printing process lives
-     GPU memory used/free/total (MiB): 14386 / 1882 / 16269
-------------------
-     ethr =  2.39E-03,  avg # of iterations = 37.5
-
-     negative rho (up, down):  3.763E+03 4.487E+03
-
-     total cpu time spent up to now is     1199.9 secs
-
-     total energy              =   -5051.49162151 Ry
-     estimated scf accuracy    <  595530.72901188 Ry
-
-     total magnetization       =    -3.39 Bohr mag/cell
-     absolute magnetization    =    59.45 Bohr mag/cell
-[tb_dev] Currently allocated     0.00E+00 Mbytes, locked:    0 /   0
-[tb_pin] Currently allocated     0.00E+00 Mbytes, locked:    0 /   0
-
-     iteration #191     ecut=    60.00 Ry     beta= 0.02
-     Davidson diagonalization with overlap
-
----- Real-time Memory Report at c_bands before calling an iterative solver
-          4521 MiB given to the printing process from OS
-         -1472 MiB allocation reported by mallinfo(arena+hblkhd)
-        217190 MiB available memory on the node where the printing process lives
-     GPU memory used/free/total (MiB): 14386 / 1882 / 16269
 ------------------
      ethr =  2.39E-03,  avg # of iterations = 14.5
 
@@ -297,4 +223,78 @@
      convergence NOT achieved after 200 iterations: stopping
 
      Writing config to output data dir ./output/VLAB.save/ :
-     XML data file
+     XML data file, charge density
+ 
+     init_run     :     27.93s CPU     18.61s WALL (       1 calls)
+     electrons    :    978.87s CPU   1239.56s WALL (       1 calls)
+
+     Called by init_run:
+     wfcinit      :      0.35s CPU      1.61s WALL (       1 calls)
+     wfcinit:atom :      0.01s CPU      0.01s WALL (       2 calls)
+     wfcinit:wfcr :      0.25s CPU      1.43s WALL (       2 calls)
+     potinit      :      1.73s CPU      2.54s WALL (       1 calls)
+     hinit0       :     24.26s CPU     12.49s WALL (       1 calls)
+
+     Called by electrons:
+     c_bands      :    263.07s CPU    446.57s WALL (     200 calls)
+     sum_band     :    216.80s CPU    221.72s WALL (     200 calls)
+     v_of_rho     :    122.45s CPU    153.42s WALL (     201 calls)
+     v_h          :      8.08s CPU     11.03s WALL (     201 calls)
+     v_xc         :    101.53s CPU    128.64s WALL (     201 calls)
+     newd         :     89.48s CPU     95.11s WALL (     201 calls)
+     mix_rho      :     91.74s CPU     99.08s WALL (     200 calls)
+     energy_dftd3 :      0.04s CPU      0.05s WALL (       1 calls)
+
+     Called by c_bands:
+     init_us_2    :      2.60s CPU      2.62s WALL (     802 calls)
+     regterg      :    230.56s CPU    413.15s WALL (     422 calls)
+
+     Called by sum_band:
+     sum_band:wei :      0.05s CPU      0.05s WALL (     200 calls)
+     sum_band:loo :     99.07s CPU     99.63s WALL (     200 calls)
+     sum_band:buf :     14.00s CPU     14.20s WALL (     400 calls)
+     sum_band:ini :      1.30s CPU      1.30s WALL (     400 calls)
+     sum_band:cal :      1.34s CPU      1.35s WALL (     400 calls)
+     sum_band:bec :      0.71s CPU      0.71s WALL (     400 calls)
+     addusdens    :     79.09s CPU     79.44s WALL (     200 calls)
+                                       79.44s GPU  (     200 calls)
+     addusd:skk   :      1.41s CPU      1.43s WALL (     600 calls)
+                                        1.42s GPU  (     600 calls)
+
+     Called by *egterg:
+     rdiaghg      :     20.17s CPU     20.31s WALL (    4655 calls)
+                                       20.29s GPU  (    4655 calls)
+     regterg:over :     17.87s CPU     17.94s WALL (    4233 calls)
+     regterg:upda :      9.35s CPU      9.35s WALL (    4233 calls)
+     regterg:last :     13.14s CPU     13.13s WALL (    2092 calls)
+     h_psi        :    159.38s CPU    342.88s WALL (    4657 calls)
+     s_psi        :      1.81s CPU      1.85s WALL (    4657 calls)
+     g_psi        :      0.96s CPU      0.98s WALL (    4233 calls)
+
+     Called by h_psi:
+     h_psi:calbec :      9.91s CPU     10.05s WALL (    4657 calls)
+     vloc_psi     :    139.93s CPU    323.19s WALL (    4657 calls)
+                                      323.17s GPU  (    4657 calls)
+     add_vuspsi   :      0.91s CPU      0.96s WALL (    4657 calls)
+
+     General routines
+     calbec       :     11.21s CPU     11.35s WALL (    5057 calls)
+     fft          :    209.04s CPU    277.90s WALL (    3618 calls)
+                                      157.27s GPU  (    3216 calls)
+     ffts         :     25.21s CPU     26.75s WALL (     602 calls)
+                                        2.32s GPU  (     200 calls)
+     fftw         :    127.77s CPU    351.34s WALL (   47238 calls)
+                                      351.14s GPU  (   47238 calls)
+     interpolate  :    139.96s CPU    166.16s WALL (     402 calls)
+     davcio       :      0.00s CPU      0.14s WALL (      20 calls)
+ 
+     Parallel routines
+ 
+     PWSCF        :  16m51.88s CPU  20m59.56s WALL
+
+ 
+   This run was terminated on:  23:34:12   5Nov2026            
+
+=------------------------------------------------------------------------------=
+   JOB DONE.
+=------------------------------------------------------------------------------=
