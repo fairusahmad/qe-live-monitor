@@ -1,25 +1,300 @@
+                l(3) =   1
+                l(4) =   1
+                l(5) =   2
+                l(6) =   2
+     Q(r) pseudized with 0 coefficients 
 
-     Program PWSCF v.7.5 starts on  9Nov2026 at 15:40:20 
 
-     This program is part of the open-source Quantum ESPRESSO suite
-     for quantum simulation of materials; please cite
-         "P. Giannozzi et al., J. Phys.:Condens. Matter 21 395502 (2009);
-         "P. Giannozzi et al., J. Phys.:Condens. Matter 29 465901 (2017);
-         "P. Giannozzi et al., J. Chem. Phys. 152 154105 (2020);
-          URL http://www.quantum-espresso.org", 
-     in publications or presentations arising from this work. More details at
-     http://www.quantum-espresso.org/quote
+     atomic species   valence    mass     pseudopotential
+     C                 4.00    12.01100     C ( 1.00)
+     N                 5.00    14.00700     N ( 1.00)
+     MN               15.00    54.93800     Mn( 1.00)
 
-     Parallel version (MPI & OpenMP), running on      80 processor cores
-     Number of MPI processes:                 2
-     Threads/MPI process:                    40
+     Starting magnetic structure 
+     atomic species   magnetization
+     C               0.000
+     N               0.000
+     MN              0.300
 
-     MPI processes distributed on     1 nodes
-     220010 MiB available memory on the printing compute node when the environment starts
- 
-     Reading input from input.pw_relax.x
+      4 Sym. Ops. (no inversion) found ( 2 have fractional translation)
 
-     Current dimensions of program PWSCF are:
-     Max number of different atomic species (ntypx) = 10
-     Max number of k-points (npk) =  40000
-     Max angular momentum in pseudopotentials (lmaxx) =  4
+
+                                    s                        frac. trans.
+
+      isym =  1     identity                                     
+
+ cryst.   s( 1) = (     1          0          0      )
+                  (     0          1          0      )
+                  (     0          0          1      )
+
+ cart.    s( 1) = (  1.0000000 -0.0000000  0.0000000 )
+                  (  0.0000000  1.0000000  0.0000000 )
+                  (  0.0000000  0.0000000  1.0000000 )
+
+
+      isym =  2     180 deg rotation - cart. axis [0,0,1]        
+
+ cryst.   s( 2) = (    -1          0          0      )
+                  (     0         -1          0      )
+                  (     0          0          1      )
+
+ cart.    s( 2) = ( -1.0000000  0.0000000  0.0000000 )
+                  (  0.0000000 -1.0000000  0.0000000 )
+                  (  0.0000000  0.0000000  1.0000000 )
+
+
+      isym =  3     inv. 180 deg rotation - cryst. axis [1,-1,0] 
+
+ cryst.   s( 3) = (    -1          1          0      )    f =(  0.0000000 )
+                  (     0          1          0      )       (  0.5000000 )
+                  (     0          0          1      )       (  0.0000000 )
+
+ cart.    s( 3) = ( -0.5000000  0.8660254  0.0000000 )    f =(  0.2500000 )
+                  (  0.8660254  0.5000000  0.0000000 )       (  0.4330127 )
+                  (  0.0000000  0.0000000  1.0000000 )       (  0.0000000 )
+
+
+      isym =  4     inv. 180 deg rotation - cryst. axis [1,1,0]  
+
+ cryst.   s( 4) = (     1         -1          0      )    f =(  0.0000000 )
+                  (     0         -1          0      )       (  0.5000000 )
+                  (     0          0          1      )       (  0.0000000 )
+
+ cart.    s( 4) = (  0.5000000 -0.8660254  0.0000000 )    f =(  0.2500000 )
+                  ( -0.8660254 -0.5000000  0.0000000 )       (  0.4330127 )
+                  (  0.0000000  0.0000000  1.0000000 )       (  0.0000000 )
+
+
+   Cartesian axes
+
+     site n.     atom                  positions (alat units)
+         1        C      tau(   1) = (   0.5009684   0.8078817   0.8187816  )
+         2        C      tau(   2) = (   0.9990316   0.0581437   0.8187816  )
+         3        C      tau(   3) = (   0.0974822   0.1174694   0.8187815  )
+         4        C      tau(   4) = (   1.0944895   0.2341216   0.8187815  )
+         5        C      tau(   5) = (   0.1970097   0.2898559   0.8187815  )
+         6        C      tau(   6) = (   1.1991619   0.4047795   0.8187816  )
+         7        C      tau(   7) = (   0.3008381   0.4612459   0.8187816  )
+         8        C      tau(   8) = (   1.3029903   0.5761695   0.8187815  )
+         9        C      tau(   9) = (   0.4055105   0.6319038   0.8187815  )
+        10        C      tau(  10) = (   1.4025178   0.7485560   0.8187815  )
+        11        C      tau(  11) = (   0.7001516   0.8097988   0.8187815  )
+        12        C      tau(  12) = (   0.1983074   0.0596711   0.8187815  )
+        13        C      tau(  13) = (   0.2983051   0.1164486   0.8187814  )
+        14        C      tau(  14) = (   0.2974770   0.2314379   0.8187815  )
+        15        C      tau(  15) = (   0.3987695   0.2877897   0.8187815  )
+        16        C      tau(  16) = (   0.4007024   0.4027574   0.8187815  )
+        17        C      tau(  17) = (   0.5044719   0.4558520   0.8187806  )
+        18        C      tau(  18) = (   0.5064417   0.5736311   0.8187809  )
+        19        C      tau(  19) = (   0.6074565   0.6342266   0.8187806  )
+        20        C      tau(  20) = (   0.6015530   0.7506410   0.8187815  )
+        21        C      tau(  21) = (   0.9001450   0.8090496   0.8187816  )
+        22        C      tau(  22) = (   0.3994770   0.0580370   0.8187815  )
+        23        C      tau(  23) = (   0.4994150   0.1149649   0.8187816  )
+        24        C      tau(  24) = (   0.4990056   0.2301407   0.8187815  )
+        25        C      tau(  25) = (   0.5980454   0.2907982   0.8187805  )
+        26        N      tau(  26) = (   0.5988857   0.3989468   0.8187792  )
+        27        N      tau(  27) = (   0.7039448   0.5809145   0.8187792  )
+        28        C      tau(  28) = (   0.7971841   0.6357165   0.8187805  )
+        29        C      tau(  29) = (   0.8001951   0.7518163   0.8187815  )
+        30        C      tau(  30) = (   1.1005230   0.8079884   0.8187815  )
+        31        C      tau(  31) = (   0.5998550   0.0569758   0.8187816  )
+        32        C      tau(  32) = (   0.6998049   0.1142091   0.8187815  )
+        33        C      tau(  33) = (   0.7028159   0.2303089   0.8187805  )
+        34        N      tau(  34) = (   0.7960552   0.2851109   0.8187792  )
+        35        N      tau(  35) = (   0.9011143   0.4670786   0.8187792  )
+        36        C      tau(  36) = (   0.9019546   0.5752272   0.8187805  )
+        37        C      tau(  37) = (   1.0009944   0.6358847   0.8187815  )
+        38        C      tau(  38) = (   1.0005850   0.7510606   0.8187816  )
+        39        C      tau(  39) = (   1.3016926   0.8063543   0.8187815  )
+        40        C      tau(  40) = (   0.7998484   0.0562266   0.8187815  )
+        41        C      tau(  41) = (   0.8984470   0.1153844   0.8187815  )
+        42        C      tau(  42) = (   0.8925435   0.2317988   0.8187806  )
+        43        C      tau(  43) = (   0.9935583   0.2923943   0.8187809  )
+        44        C      tau(  44) = (   0.9955281   0.4101734   0.8187806  )
+        45        C      tau(  45) = (   1.0992976   0.4632680   0.8187815  )
+        46        C      tau(  46) = (   1.1012305   0.5782357   0.8187815  )
+        47        C      tau(  47) = (   1.2025230   0.6345875   0.8187815  )
+        48        C      tau(  48) = (   1.2016949   0.7495768   0.8187814  )
+        49        MN     tau(  49) = (   0.7500000   0.4330127   0.8187792  )
+
+   Crystallographic axes
+
+     site n.     atom                  positions (cryst. coord.)
+         1        C      tau(   1) = (  0.0345377  0.9328614  0.3449595  )
+         2        C      tau(   2) = (  0.9654623  0.0671386  0.3449595  )
+         3        C      tau(   3) = (  0.0296613  0.1356420  0.3449595  )
+         4        C      tau(   4) = (  0.9593194  0.2703403  0.3449595  )
+         5        C      tau(   5) = (  0.0296613  0.3346968  0.3449595  )
+         6        C      tau(   6) = (  0.9654623  0.4673991  0.3449595  )
+         7        C      tau(   7) = (  0.0345377  0.5326009  0.3449595  )
+         8        C      tau(   8) = (  0.9703387  0.6653032  0.3449595  )
+         9        C      tau(   9) = (  0.0406806  0.7296597  0.3449595  )
+        10        C      tau(  10) = (  0.9703387  0.8643580  0.3449595  )
+        11        C      tau(  11) = (  0.2326140  0.9350751  0.3449595  )
+        12        C      tau(  12) = (  0.1638563  0.0689023  0.3449595  )
+        13        C      tau(  13) = (  0.2310734  0.1344633  0.3449595  )
+        14        C      tau(  14) = (  0.1638563  0.2672414  0.3449595  )
+        15        C      tau(  15) = (  0.2326140  0.3323109  0.3449595  )
+        16        C      tau(  16) = (  0.1681703  0.4650642  0.3449595  )
+        17        C      tau(  17) = (  0.2412856  0.5263726  0.3449591  )
+        18        C      tau(  18) = (  0.1752556  0.6623722  0.3449592  )
+        19        C      tau(  19) = (  0.2412856  0.7323418  0.3449591  )
+        20        C      tau(  20) = (  0.1681703  0.8667655  0.3449595  )
+        21        C      tau(  21) = (  0.4330400  0.9342100  0.3449595  )
+        22        C      tau(  22) = (  0.3659693  0.0670153  0.3449595  )
+        23        C      tau(  23) = (  0.4330400  0.1327500  0.3449595  )
+        24        C      tau(  24) = (  0.3661338  0.2657436  0.3449595  )
+        25        C      tau(  25) = (  0.4301530  0.3357848  0.3449590  )
+        26        N      tau(  26) = (  0.3685536  0.4606641  0.3449585  )
+        27        N      tau(  27) = (  0.3685536  0.6707822  0.3449585  )
+        28        C      tau(  28) = (  0.4301530  0.7340622  0.3449590  )
+        29        C      tau(  29) = (  0.3661338  0.8681226  0.3449595  )
+        30        C      tau(  30) = (  0.6340307  0.9329847  0.3449595  )
+        31        C      tau(  31) = (  0.5669600  0.0657900  0.3449595  )
+        32        C      tau(  32) = (  0.6338662  0.1318774  0.3449595  )
+        33        C      tau(  33) = (  0.5698470  0.2659378  0.3449590  )
+        34        N      tau(  34) = (  0.6314464  0.3292178  0.3449585  )
+        35        N      tau(  35) = (  0.6314464  0.5393359  0.3449585  )
+        36        C      tau(  36) = (  0.5698470  0.6642152  0.3449590  )
+        37        C      tau(  37) = (  0.6338662  0.7342564  0.3449595  )
+        38        C      tau(  38) = (  0.5669600  0.8672500  0.3449595  )
+        39        C      tau(  39) = (  0.8361437  0.9310977  0.3449595  )
+        40        C      tau(  40) = (  0.7673860  0.0649249  0.3449595  )
+        41        C      tau(  41) = (  0.8318297  0.1332345  0.3449595  )
+        42        C      tau(  42) = (  0.7587144  0.2676582  0.3449591  )
+        43        C      tau(  43) = (  0.8247444  0.3376278  0.3449592  )
+        44        C      tau(  44) = (  0.7587144  0.4736274  0.3449591  )
+        45        C      tau(  45) = (  0.8318297  0.5349358  0.3449595  )
+        46        C      tau(  46) = (  0.7673860  0.6676891  0.3449595  )
+        47        C      tau(  47) = (  0.8361437  0.7327586  0.3449595  )
+        48        C      tau(  48) = (  0.7689266  0.8655367  0.3449595  )
+        49        MN     tau(  49) = (  0.5000000  0.5000000  0.3449585  )
+
+     number of k points=     1  Marzari-Vanderbilt smearing, width (Ry)=  0.0200
+                       cart. coord. in units 2pi/alat
+        k(    1) = (   0.0000000   0.0000000   0.0000000), wk =   1.0000000
+
+                       cryst. coord.
+        k(    1) = (   0.0000000   0.0000000   0.0000000), wk =   1.0000000
+
+     Dense  grid:  2244147 G-vectors     FFT dimensions: ( 162, 162, 384)
+
+     Smooth grid:   793429 G-vectors     FFT dimensions: ( 120, 120, 288)
+
+     Dynamical RAM for                 wfc:      96.09 MB
+
+     Dynamical RAM for     wfc (w. buffer):     288.26 MB
+
+     Dynamical RAM for           str. fact:      51.36 MB
+
+     Dynamical RAM for           local pot:       0.00 MB
+
+     Dynamical RAM for          nlocal pot:     304.15 MB
+
+     Dynamical RAM for                qrad:       5.27 MB
+
+     Dynamical RAM for          rho,v,vnew:     333.39 MB
+
+     Dynamical RAM for               rhoin:     111.13 MB
+
+     Dynamical RAM for            rho*nmix:     547.89 MB
+
+     Dynamical RAM for           G-vectors:      67.23 MB
+
+     Dynamical RAM for          h,s,v(r/c):       1.48 MB
+
+     Dynamical RAM for          <psi|beta>:       0.39 MB
+
+     Dynamical RAM for                 psi:     192.17 MB
+
+     Dynamical RAM for                hpsi:     192.17 MB
+
+     Dynamical RAM for                spsi:     192.17 MB
+
+     Dynamical RAM for      wfcinit/wfcrot:     192.54 MB
+
+     Dynamical RAM for           addusdens:    3955.07 MB
+
+     Dynamical RAM for          addusforce:    5427.87 MB
+
+     Estimated static dynamical RAM per process >       1.43 GB
+
+     Estimated max dynamical RAM per process >       7.26 GB
+
+     Estimated total dynamical RAM >      14.52 GB
+     Generating pointlists ...
+     new r_m :   0.0446 (alat units)  1.0296 (a.u.) for type    1
+     new r_m :   0.0446 (alat units)  1.0296 (a.u.) for type    2
+     new r_m :   0.0639 (alat units)  1.4748 (a.u.) for type    3
+
+     Initial potential from superposition of free atoms
+
+     starting charge     210.9980, renormalised to     211.0000
+
+     negative rho (up, down):  3.125E-03 1.979E-03
+     Starting wfcs are  202 randomized atomic wfcs
+
+     total cpu time spent up to now is       11.6 secs
+
+     per-process dynamical memory:  1253.6 Mb
+
+     Self-consistent Calculation
+[tb_dev] Currently allocated     1.88E+00 Mbytes, locked:    0 /   3
+[tb_pin] Currently allocated     0.00E+00 Mbytes, locked:    0 /   0
+
+     iteration #  1     ecut=    60.00 Ry     beta= 0.05
+     Davidson diagonalization with overlap
+
+---- Real-time Memory Report at c_bands before calling an iterative solver
+          3332 MiB given to the printing process from OS
+          1335 MiB allocation reported by mallinfo(arena+hblkhd)
+        214187 MiB available memory on the node where the printing process lives
+     GPU memory used/free/total (MiB): 7618 / 8650 / 16269
+------------------
+     ethr =  1.00E-02,  avg # of iterations =  3.0
+
+     negative rho (up, down):  3.103E-03 1.994E-03
+
+     total cpu time spent up to now is       15.2 secs
+
+     total energy              =    -838.29711528 Ry
+     estimated scf accuracy    <       5.85984244 Ry
+
+     total magnetization       =     3.19 Bohr mag/cell
+     absolute magnetization    =     4.46 Bohr mag/cell
+[tb_dev] Currently allocated     0.00E+00 Mbytes, locked:    0 /   0
+[tb_pin] Currently allocated     0.00E+00 Mbytes, locked:    0 /   0
+
+     iteration #  2     ecut=    60.00 Ry     beta= 0.05
+     Davidson diagonalization with overlap
+
+---- Real-time Memory Report at c_bands before calling an iterative solver
+          3535 MiB given to the printing process from OS
+          1595 MiB allocation reported by mallinfo(arena+hblkhd)
+        213783 MiB available memory on the node where the printing process lives
+     GPU memory used/free/total (MiB): 8852 / 7416 / 16269
+------------------
+     ethr =  2.78E-03,  avg # of iterations =  1.0
+
+     negative rho (up, down):  9.791E-03 6.310E-03
+
+     total cpu time spent up to now is       18.2 secs
+
+     total energy              =    -836.65426387 Ry
+     estimated scf accuracy    <       5.00304759 Ry
+
+     total magnetization       =     3.09 Bohr mag/cell
+     absolute magnetization    =     4.39 Bohr mag/cell
+[tb_dev] Currently allocated     0.00E+00 Mbytes, locked:    0 /   0
+[tb_pin] Currently allocated     0.00E+00 Mbytes, locked:    0 /   0
+
+     iteration #  3     ecut=    60.00 Ry     beta= 0.05
+     Davidson diagonalization with overlap
+
+---- Real-time Memory Report at c_bands before calling an iterative solver
+          3562 MiB given to the printing process from OS
+          1620 MiB allocation reported by mallinfo(arena+hblkhd)
+        213728 MiB available memory on the node where the printing process lives
+     GPU memory used/free/total (MiB): 8852 / 7416 / 16269
+------------------
