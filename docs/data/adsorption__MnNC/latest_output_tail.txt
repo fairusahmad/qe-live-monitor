@@ -1,5 +1,5 @@
 
-     Program PWSCF v.7.5 starts on  9Nov2026 at 13:24: 0 
+     Program PWSCF v.7.5 starts on  9Nov2026 at 13:25:49 
 
      This program is part of the open-source Quantum ESPRESSO suite
      for quantum simulation of materials; please cite
@@ -15,7 +15,7 @@
      Threads/MPI process:                    40
 
      MPI processes distributed on     1 nodes
-     220121 MiB available memory on the printing compute node when the environment starts
+     220175 MiB available memory on the printing compute node when the environment starts
  
      Reading input from input.pw_relax.x
 
@@ -23,4 +23,10 @@
      Max number of different atomic species (ntypx) = 10
      Max number of k-points (npk) =  40000
      Max angular momentum in pseudopotentials (lmaxx) =  4
-     file Mn.rel-pbe-spn-rrkjus_psl.1.0.0.UPF: wavefunction(s)  3S 3P 3P renormalized
+
+ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+     Error in routine iosys (1):
+     noncolin .and. nspin==2 are conflicting flags
+ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+     stopping ...
