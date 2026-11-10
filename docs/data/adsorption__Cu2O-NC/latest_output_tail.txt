@@ -1,186 +1,300 @@
-&CONTROL
-calculation = 'relax'
-forc_conv_thr = 1d-3
-nstep = 200
-outdir = './output/'
-prefix = 'VLAB'
-pseudo_dir = '/home/node1/PSP/PseudosP/pslibrary-master/pz/PSEUDOPOTENTIALS/'
-restart_mode = 'from_scratch'
-tprnfor = .TRUE.
-verbosity = 'high'
-wf_collect = .TRUE.
-/
-&system
-  ibrav         = 0,
-  nat           = 121,
-
-  ntyp          = 5,
- ecutwfc = 60
- ecutrho = 710
-
-starting_magnetization(1) = 0.0
-starting_magnetization(2) = 0.0
-starting_magnetization(3) = 0.3
-  occupations = 'smearing',
-  smearing = 'mv',
- degauss = 0.02
-
-nspin = 2
-lspinorb=.false.
- nosym = .false.
- noinv = .false.
- noncolin = .false.
-
- !vdw_corr = 'grimme-d3'
-/
-&electrons
-  conv_thr            = 2d-7,
-electron_maxstep = 400
-mixing_mode = 'plain'
-mixing_beta = 0.05
-scf_must_converge = .TRUE.
-/
-&ions
-  ion_dynamics      = 'bfgs',
-  upscale       = 100.,
-/
-
-ATOMIC_SPECIES
-C 12.011 C.pz-n-rrkjus_psl.1.0.0.UPF
-N 14.007 N.pz-n-rrkjus_psl.1.0.0.UPF
-MN 54.938 Mn.pz-spn-rrkjus_psl.1.0.0.UPF
-Cu 63.546 Cu.pz-dn-rrkjus_psl.1.0.0.UPF
-O 15.999 O.pz-n-rrkjus_psl.1.0.0.UPF
-
-ATOMIC_POSITIONS angstrom
-C                6.1192457836        9.8646359048       10.0000021363
-C               12.2006683854        0.7123714722       10.0000021363
-C                1.1940554255        1.4373731295       10.0000030079
-C               13.3737471584        2.8556708555       10.0000009805
-C                2.4055450964        3.5357347917       10.0000030079
-C               14.6433594849        4.9432365648       10.0000021363
-C                3.6765546841        5.6337708122       10.0000021363
-C               15.9143690726        7.0412725853       10.0000030079
-C                4.9461670106        7.7213365215       10.0000009805
-C               17.1258587435        9.1396342475       10.0000030079
-C                8.5515980327        9.8984476807       10.0000027765
-C                2.4240269331        0.7275448651       10.0000055277
-C                3.6507862755        1.4178866866       10.0000078168
-C                3.6352601590        2.8254623532       10.0000055277
-C                4.8634489513        3.5103860863       10.0000027765
-C                4.9043067639        4.9185600801        9.9999999600
-C                6.1666483474        5.5776063491        9.9999935954
-C                6.1890141723        7.0037783781        9.9999947158
-C                7.4129324680        7.7362337651        9.9999935954
-C                7.3525124875        9.1589767803        9.9999999600
-C               11.0062242661        9.8919566351       10.0000053681
-C                4.8684385401        0.7148748238       10.0000081733
-C                6.0963834785        1.3878629331       10.0000053681
-C                6.0825624738        2.7900460314       10.0000007947
-C                7.2933814416        3.4686442121        9.9999935332
-N                7.3260825656        4.8432565986        9.9999871639
-N                8.6286151159        7.0993091542        9.9999871639
-C                9.8027138009        7.8149353515        9.9999935332
-C                9.7849875809        9.2028344276       10.0000007947
-C               13.4514756289        9.8621325532       10.0000081733
-C                7.3136899029        0.6850507419       10.0000053681
-C                8.5349265881        1.3741729494       10.0000007947
-C                8.5172003681        2.7620720255        9.9999935332
-N                9.6912990531        3.4776982228        9.9999871639
-N               10.9938316034        5.7337507784        9.9999871639
-C               11.0265327274        7.1083631649        9.9999935332
-C               12.2373516952        7.7869613456       10.0000007947
-C               12.2235306905        9.1891444439       10.0000053681
-C               15.8958872359        9.8494625119       10.0000055277
-C                9.7683161363        0.6785596963       10.0000027765
-C               10.9674016815        1.4180305967        9.9999999600
-C               10.9069817010        2.8407736119        9.9999935954
-C               12.1308999967        3.5732289989        9.9999947158
-C               12.1532658216        4.9994010279        9.9999935954
-C               13.4156074051        5.6584472969        9.9999999600
-C               13.4564652177        7.0666212907       10.0000027765
-C               14.6846540100        7.7515450238       10.0000055277
-C               14.6691278935        9.1591206904       10.0000078168
-MN               9.1599570845        5.2885036885        9.9999774875
-Cu               1.4811696376        0.8551536886       13.7228532190
-Cu               4.6254668063        0.8551515880       13.7228526133
-Cu               3.0533164028        3.5781959649       13.7228526133
-Cu               6.1066380560        3.5256691260       13.6070431114
-O                3.0533192618        1.7628346980       14.0529290231
-O                0.0000000000        0.0000000000       13.1580343125
-Cu               7.6332966322        4.4070858656       15.8944686361
-Cu               4.5799794798        4.4070858656       15.8944686361
-Cu               6.1066380560        1.7628356458       15.8944686361
-Cu               3.0533175183        1.7628336914       15.8944624789
-O                6.1066380560        0.0000024514       16.3536059605
-O                6.1066380560        3.5256691260       15.4353256595
-Cu               4.6254654653        2.6705137314       18.0660654198
-Cu               7.5878106467        2.6705137314       18.0660654198
-Cu               3.0533175745       -0.0525253838       18.0660697178
-Cu               9.1599958851        5.2885260898       18.1818896363
-O                6.1066380560        3.5256691260       18.6308683389
-O                3.0533172123        1.7628335147       17.7359984733
-Cu               4.5344876525        6.1436598241       13.7228526133
-Cu               7.6787884595        6.1436598241       13.7228526133
-Cu               6.1066380560        8.8666999988       13.7228532190
-Cu               9.1599331432        8.8141866362       13.6070396163
-O                6.1066380560        7.0513379810       14.0529290231
-O                3.0533192386        5.2885035664       13.1580377890
-Cu              10.6866196839        9.6955865975       15.8944665466
-Cu               7.6333004819        9.6955884138       15.8944708859
-Cu               9.1599616559        7.0513373273       15.8944665466
-Cu               6.1066380560        7.0513399942       15.8944624789
-O                9.1599549611        5.2885024623       16.3536059605
-O                9.1599600961        8.8141710750       15.4353230539
-Cu               7.6787851599        7.9590194836       18.0660697178
-Cu              10.6411281914        7.9590182768       18.0660689033
-Cu               6.1066380560        5.2359799132       18.0660654198
-Cu              12.2132761130       10.5769625733       18.1818896363
-O                9.1599568930        8.8141729243       18.6308784598
-O                6.1066380560        7.0513403476       17.7359984733
-Cu               7.5878093057        0.8551515880       13.7228526133
-Cu              10.7321064744        0.8551536886       13.7228532190
-Cu               9.1599597092        3.5781959649       13.7228526133
-Cu              12.2132761130        3.5256414815       13.6070396163
-O                9.1599568502        1.7628346980       14.0529290231
-O                6.1066380560        0.0000002431       13.1580377890
-Cu              13.7399341410        4.4070908282       15.8944665466
-Cu              10.6866180840        4.4070908282       15.8944665466
-Cu              12.2132761130        1.7628379253       15.8944708859
-Cu               9.1599585937        1.7628336914       15.8944624789
-O                0.0000000000        0.0000000000       16.3535979773
-O               12.2132761130        3.5256726040       15.4353230539
-Cu              10.7321056414        2.6705132771       18.0660697178
-Cu               1.4811704706        2.6705132771       18.0660697178
-Cu               9.1599585375       -0.0525253838       18.0660697178
-Cu              15.2665563399        5.2885260898       18.1818896363
-O               12.2132761130        3.5256689054       18.6308784598
-O                9.1599588997        1.7628335147       17.7359984733
-Cu              10.6411255094        6.1436566778       13.7228543469
-Cu              13.7854267156        6.1436566778       13.7228543469
-Cu              12.2132761130        8.8667013984       13.7228543469
-Cu              15.2666190818        8.8141866362       13.6070396163
-O               12.2132761130        7.0513382510       14.0529223446
-O                9.1599568734        5.2885035664       13.1580377890
-Cu              16.7932517431        9.6955884138       15.8944708859
-Cu              13.7399325411        9.6955865975       15.8944665466
-Cu              15.2665905691        7.0513373273       15.8944665466
-Cu              12.2132761130        7.0513382510       15.8944573132
-O                3.0533211509        5.2885024623       16.3536059605
-O               15.2665921289        8.8141710750       15.4353230539
-Cu              13.7854240336        7.9590182768       18.0660689033
-Cu               4.5344909521        7.9590194836       18.0660697178
-Cu              12.2132761130        5.2359782004       18.0660689033
-Cu               6.1066380560       10.5770073770       18.1818831947
-O               15.2665953320        8.8141729243       18.6308784598
-O               12.2132761130        7.0513382510       17.7359958477
+C               14.6760180380        9.1551426636       10.0018795972
+Cu               1.4817586040        0.8554391932       13.7219125219
+Cu               4.6248438058        0.8555112775       13.7219810685
+Cu               3.0533636317        3.5775431528       13.7219119162
+Cu               6.1068742147        3.5254020220       13.6045140540
+O                3.0533584163        1.7628120922       14.0534464272
+O                0.0000673541       -0.0000392317       13.1565068153
+Cu               7.6333695453        4.4071527709       15.8942378159
+Cu               4.5799804876        4.4070607954       15.8945363082
+Cu               6.1066044300        1.7628260484       15.8945438737
+Cu               3.0533354738        1.7628233248       15.8945477832
+O                6.1066175987        0.0000142624       16.3533998993
+O                6.1063845006        3.5255800209       15.4351733045
+Cu               4.6254417681        2.6704979651       18.0662386171
+Cu               7.5878249228        2.6705265159       18.0662063861
+Cu               3.0533193799       -0.0524969782       18.0662429151
+Cu               9.1599939053        5.2885272328       18.1815534818
+O                6.1066534603        3.5256749299       18.6311296903
+O                3.0533137594        1.7628355082       17.7354655733
+Cu               4.5352140844        6.1441372914       13.7220395144
+Cu               7.6798512573        6.1430462175       13.7209409567
+Cu               6.1065877731        8.8658321567       13.7220401201
+Cu               9.1602825414        8.8141156687       13.6045105589
+O                6.1064150144        7.0514667541       14.0535630196
+O                3.0533868914        5.2884648519       13.1565102918
+Cu              10.6866111825        9.6956205172       15.8945417842
+Cu               7.6333226972        9.6956000761       15.8945385580
+Cu               9.1599401708        7.0512407300       15.8942357264
+Cu               6.1066343527        7.0513421323       15.8943764935
+O                9.1599707242        5.2884933615       16.3542613592
+O                9.1599104857        8.8144352130       15.4351706989
+Cu               7.6787906559        7.9589955258       18.0661965131
+Cu              10.6411242578        7.9589995211       18.0662098696
+Cu               6.1066615520        5.2359871324       18.0661922151
+Cu              12.2132804778       10.5769600533       18.1816368082
+O                9.1599595688        8.8141566818       18.6311398112
+O                6.1066413001        7.0513384746       17.7355140276
+Cu               7.5885825057        0.8554836860       13.7219505467
+Cu              10.7313995863        0.8554579715       13.7218920701
+Cu               9.1599232560        3.5794491401       13.7211069464
+Cu              12.2129809193        3.5258119116       13.6038714352
+O                9.1599078590        1.7626009536       14.0535015419
+O                6.1066059528        0.0000187779       13.1560726677
+Cu              13.7399209819        4.4070671244       15.8944385598
+Cu              10.6865153643        4.4071501335       15.8941998979
+Cu              12.2132900615        1.7628611734       15.8944428991
+Cu               9.1599486080        1.7628287920       15.8944430991
+O                0.0000082393       -0.0000193411       16.3535104145
+O               12.2134781429        3.5255559620       15.4349966889
+Cu              10.7320925258        2.6705251911       18.0661973373
+Cu               1.4812005249        2.6704959252       18.0662487574
+Cu               9.1599574056       -0.0525131861       18.0662223209
+Cu              15.2665622033        5.2885359613       18.1816289406
+O               12.2132619245        3.5256770972       18.6311316094
+O                9.1599662926        1.7628438129       17.7354927475
+Cu              10.6400220012        6.1430616596       13.7211086800
+Cu              13.7848097548        6.1441167194       13.7218931980
+Cu              12.2133751077        8.8658657385       13.7219522803
+Cu              15.2663025224        8.8143694018       13.6044937257
+O               12.2134540460        7.0514975508       14.0534948634
+O                9.1600049126        5.2884758310       13.1608060643
+Cu              16.7933015228        9.6956154679       15.8945905469
+Cu              13.7398834344        9.6956149492       15.8946160777
+Cu              15.2665920294        7.0512806898       15.8945862076
+Cu              12.2132753632        7.0513493485       15.8944379334
+O                3.0533420204        5.2885049974       16.3535183977
+O               15.2666490602        8.8141382057       15.4350516087
+Cu              13.7854129041        7.9590131582       18.0662215064
+Cu               4.5345084042        7.9590094076       18.0662094558
+Cu              12.2132592374        5.2359836018       18.0661965228
+Cu               6.1066324387       10.5769973634       18.1816224990
+O               15.2665918775        8.8141749188       18.6311725630
+O               12.2132708909        7.0513266995       17.7354901219
 
 
 
-K_POINTS {gamma}
+     Writing config-only to output data dir ./output/VLAB.save/ :
+     XML data file
+     NEW-OLD atomic charge density approx. for the potential
 
+     negative rho (up, down):  1.449E-03 0.000E+00
 
-CELL_PARAMETERS angstrom
- 12.213276113   0.000000000   0.000000000
-  6.106638056  10.577007377   0.000000000
-  0.000000000   0.000000000  28.988924974
+     total cpu time spent up to now is      157.1 secs
+
+     per-process dynamical memory:  1803.1 Mb
+
+     Self-consistent Calculation
+[tb_dev] Currently allocated     0.00E+00 Mbytes, locked:    0 /   0
+[tb_pin] Currently allocated     0.00E+00 Mbytes, locked:    0 /   0
+
+     iteration #  1     ecut=    60.00 Ry     beta= 0.05
+     Davidson diagonalization with overlap
+
+---- Real-time Memory Report at c_bands before calling an iterative solver
+          4958 MiB given to the printing process from OS
+          1760 MiB allocation reported by mallinfo(arena+hblkhd)
+        207749 MiB available memory on the node where the printing process lives
+     GPU memory used/free/total (MiB): 14024 / 2244 / 16269
+------------------
+     ethr =  1.00E-06,  avg # of iterations = 10.0
+     Minimization algorithm failed to find Fermi energy: reverting to bisection
+     Possible cause: smearing is larger than the electronic band-gap.
+
+     negative rho (up, down):  1.449E-03 0.000E+00
+
+     total cpu time spent up to now is      163.3 secs
+
+     total energy              =   -7274.38523138 Ry
+     estimated scf accuracy    <       0.00159082 Ry
+[tb_dev] Currently allocated     0.00E+00 Mbytes, locked:    0 /   0
+[tb_pin] Currently allocated     0.00E+00 Mbytes, locked:    0 /   0
+
+     iteration #  2     ecut=    60.00 Ry     beta= 0.05
+     Davidson diagonalization with overlap
+
+---- Real-time Memory Report at c_bands before calling an iterative solver
+          4958 MiB given to the printing process from OS
+          1835 MiB allocation reported by mallinfo(arena+hblkhd)
+        207700 MiB available memory on the node where the printing process lives
+     GPU memory used/free/total (MiB): 13886 / 2382 / 16269
+------------------
+     ethr =  1.83E-07,  avg # of iterations =  2.0
+     Minimization algorithm failed to find Fermi energy: reverting to bisection
+     Possible cause: smearing is larger than the electronic band-gap.
+
+     negative rho (up, down):  1.449E-03 0.000E+00
+
+     total cpu time spent up to now is      168.0 secs
+
+     total energy              =   -7274.38533141 Ry
+     estimated scf accuracy    <       0.00051902 Ry
+[tb_dev] Currently allocated     0.00E+00 Mbytes, locked:    0 /   0
+[tb_pin] Currently allocated     0.00E+00 Mbytes, locked:    0 /   0
+
+     iteration #  3     ecut=    60.00 Ry     beta= 0.05
+     Davidson diagonalization with overlap
+
+---- Real-time Memory Report at c_bands before calling an iterative solver
+          4958 MiB given to the printing process from OS
+          1853 MiB allocation reported by mallinfo(arena+hblkhd)
+        207548 MiB available memory on the node where the printing process lives
+     GPU memory used/free/total (MiB): 15074 / 1194 / 16269
+------------------
+     ethr =  5.98E-08,  avg # of iterations =  4.0
+     Minimization algorithm failed to find Fermi energy: reverting to bisection
+     Possible cause: smearing is larger than the electronic band-gap.
+
+     negative rho (up, down):  1.449E-03 0.000E+00
+
+     total cpu time spent up to now is      172.8 secs
+
+     total energy              =   -7274.38533114 Ry
+     estimated scf accuracy    <       0.00011945 Ry
+[tb_dev] Currently allocated     0.00E+00 Mbytes, locked:    0 /   0
+[tb_pin] Currently allocated     0.00E+00 Mbytes, locked:    0 /   0
+
+     iteration #  4     ecut=    60.00 Ry     beta= 0.05
+     Davidson diagonalization with overlap
+
+---- Real-time Memory Report at c_bands before calling an iterative solver
+          4958 MiB given to the printing process from OS
+          1871 MiB allocation reported by mallinfo(arena+hblkhd)
+        207575 MiB available memory on the node where the printing process lives
+     GPU memory used/free/total (MiB): 15074 / 1194 / 16269
+------------------
+     ethr =  1.38E-08,  avg # of iterations =  4.0
+     Minimization algorithm failed to find Fermi energy: reverting to bisection
+     Possible cause: smearing is larger than the electronic band-gap.
+
+     negative rho (up, down):  1.453E-03 0.000E+00
+
+     total cpu time spent up to now is      177.7 secs
+
+     total energy              =   -7274.38532187 Ry
+     estimated scf accuracy    <       0.00006731 Ry
+[tb_dev] Currently allocated     0.00E+00 Mbytes, locked:    0 /   0
+[tb_pin] Currently allocated     0.00E+00 Mbytes, locked:    0 /   0
+
+     iteration #  5     ecut=    60.00 Ry     beta= 0.05
+     Davidson diagonalization with overlap
+
+---- Real-time Memory Report at c_bands before calling an iterative solver
+          4958 MiB given to the printing process from OS
+          1877 MiB allocation reported by mallinfo(arena+hblkhd)
+        207941 MiB available memory on the node where the printing process lives
+     GPU memory used/free/total (MiB): 15074 / 1194 / 16269
+------------------
+     ethr =  7.76E-09,  avg # of iterations =  4.0
+     Minimization algorithm failed to find Fermi energy: reverting to bisection
+     Possible cause: smearing is larger than the electronic band-gap.
+
+     negative rho (up, down):  1.465E-03 0.000E+00
+
+     total cpu time spent up to now is      182.5 secs
+
+     total energy              =   -7274.38531709 Ry
+     estimated scf accuracy    <       0.00003846 Ry
+[tb_dev] Currently allocated     0.00E+00 Mbytes, locked:    0 /   0
+[tb_pin] Currently allocated     0.00E+00 Mbytes, locked:    0 /   0
+
+     iteration #  6     ecut=    60.00 Ry     beta= 0.05
+     Davidson diagonalization with overlap
+
+---- Real-time Memory Report at c_bands before calling an iterative solver
+          4958 MiB given to the printing process from OS
+          1883 MiB allocation reported by mallinfo(arena+hblkhd)
+        207886 MiB available memory on the node where the printing process lives
+     GPU memory used/free/total (MiB): 15074 / 1194 / 16269
+------------------
+     ethr =  4.43E-09,  avg # of iterations =  2.0
+     Minimization algorithm failed to find Fermi energy: reverting to bisection
+     Possible cause: smearing is larger than the electronic band-gap.
+
+     negative rho (up, down):  1.482E-03 0.000E+00
+
+     total cpu time spent up to now is      187.2 secs
+
+     total energy              =   -7274.38531754 Ry
+     estimated scf accuracy    <       0.00001426 Ry
+[tb_dev] Currently allocated     0.00E+00 Mbytes, locked:    0 /   0
+[tb_pin] Currently allocated     0.00E+00 Mbytes, locked:    0 /   0
+
+     iteration #  7     ecut=    60.00 Ry     beta= 0.05
+     Davidson diagonalization with overlap
+
+---- Real-time Memory Report at c_bands before calling an iterative solver
+          4958 MiB given to the printing process from OS
+          1913 MiB allocation reported by mallinfo(arena+hblkhd)
+        207700 MiB available memory on the node where the printing process lives
+     GPU memory used/free/total (MiB): 15074 / 1194 / 16269
+------------------
+     ethr =  1.64E-09,  avg # of iterations =  4.0
+     Minimization algorithm failed to find Fermi energy: reverting to bisection
+     Possible cause: smearing is larger than the electronic band-gap.
+
+     negative rho (up, down):  1.480E-03 0.000E+00
+
+     total cpu time spent up to now is      192.0 secs
+
+     total energy              =   -7274.38531806 Ry
+     estimated scf accuracy    <       0.00000619 Ry
+[tb_dev] Currently allocated     0.00E+00 Mbytes, locked:    0 /   0
+[tb_pin] Currently allocated     0.00E+00 Mbytes, locked:    0 /   0
+
+     iteration #  8     ecut=    60.00 Ry     beta= 0.05
+     Davidson diagonalization with overlap
+
+---- Real-time Memory Report at c_bands before calling an iterative solver
+          4973 MiB given to the printing process from OS
+          1919 MiB allocation reported by mallinfo(arena+hblkhd)
+        207704 MiB available memory on the node where the printing process lives
+     GPU memory used/free/total (MiB): 15074 / 1194 / 16269
+------------------
+     ethr =  7.13E-10,  avg # of iterations =  2.0
+     Minimization algorithm failed to find Fermi energy: reverting to bisection
+     Possible cause: smearing is larger than the electronic band-gap.
+
+     negative rho (up, down):  1.492E-03 0.000E+00
+
+     total cpu time spent up to now is      196.6 secs
+
+     total energy              =   -7274.38531724 Ry
+     estimated scf accuracy    <       0.00000407 Ry
+[tb_dev] Currently allocated     0.00E+00 Mbytes, locked:    0 /   0
+[tb_pin] Currently allocated     0.00E+00 Mbytes, locked:    0 /   0
+
+     iteration #  9     ecut=    60.00 Ry     beta= 0.05
+     Davidson diagonalization with overlap
+
+---- Real-time Memory Report at c_bands before calling an iterative solver
+          4991 MiB given to the printing process from OS
+          1925 MiB allocation reported by mallinfo(arena+hblkhd)
+        207664 MiB available memory on the node where the printing process lives
+     GPU memory used/free/total (MiB): 15074 / 1194 / 16269
+------------------
+     ethr =  4.69E-10,  avg # of iterations =  2.0
+     Minimization algorithm failed to find Fermi energy: reverting to bisection
+     Possible cause: smearing is larger than the electronic band-gap.
+
+     negative rho (up, down):  1.493E-03 0.000E+00
+
+     total cpu time spent up to now is      201.4 secs
+
+     total energy              =   -7274.38531751 Ry
+     estimated scf accuracy    <       0.00000090 Ry
+[tb_dev] Currently allocated     0.00E+00 Mbytes, locked:    0 /   0
+[tb_pin] Currently allocated     0.00E+00 Mbytes, locked:    0 /   0
+
+     iteration # 10     ecut=    60.00 Ry     beta= 0.05
+     Davidson diagonalization with overlap
+
+---- Real-time Memory Report at c_bands before calling an iterative solver
+          4997 MiB given to the printing process from OS
+          1955 MiB allocation reported by mallinfo(arena+hblkhd)
+        207587 MiB available memory on the node where the printing process lives
+     GPU memory used/free/total (MiB): 15074 / 1194 / 16269
+------------------
+     ethr =  1.04E-10,  avg # of iterations =  4.0
+     Minimization algorithm failed to find Fermi energy: reverting to bisection
+     Possible cause: smearing is larger than the electronic band-gap.
