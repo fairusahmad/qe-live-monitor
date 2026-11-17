@@ -1,25 +1,3 @@
-
-     iteration # 10     ecut=    60.00 Ry     beta= 0.05
-     Davidson diagonalization with overlap
-
----- Real-time Memory Report at c_bands before calling an iterative solver
-          2070 MiB given to the printing process from OS
-           941 MiB allocation reported by mallinfo(arena+hblkhd)
-         19701 MiB available memory on the node where the printing process lives
-------------------
-     c_bands:  2 eigenvalues not converged
-     c_bands:  2 eigenvalues not converged
-     c_bands:  2 eigenvalues not converged
-     c_bands:  1 eigenvalues not converged
-     c_bands:  1 eigenvalues not converged
-     ethr =  2.59E-06,  avg # of iterations = 11.8
-     Minimization algorithm failed to find Fermi energy: reverting to bisection
-     Possible cause: smearing is larger than the electronic band-gap.
-
-     negative rho (up, down):  7.176E-04 7.165E-04
-
-     total cpu time spent up to now is     3126.9 secs
-
      total energy              =   -6647.53263021 Ry
      estimated scf accuracy    <       0.00824043 Ry
 
@@ -297,4 +275,26 @@
           2072 MiB given to the printing process from OS
            941 MiB allocation reported by mallinfo(arena+hblkhd)
          23509 MiB available memory on the node where the printing process lives
+------------------
+     ethr =  4.93E-10,  avg # of iterations =  2.0
+     Minimization algorithm failed to find Fermi energy: reverting to bisection
+     Possible cause: smearing is larger than the electronic band-gap.
+
+     negative rho (up, down):  7.510E-04 7.510E-04
+
+     total cpu time spent up to now is     7121.1 secs
+
+     total energy              =   -6647.53180023 Ry
+     estimated scf accuracy    <       0.00000054 Ry
+
+     total magnetization       =     0.00 Bohr mag/cell
+     absolute magnetization    =     0.00 Bohr mag/cell
+
+     iteration # 24     ecut=    60.00 Ry     beta= 0.05
+     Davidson diagonalization with overlap
+
+---- Real-time Memory Report at c_bands before calling an iterative solver
+          2072 MiB given to the printing process from OS
+           941 MiB allocation reported by mallinfo(arena+hblkhd)
+         23122 MiB available memory on the node where the printing process lives
 ------------------
