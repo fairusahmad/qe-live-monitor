@@ -4,9 +4,9 @@
     "label": "adsorption / charge-density / Cu2O-MnNC / Cu2O",
     "source_dir": "/media/node1/Fairus2TB/fairus/Nguyen/adsorption/charge-density/Cu2O-MnNC/Cu2O",
     "found": true,
-    "output_file": "/media/node1/Fairus2TB/fairus/Nguyen/adsorption/charge-density/Cu2O-MnNC/Cu2O/input.pp.x",
+    "output_file": "/media/node1/Fairus2TB/fairus/Nguyen/adsorption/charge-density/Cu2O-MnNC/Cu2O/output_scf.pw.x",
     "status": "calculating...",
-    "structure_capable": false,
+    "structure_capable": true,
     "input_file": "/media/node1/Fairus2TB/fairus/Nguyen/adsorption/charge-density/Cu2O-MnNC/Cu2O/input.pw.x",
     "input_file_name": "input.pw.x",
     "input_parameters": {
@@ -26,7 +26,7 @@
       "forc_conv_thr": "1d-3"
     },
     "input_file_data": "data/adsorption__charge-density__Cu2O-MnNC__Cu2O/input.json",
-    "output_mtime": 1794928567.0038092,
+    "output_mtime": 1794936561.7544782,
     "latest_energy_ry": null,
     "latest_total_force_ry_bohr": null,
     "latest_gradient_error_ry_bohr": null,
@@ -49,7 +49,7 @@
     "original_constraints_file": "data/adsorption__charge-density__Cu2O-MnNC__Cu2O/original_constraints.json",
     "output_tail_file": "data/adsorption__charge-density__Cu2O-MnNC__Cu2O/latest_output_tail.txt",
     "atomic_positions_file": "data/adsorption__charge-density__Cu2O-MnNC__Cu2O/latest_atomic_positions.txt",
-    "note": "Output parsed, but this calculation type usually does not contain a final structure block."
+    "note": "Output parsed, but no final structure block was found."
   },
   {
     "job_id": "adsorption__charge-density__Cu2O-MnNC__MnNC",
@@ -57,7 +57,7 @@
     "source_dir": "/media/node1/Fairus2TB/fairus/Nguyen/adsorption/charge-density/Cu2O-MnNC/MnNC",
     "found": true,
     "output_file": "/media/node1/Fairus2TB/fairus/Nguyen/adsorption/charge-density/Cu2O-MnNC/MnNC/output_scf.pw.x",
-    "status": "calculating...",
+    "status": "OK",
     "structure_capable": true,
     "input_file": "/media/node1/Fairus2TB/fairus/Nguyen/adsorption/charge-density/Cu2O-MnNC/MnNC/input.pw.x",
     "input_file_name": "input.pw.x",
@@ -78,11 +78,11 @@
       "forc_conv_thr": "1d-3"
     },
     "input_file_data": "data/adsorption__charge-density__Cu2O-MnNC__MnNC/input.json",
-    "output_mtime": 1794936069.1117702,
-    "latest_energy_ry": null,
-    "latest_total_force_ry_bohr": null,
+    "output_mtime": 1794936412.405791,
+    "latest_energy_ry": -6647.53180054,
+    "latest_total_force_ry_bohr": 0.119326,
     "latest_gradient_error_ry_bohr": null,
-    "converged": false,
+    "converged": true,
     "nat_latest": 0,
     "has_structure": false,
     "num_structure_steps": 0,
