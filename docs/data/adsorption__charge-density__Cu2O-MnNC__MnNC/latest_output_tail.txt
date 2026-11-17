@@ -1,44 +1,3 @@
-
-     Dynamical RAM for      wfcinit/wfcrot:      67.91 MB
-
-     Dynamical RAM for           addusdens:     761.80 MB
-
-     Dynamical RAM for          addusforce:    1066.89 MB
-
-     Estimated static dynamical RAM per process >     808.30 MB
-
-     Estimated max dynamical RAM per process >       1.93 GB
-
-     Estimated total dynamical RAM >      73.44 GB
-     Generating pointlists ...
-     new r_m :   0.0603 (alat units)  1.3914 (a.u.) for type    1
-     new r_m :   0.0603 (alat units)  1.3914 (a.u.) for type    2
-
-     Initial potential from superposition of free atoms
-
-     starting charge     671.9918, renormalised to     672.0000
-
-     negative rho (up, down):  7.128E-04 7.128E-04
-     Starting wfcs are  528 randomized atomic wfcs
-
-     total cpu time spent up to now is      118.9 secs
-
-     per-process dynamical memory:   890.7 Mb
-
-     Self-consistent Calculation
-
-     iteration #  1     ecut=    60.00 Ry     beta= 0.05
-     Davidson diagonalization with overlap
-
----- Real-time Memory Report at c_bands before calling an iterative solver
-          1102 MiB given to the printing process from OS
-           869 MiB allocation reported by mallinfo(arena+hblkhd)
-          4059 MiB available memory on the node where the printing process lives
-------------------
-     ethr =  1.00E-02,  avg # of iterations =  2.0
-     Minimization algorithm failed to find Fermi energy: reverting to bisection
-     Possible cause: smearing is larger than the electronic band-gap.
-
      negative rho (up, down):  4.733E-04 4.722E-04
 
      total cpu time spent up to now is      396.9 secs
@@ -298,3 +257,44 @@
      ethr =  6.10E-07,  avg # of iterations =  4.9
      Minimization algorithm failed to find Fermi energy: reverting to bisection
      Possible cause: smearing is larger than the electronic band-gap.
+
+     negative rho (up, down):  7.636E-04 7.631E-04
+
+     total cpu time spent up to now is     3763.7 secs
+
+     total energy              =   -6647.53170711 Ry
+     estimated scf accuracy    <       0.00872067 Ry
+
+     total magnetization       =     0.00 Bohr mag/cell
+     absolute magnetization    =     0.01 Bohr mag/cell
+
+     iteration # 13     ecut=    60.00 Ry     beta= 0.05
+     Davidson diagonalization with overlap
+
+---- Real-time Memory Report at c_bands before calling an iterative solver
+          2072 MiB given to the printing process from OS
+           941 MiB allocation reported by mallinfo(arena+hblkhd)
+         20067 MiB available memory on the node where the printing process lives
+------------------
+     ethr =  6.10E-07,  avg # of iterations =  2.0
+     Minimization algorithm failed to find Fermi energy: reverting to bisection
+     Possible cause: smearing is larger than the electronic band-gap.
+
+     negative rho (up, down):  7.613E-04 7.608E-04
+
+     total cpu time spent up to now is     4010.2 secs
+
+     total energy              =   -6647.53035346 Ry
+     estimated scf accuracy    <       0.00270019 Ry
+
+     total magnetization       =     0.00 Bohr mag/cell
+     absolute magnetization    =     0.00 Bohr mag/cell
+
+     iteration # 14     ecut=    60.00 Ry     beta= 0.05
+     Davidson diagonalization with overlap
+
+---- Real-time Memory Report at c_bands before calling an iterative solver
+          2072 MiB given to the printing process from OS
+           941 MiB allocation reported by mallinfo(arena+hblkhd)
+         24411 MiB available memory on the node where the printing process lives
+------------------
