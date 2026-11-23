@@ -15,8 +15,8 @@
   ibrav = 0,
   nat = 169,
   ntyp = 6,
-  ecutwfc = 57,
-  ecutrho = 579,
+  ecutwfc = 60,
+  ecutrho = 600,
 
   starting_magnetization(1) = 0.0,
   starting_magnetization(2) = 0.0,
@@ -40,7 +40,7 @@
   conv_thr = 2d-6,
   electron_maxstep = 400,
   mixing_mode = 'plain',
-  mixing_beta = 0.05,
+  mixing_beta = 0.03,
   scf_must_converge = .TRUE.,
 /
 &IONS
