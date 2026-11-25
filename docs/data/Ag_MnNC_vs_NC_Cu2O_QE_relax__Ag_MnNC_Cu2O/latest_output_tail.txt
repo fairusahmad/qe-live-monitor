@@ -1,103 +1,3 @@
-CU               7.5871140102        0.8576820512       21.3797326897
-CU              10.7342394487        0.8568721741       21.3748062466
-CU               9.1574454680        3.5949233496       21.3537283163
-CU              12.2164098768        3.5238598459       21.3813364873
-O                9.1606128701        1.7649584892       21.7734055029
-O                6.1069829471       -0.0001991228       20.8069483383
-CU              13.7399356266        4.4070864070       23.7337649858    0   0   0
-CU              10.6866165985        4.4070864070       23.7337649858    0   0   0
-CU              12.2132761125        1.7628345628       23.7337649858    0   0   0
-CU               9.1599570844        1.7628345628       23.7337649858    0   0   0
-O                0.0000531283       -0.0000488600       24.1889663540
-O               12.2116256822        3.5266220020       23.2447666240
-CU              10.7345036280        2.6719696685       26.0765790093
-CU               1.4784250936        2.6720999998       26.0749807064
-CU               9.1598771822       -0.0554441074       26.0758908365
-CU              15.2668755043        5.2885802203       26.0397701244
-O               12.2132917926        3.5256600727       26.6489955782
-O                9.1599881018        1.7630658253       25.6919202722
-CU              10.6253848730        6.1374689815       21.3537283163
-CU              13.7850037381        6.1409509254       21.3748062466
-CU              12.2107396448        8.8660365655       21.3797326897
-CU              15.2528764762        8.8220932887       21.3891668718
-O               12.2117646312        7.0497083610       21.7734055029
-O                9.1590747072        5.2890131291       20.6735926027
-CU              16.7932546547        9.6955900955       23.7337649858    0   0   0
-CU              13.7399356266        9.6955900955       23.7337649858    0   0   0
-CU              15.2665951407        7.0513382513       23.7337649858    0   0   0
-CU              12.2132761125        7.0513382513       23.7337649858    0   0   0
-O                3.0533879062        5.2884821079       24.1889663540
-O               15.2672621048        8.8137877422       23.2492611262
-CU              13.7879116810        7.9605467837       26.0758908365
-CU               4.5320443291        7.9604303636       26.0762564997
-CU              12.2132152873        5.2331733923       26.0765790093
-CU               6.1067119595       10.5767263090       26.0397701244
-O               15.2665738831        8.8141850872       26.6489639901
-O               12.2130913420        7.0511957581       25.6919202722
-
-
-
-     Writing config-only to output data dir ./output/VLAB.save/ :
-     XML data file
-     NEW-OLD atomic charge density approx. for the potential
-
-     negative rho (up, down):  1.526E-03 1.534E-03
-     Generating pointlists ...
-
-     total cpu time spent up to now is    10711.0 secs
-
-     per-process dynamical memory:   508.6 Mb
-
-     Self-consistent Calculation
-
-     iteration #  1     ecut=    60.00 Ry     beta= 0.03
-     Davidson diagonalization with overlap
-
----- Real-time Memory Report at c_bands before calling an iterative solver
-          1475 MiB given to the printing process from OS
-           496 MiB allocation reported by mallinfo(arena+hblkhd)
-         11551 MiB available memory on the node where the printing process lives
-------------------
-     ethr =  1.00E-06,  avg # of iterations = 12.0
-
-     negative rho (up, down):  1.889E-03 1.902E-03
-
-     total cpu time spent up to now is    10865.1 secs
-
-     total energy              =  -11524.40914172 Ry
-     estimated scf accuracy    <       0.01665770 Ry
-
-     total magnetization       =     2.60 Bohr mag/cell
-     absolute magnetization    =     3.70 Bohr mag/cell
-
-     iteration #  2     ecut=    60.00 Ry     beta= 0.03
-     Davidson diagonalization with overlap
-
----- Real-time Memory Report at c_bands before calling an iterative solver
-          1475 MiB given to the printing process from OS
-           496 MiB allocation reported by mallinfo(arena+hblkhd)
-         15073 MiB available memory on the node where the printing process lives
-------------------
-     ethr =  1.18E-06,  avg # of iterations =  1.0
-
-     negative rho (up, down):  1.873E-03 1.885E-03
-
-     total cpu time spent up to now is    10922.8 secs
-
-     total energy              =  -11524.40900453 Ry
-     estimated scf accuracy    <       0.01661936 Ry
-
-     total magnetization       =     2.62 Bohr mag/cell
-     absolute magnetization    =     3.72 Bohr mag/cell
-
-     iteration #  3     ecut=    60.00 Ry     beta= 0.03
-     Davidson diagonalization with overlap
-
----- Real-time Memory Report at c_bands before calling an iterative solver
-          1475 MiB given to the printing process from OS
-           496 MiB allocation reported by mallinfo(arena+hblkhd)
-         15194 MiB available memory on the node where the printing process lives
-------------------
      ethr =  1.18E-06,  avg # of iterations =  1.0
 
      negative rho (up, down):  1.880E-03 1.870E-03
@@ -297,4 +197,104 @@ O               12.2130913420        7.0511957581       25.6919202722
           1475 MiB given to the printing process from OS
            496 MiB allocation reported by mallinfo(arena+hblkhd)
          10665 MiB available memory on the node where the printing process lives
+------------------
+     ethr =  2.44E-09,  avg # of iterations =  4.0
+
+     negative rho (up, down):  2.546E-03 2.018E-03
+
+     total cpu time spent up to now is    11620.4 secs
+
+     total energy              =  -11524.40599247 Ry
+     estimated scf accuracy    <       0.00002058 Ry
+
+     total magnetization       =     2.60 Bohr mag/cell
+     absolute magnetization    =     3.71 Bohr mag/cell
+
+     iteration # 14     ecut=    60.00 Ry     beta= 0.03
+     Davidson diagonalization with overlap
+
+---- Real-time Memory Report at c_bands before calling an iterative solver
+          1475 MiB given to the printing process from OS
+           496 MiB allocation reported by mallinfo(arena+hblkhd)
+         10914 MiB available memory on the node where the printing process lives
+------------------
+     ethr =  1.46E-09,  avg # of iterations =  4.0
+
+     negative rho (up, down):  2.504E-03 1.996E-03
+
+     total cpu time spent up to now is    11686.8 secs
+
+     total energy              =  -11524.40599327 Ry
+     estimated scf accuracy    <       0.00001303 Ry
+
+     total magnetization       =     2.61 Bohr mag/cell
+     absolute magnetization    =     3.71 Bohr mag/cell
+
+     iteration # 15     ecut=    60.00 Ry     beta= 0.03
+     Davidson diagonalization with overlap
+
+---- Real-time Memory Report at c_bands before calling an iterative solver
+          1475 MiB given to the printing process from OS
+           496 MiB allocation reported by mallinfo(arena+hblkhd)
+         16240 MiB available memory on the node where the printing process lives
+------------------
+     ethr =  9.24E-10,  avg # of iterations =  2.0
+
+     negative rho (up, down):  2.470E-03 1.977E-03
+
+     total cpu time spent up to now is    11750.0 secs
+
+     total energy              =  -11524.40599372 Ry
+     estimated scf accuracy    <       0.00000913 Ry
+
+     total magnetization       =     2.61 Bohr mag/cell
+     absolute magnetization    =     3.71 Bohr mag/cell
+
+     iteration # 16     ecut=    60.00 Ry     beta= 0.03
+     Davidson diagonalization with overlap
+
+---- Real-time Memory Report at c_bands before calling an iterative solver
+          1475 MiB given to the printing process from OS
+           496 MiB allocation reported by mallinfo(arena+hblkhd)
+         13599 MiB available memory on the node where the printing process lives
+------------------
+     ethr =  6.47E-10,  avg # of iterations =  2.0
+
+     negative rho (up, down):  2.448E-03 1.966E-03
+
+     total cpu time spent up to now is    11816.2 secs
+
+     total energy              =  -11524.40599282 Ry
+     estimated scf accuracy    <       0.00000729 Ry
+
+     total magnetization       =     2.61 Bohr mag/cell
+     absolute magnetization    =     3.71 Bohr mag/cell
+
+     iteration # 17     ecut=    60.00 Ry     beta= 0.03
+     Davidson diagonalization with overlap
+
+---- Real-time Memory Report at c_bands before calling an iterative solver
+          1475 MiB given to the printing process from OS
+           496 MiB allocation reported by mallinfo(arena+hblkhd)
+         13265 MiB available memory on the node where the printing process lives
+------------------
+     ethr =  5.17E-10,  avg # of iterations =  2.0
+
+     negative rho (up, down):  2.415E-03 1.949E-03
+
+     total cpu time spent up to now is    11881.3 secs
+
+     total energy              =  -11524.40599316 Ry
+     estimated scf accuracy    <       0.00000322 Ry
+
+     total magnetization       =     2.61 Bohr mag/cell
+     absolute magnetization    =     3.71 Bohr mag/cell
+
+     iteration # 18     ecut=    60.00 Ry     beta= 0.03
+     Davidson diagonalization with overlap
+
+---- Real-time Memory Report at c_bands before calling an iterative solver
+          1475 MiB given to the printing process from OS
+           496 MiB allocation reported by mallinfo(arena+hblkhd)
+         14032 MiB available memory on the node where the printing process lives
 ------------------
